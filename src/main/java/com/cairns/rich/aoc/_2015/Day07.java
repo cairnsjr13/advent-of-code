@@ -64,7 +64,8 @@ class Day07 extends Base2015 {
           compute(circuit, instructionsByOutput, ls[0]),
           compute(circuit, instructionsByOutput, ls[2])
       );
-    } else {
+    }
+    else {
       throw fail(Arrays.toString(ls));
     }
     circuit.put(output, value);

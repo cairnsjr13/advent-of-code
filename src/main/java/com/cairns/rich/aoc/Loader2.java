@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * This api makes reading puzzle input from a file less verbose.  File handling and parsing are done at this level.
  */
 public class Loader2 extends QuietCapable {
-  private final String file;
+  public final String file;
   
   public Loader2(String file) {
     this.file = file;
@@ -54,6 +54,36 @@ public class Loader2 extends QuietCapable {
   }
   
   /**
+   * Grouped parser that consumes all lines of input using the given function until exhausted.
+   */
+  public <G> List<G> g(Function<GroupParserData, G> toGroup) {
+    List<G> groups = new ArrayList<>();
+    GroupParserData groupParserData = new GroupParserData(ml());
+    while (groupParserData.peek() != null) {
+      groups.add(toGroup.apply(groupParserData));
+    }
+    return groups;
+  }
+  
+  public List<List<String>> gDelim(String delim) {
+    return gDelim(delim, Function.identity());
+  }
+  
+  public <T> List<T> gDelim(String delim, Function<List<String>, T> map) {
+    return g((gpd) -> {
+      List<String> group = new ArrayList<>();
+      while (gpd.peek() != null) {
+        String line = gpd.next();
+        if (delim.equals(line)) {
+          break;
+        }
+        group.add(line);
+      }
+      return map.apply(group);
+    });
+  }
+  
+  /**
    * Helper method that reads the entire file, transforms each line using the given map fn, and returns them in a list.
    */
   private <T> List<T> load(Function<String, T> map) {
@@ -69,5 +99,22 @@ public class Loader2 extends QuietCapable {
         }
       }
     });
+  }
+  
+  public static class GroupParserData {
+    private final List<String> lines;
+    private int position = 0;
+    
+    private GroupParserData(List<String> lines) {
+      this.lines = lines;
+    }
+    
+    public String peek() {
+      return (lines.size() == position) ? null : lines.get(position);
+    }
+    
+    public String next() {
+      return (lines.size() == position) ? null : lines.get(position++);
+    }
   }
 }

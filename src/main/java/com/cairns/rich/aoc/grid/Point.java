@@ -50,7 +50,7 @@ public abstract class Point<P extends Point<P>> {
   
   @Override
   public int hashCode() {
-    return (x * 31) + y;
+    return (x * 0b11_1111) + y;
   }
   
   @Override

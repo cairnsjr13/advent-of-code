@@ -1,15 +1,24 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc._2015.Base2015;
+import com.cairns.rich.aoc._2021.Base2021;
 import com.google.common.base.Strings;
 import java.security.MessageDigest;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.ToLongFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,8 +33,7 @@ public abstract class Base extends SafeAccessor {
       ThreadLocal.withInitial(() -> quietly(() -> MessageDigest.getInstance("MD5")));
   
   public static void main(String[] args) throws Throwable {
-    Base day = Base2015.day;
-    day.run();
+    Base2021.day.run();
   }
   
   protected final Loader2 testLoader;
@@ -106,5 +114,45 @@ public abstract class Base extends SafeAccessor {
   
   public interface HasId<I> {
     I getId();
+  }
+  
+  protected <S> Optional<SearchState<S>> bfs(
+      S initial,
+      Predicate<S> search,
+      ToLongFunction<SearchState<S>> priorityComputer,
+      BiConsumer<S, Consumer<S>> step
+  ) {
+    Set<S> visited = new HashSet<>();
+    visited.add(initial);
+    PriorityQueue<SearchState<S>> pq = new PriorityQueue<>(Comparator.comparingLong(priorityComputer));
+    pq.offer(new SearchState<>(initial, 0));
+    while (!pq.isEmpty()) {
+      SearchState<S> current = pq.poll();
+      if (search.test(current.state)) {
+        return Optional.of(current);
+      }
+      else {
+        step.accept(current.state, (next) -> {
+          if (visited.add(next)) {
+            pq.offer(new SearchState<>(next, current.numSteps + 1));
+          }
+        });
+      }
+    }
+    return Optional.empty();
+  }
+  
+  protected static final class SearchState<S> {
+    public final S state;
+    protected final long numSteps;
+    
+    protected SearchState(S state, long numSteps) {
+      this.state = state;
+      this.numSteps = numSteps;
+    }
+    
+    public final long getNumSteps() {
+      return numSteps;
+    }
   }
 }

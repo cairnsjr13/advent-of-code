@@ -8,9 +8,9 @@ import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.cairns.rich.aoc.EnumUtils;
+
 class Day15 extends Base2015 {
-  private static final Metric[] metrics = Metric.values();
-  
   @Override
   protected void run() {
     List<Ingredient> ingredients = fullLoader.ml(Ingredient::new);
@@ -44,7 +44,7 @@ class Day15 extends Base2015 {
   
   private int scoreDistribution(Map<Ingredient, Integer> distribution, IntUnaryOperator calorieHandler) {
     int score = 1;
-    for (Metric metric : metrics) {
+    for (Metric metric : EnumUtils.enumValues(Metric.class)) {
       int metricScore = 0;
       for (Ingredient ing : distribution.keySet()) {
         metricScore += ing.metrics.get(metric) * distribution.get(ing);
@@ -77,11 +77,9 @@ class Day15 extends Base2015 {
     
     private Ingredient(String spec) {
       Matcher matcher = matcher(pattern, spec);
-      metrics.put(Metric.Capacity, Integer.parseInt(matcher.group(1)));
-      metrics.put(Metric.Durability, Integer.parseInt(matcher.group(2)));
-      metrics.put(Metric.Flavor, Integer.parseInt(matcher.group(3)));
-      metrics.put(Metric.Texture, Integer.parseInt(matcher.group(4)));
-      metrics.put(Metric.Calories, Integer.parseInt(matcher.group(5)));
+      for (Metric metric : EnumUtils.enumValues(Metric.class)) {
+        metrics.put(metric, num(matcher, 1 + metric.ordinal()));
+      }
     }
   }
 }

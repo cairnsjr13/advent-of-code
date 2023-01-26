@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
+import com.cairns.rich.aoc.grid.ReadDir;
 
 class Day06 extends Base2015 {
   private static final Map<Type, IntUnaryOperator> simple = Map.of(
@@ -32,8 +33,8 @@ class Day06 extends Base2015 {
   private final int countLightsOn(List<Instruction> instructions, Map<Type, IntUnaryOperator> rules) {
     int lightsOn = 0;
     MutablePoint light = new MutablePoint(0, 0);
-    for (light.x(0); light.x() < 1000; light.x(light.x() + 1)) {
-      for (light.y(0); light.y() < 1000; light.y(light.y() + 1)) {
+    for (light.x(0); light.x() < 1000; light.move(ReadDir.Right)) {
+      for (light.y(0); light.y() < 1000; light.move(ReadDir.Down)) {
         int bulb = 0;
         for (Instruction instruction : instructions) {
           if (instruction.range.contains(light)) {
