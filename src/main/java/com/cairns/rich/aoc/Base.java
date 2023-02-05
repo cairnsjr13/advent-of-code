@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc._2021.Base2021;
+import com.cairns.rich.aoc._2022.Base2022;
 import com.google.common.base.Strings;
 import java.security.MessageDigest;
 import java.util.Collection;
@@ -31,30 +31,30 @@ public abstract class Base extends SafeAccessor {
   });
   private static final ThreadLocal<MessageDigest> md5Cache =
       ThreadLocal.withInitial(() -> quietly(() -> MessageDigest.getInstance("MD5")));
-  
+
   public static void main(String[] args) throws Throwable {
-    Base2021.day.run();
+    Base2022.day.run();
   }
-  
+
   protected final Loader2 testLoader;
   protected final Loader2 fullLoader;
-  
+
   protected Base() {
     String pkgPrefix = "/" + getClass().getPackageName().replace('.', '/') + "/";
     this.testLoader = new Loader2(pkgPrefix + "test.txt");
     this.fullLoader = new Loader2(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt");
   }
-  
+
   protected abstract void run() throws Throwable;
-  
+
   protected static final RuntimeException fail() {
     return fail("Unexpected");
   }
-  
+
   protected static final RuntimeException fail(Object msg) {
     return new RuntimeException(Objects.toString(msg));
   }
-  
+
   protected static Matcher matcher(Pattern pattern, String spec) {
     Matcher matcher = pattern.matcher(spec);
     if (!matcher.matches()) {
@@ -62,11 +62,11 @@ public abstract class Base extends SafeAccessor {
     }
     return matcher;
   }
-  
+
   protected static int num(Matcher matcher, int group) {
     return Integer.parseInt(matcher.group(group));
   }
-  
+
   protected static String md5(String seed) {
     return quietly(() -> {
       MessageDigest md5 = md5Cache.get();
@@ -78,19 +78,19 @@ public abstract class Base extends SafeAccessor {
       return hex.toString();
     });
   }
-  
+
   protected static Future<?> startDaemon(Runnable action) {
     return daemonExec.submit(action);
   }
-  
+
   protected static <R, V extends Comparable<V>> R getMax(Iterable<R> returns, Function<R, V> toValue) {
     return getExtreme(1, returns, toValue);
   }
-  
+
   protected static <R, V extends Comparable<V>> R getMin(Iterable<R> returns, Function<R, V> toValue) {
     return getExtreme(-1, returns, toValue);
   }
-  
+
   private static <R, V extends Comparable<V>> R getExtreme(
       int signForExtreme,
       Iterable<R> returns,
@@ -158,12 +158,12 @@ public abstract class Base extends SafeAccessor {
   protected static final class SearchState<S> {
     public final S state;
     protected final long numSteps;
-    
+
     protected SearchState(S state, long numSteps) {
       this.state = state;
       this.numSteps = numSteps;
     }
-    
+
     public final long getNumSteps() {
       return numSteps;
     }
