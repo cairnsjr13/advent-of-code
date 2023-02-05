@@ -47,8 +47,8 @@ class Day15 extends Base2016 {
     
     private DiscDesc(String spec) {
       Matcher matcher = matcher(pattern, spec);
-      this.numPositions = Integer.parseInt(matcher.group(1));
-      this.startPosition = Integer.parseInt(matcher.group(2));
+      this.numPositions = num(matcher, 1);
+      this.startPosition = num(matcher, 2);
     }
   }
 }

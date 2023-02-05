@@ -58,10 +58,10 @@ class Day22 extends Base2016 {
     short[][] grid = new short[cols][rows];
     for (String nodeSpec : nodeSpecs) {
       Matcher matcher = matcher(pattern, nodeSpec);
-      int x = Integer.parseInt(matcher.group(1));
-      int y = Integer.parseInt(matcher.group(2));
-      int used = Integer.parseInt(matcher.group(3));
-      int avail = Integer.parseInt(matcher.group(4));
+      int x = num(matcher, 1);
+      int y = num(matcher, 2);
+      int used = num(matcher, 3);
+      int avail = num(matcher, 4);
       grid[x][y] = encode(used, avail);
     }
     return grid;

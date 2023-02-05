@@ -1,59 +1,38 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.grid.CardDir;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.UnaryOperator;
 
 class Day01 extends Base2016 {
-  private static final Dir[] dirs = Dir.values();
-  
+  private static final Map<Character, UnaryOperator<CardDir>> turns = Map.of('L', CardDir::turnLeft, 'R', CardDir::turnRight);
+
   @Override
   protected void run() {
-    String input = fullLoader.ml().get(0);
-    String[] instructions = input.split(", ");
-    Set<Long> seen = new HashSet<>();
-    
-    Dir dir = Dir.North;
-    long x = 0;
-    long y = 0;
+    List<String> instructions = fullLoader.sl(", ");
+    Set<ImmutablePoint> seen = new HashSet<>();
+
+    CardDir dir = CardDir.North;
+    ImmutablePoint location = new ImmutablePoint(0, 0);
     for (String instruction : instructions) {
-      dir = dir.turn(instruction.charAt(0));
+      dir = turns.get(instruction.charAt(0)).apply(dir);
       int steps = Integer.parseInt(instruction.substring(1));
       for (int i = 0; i < steps; ++i) {
-        x += dir.deltaX;
-        y += dir.deltaY;
-        if ((seen != null) && !seen.add(encode(x, y))) {
+        location = location.move(dir);
+        if ((seen != null) && !seen.add(location)) {
           seen = null;
-          report("Revist", x, y);
+          report("Revist", location);
         }
       }
     }
-    report("Final", x, y);
+    report("Final", location);
   }
-  
-  private long encode(long x, long y) {
-    return (x << 32) + y;
-  }
-  
-  private void report(String tag, long x, long y) {
-    System.out.println("(" + x + ", " + y + ") " + tag + " - " + (Math.abs(x) + Math.abs(y)));
-  }
-  
-  private enum Dir {
-    North(0, 1),
-    East(1, 0),
-    South(0, -1),
-    West(-1, 0);
-    
-    private final int deltaX;
-    private final int deltaY;
-    
-    private Dir(int deltaX, int deltaY) {
-      this.deltaX = deltaX;
-      this.deltaY = deltaY;
-    }
-    
-    private Dir turn(char turn) {
-      return dirs[((ordinal() + ((turn == 'R') ? 1 : -1)) + dirs.length) % dirs.length];
-    }
+
+  private void report(String tag, ImmutablePoint location) {
+    System.out.println(location + " " + tag + " - " + (Math.abs(location.x()) + Math.abs(location.y())));
   }
 }

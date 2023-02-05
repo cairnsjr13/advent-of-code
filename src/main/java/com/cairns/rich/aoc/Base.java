@@ -107,20 +107,29 @@ public abstract class Base extends SafeAccessor {
     }
     return toReturn;
   }
-  
+
   public static <I, T extends HasId<I>> Map<I, T> getLookup(Collection<T> elements) {
     return elements.stream().collect(Collectors.toMap(HasId::getId, Function.identity()));
   }
-  
+
   public interface HasId<I> {
     I getId();
   }
-  
+
   protected <S> Optional<SearchState<S>> bfs(
       S initial,
       Predicate<S> search,
       ToLongFunction<SearchState<S>> priorityComputer,
       BiConsumer<S, Consumer<S>> step
+  ) {
+    return bfs(initial, search, priorityComputer, (state, numSteps, registrar) -> step.accept(state, registrar));
+  }
+
+  protected <S> Optional<SearchState<S>> bfs(
+      S initial,
+      Predicate<S> search,
+      ToLongFunction<SearchState<S>> priorityComputer,
+      StepperWithStepsSoFar<S> step
   ) {
     Set<S> visited = new HashSet<>();
     visited.add(initial);
@@ -132,7 +141,7 @@ public abstract class Base extends SafeAccessor {
         return Optional.of(current);
       }
       else {
-        step.accept(current.state, (next) -> {
+        step.accept(current.state, current.numSteps, (next) -> {
           if (visited.add(next)) {
             pq.offer(new SearchState<>(next, current.numSteps + 1));
           }
@@ -141,7 +150,11 @@ public abstract class Base extends SafeAccessor {
     }
     return Optional.empty();
   }
-  
+
+  protected static interface StepperWithStepsSoFar<S> {
+    void accept(S state, long numSteps, Consumer<S> registrar);
+  }
+
   protected static final class SearchState<S> {
     public final S state;
     protected final long numSteps;

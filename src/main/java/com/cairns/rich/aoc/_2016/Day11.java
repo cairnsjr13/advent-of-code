@@ -1,25 +1,22 @@
 package com.cairns.rich.aoc._2016;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.ToLongFunction;
 
+import com.cairns.rich.aoc.EnumUtils;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 /**
  * 6666555555555544444444443333333333222222222211111111110000000000
  * 3210987654321098765432109876543210987654321098765432109876543210
- *  BBBBBBBBBBBBBRRRQQQPPPOOONNNMMMLLLKKKJJJIIIHHHGGGFFFEEEDDDCCCAA
+ *               RRRQQQPPPOOONNNMMMLLLKKKJJJIIIHHHGGGFFFEEEDDDCCCAA
  * 
  * A - elevator floor       -> offset  0
- * B - numMoves             -> offset 50
- * 
+ *
  *     (gen, chip) counts   -> offset  [2+3*(4g+c)]
  * C - (  0,    0) count    -> offset  2
  * D - (  0,    1) count    -> offset  5
@@ -40,10 +37,7 @@ import com.google.common.collect.Multiset;
  */
 class Day11 extends Base2016 {
   private static final int[] DIRS = { 1, -1 };
-  private static final Field[] FIELDS = Field.values();
   private static final int ELEVATOR_FLOOR_MASK = 0b11;
-  private static final int NUM_MOVES_OFFSET = 50;
-  private static final long NUM_MOVES_MASK = 0b1_1111_1111_1111;
   private static final int NUM_FLOORS = 4;
   private static final int LOCATION_COUNT_BITS = 3; 
   private static final int LOCATION_COUNT_MASK = 0b111;
@@ -78,40 +72,32 @@ class Day11 extends Base2016 {
   }
   
   private long computeMinMoves(List<Location> initLocations) {
-    Set<Long> seenStates = new HashSet<>();
-    PriorityQueue<Long> candidates = new PriorityQueue<>(Comparator.comparingLong(this::getPriority));
-    long initState = buildState(0, 0, initLocations);
-    seenStates.add(initState);
-    candidates.offer(initState);
-    
-    while (!candidates.isEmpty()) {
-      long candidate = candidates.poll();
-      long numMoves = getNumMoves(candidate);
-      long elevatorFloor = getElevatorFloor(candidate);
-      List<Location> locations = getLocations(candidate);
-      for (int i = 0; i < locations.size(); ++i) {
-        Location first = locations.get(i);
-        for (int j = i; j < locations.size(); ++j) {
-          Location second = locations.get(j);
-          for (int dir : DIRS) {
-            for (Field field1 : FIELDS) {
-              for (Field field2 : FIELDS) {
-                if (addAllNewOptions(seenStates, candidates, numMoves, elevatorFloor, dir, locations, first, field1, second, field2)) {
-                  return numMoves + 1;
+    return bfs(
+        buildState(0, initLocations),
+        (s) -> isDone(getLocations(s)),
+        this::getPriority,
+        (candidate, registrar) -> {
+          long elevatorFloor = getElevatorFloor(candidate);
+          List<Location> locations = getLocations(candidate);
+          for (int i = 0; i < locations.size(); ++i) {
+            Location first = locations.get(i);
+            for (int j = i; j < locations.size(); ++j) {
+              Location second = locations.get(j);
+              for (int dir : DIRS) {
+                for (Field field1 : EnumUtils.enumValues(Field.class)) {
+                  for (Field field2 : EnumUtils.enumValues(Field.class)) {
+                    registerAllOptions(registrar, elevatorFloor, dir, locations, first, field1, second, field2);
+                  }
                 }
               }
             }
           }
         }
-      }
-    }
-    throw fail();
+    ).get().getNumSteps();
   }
   
-  private boolean addAllNewOptions(
-      Set<Long> seenStates,
-      PriorityQueue<Long> candidates,
-      long oldNumMoves,
+  private void registerAllOptions(
+      Consumer<Long> registrar,
       long oldElevatorFloor,
       long dir,
       List<Location> oldLocations,
@@ -143,19 +129,11 @@ class Day11 extends Base2016 {
             newLocations.add(new Location(oldLocation.genFloor, oldLocation.chipFloor));
           }
         }
-        if (isDone(newLocations)) {
-          return true;
-        }
-        else if (isSafe(newLocations)) {
-          long newCandidate = buildState(oldNumMoves + 1, newElevatorFloor, newLocations);
-          if (!seenStates.contains(newCandidate)) {
-            seenStates.add(newCandidate);
-            candidates.add(newCandidate);
-          }
+        if (isSafe(newLocations)) {
+          registrar.accept(buildState(newElevatorFloor, newLocations));
         }
       }
     }
-    return false;
   }
   
   private boolean isSafe(List<Location> locations) {
@@ -180,21 +158,17 @@ class Day11 extends Base2016 {
     return true;
   }
   
-  private int getPriority(long state) {
-    long numMoves = getNumMoves(state);
-    for (Location location : getLocations(state)) {
-      numMoves += (NUM_FLOORS - location.genFloor - 1)
-                + (NUM_FLOORS - location.chipFloor - 1);
+  private int getPriority(SearchState<Long> searchState) {
+    int numMovesMoreMin = 0;
+    for (Location location : getLocations(searchState.state)) {
+      numMovesMoreMin += (NUM_FLOORS - location.genFloor - 1)
+                       + (NUM_FLOORS - location.chipFloor - 1);
     }
-    return (int) numMoves;
+    return (int) (searchState.getNumSteps() + numMovesMoreMin);
   }
   
   private long getElevatorFloor(long state) {
     return state & ELEVATOR_FLOOR_MASK;
-  }
-  
-  private long getNumMoves(long state) {
-    return (state >> NUM_MOVES_OFFSET) & NUM_MOVES_MASK;
   }
   
   private List<Location> getLocations(long state) {
@@ -211,8 +185,8 @@ class Day11 extends Base2016 {
     return locations;
   }
   
-  private long buildState(long numMoves, long elevatorFloor, List<Location> locations) {
-    long state = elevatorFloor + (numMoves << NUM_MOVES_OFFSET);
+  private long buildState(long elevatorFloor, List<Location> locations) {
+    long state = elevatorFloor;
     Multiset<Location> locationSet = HashMultiset.create(locations);
     for (Location location : locationSet.elementSet()) {
       state |= (((long) locationSet.count(location)) << location.computeOffset());

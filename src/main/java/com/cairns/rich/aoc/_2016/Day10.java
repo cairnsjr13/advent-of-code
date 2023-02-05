@@ -29,7 +29,7 @@ class Day10 extends Base2016 {
       if (line.startsWith("value")) {
         Matcher matcher = matcher(valPattern, line);
         String bot = matcher.group(2);
-        int val = Integer.parseInt(matcher.group(1));
+        int val = num(matcher, 1);
         inits.add(() -> receivers.get(bot).accept(val));
       }
       else if (line.startsWith("bot")) {

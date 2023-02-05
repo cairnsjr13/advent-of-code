@@ -30,7 +30,7 @@ class Day08 extends Base2016 {
   private void print(boolean[][] grid) {
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
-        System.out.print((grid[row][col]) ? '\u25A0' : ' ');
+        System.out.print((grid[row][col]) ? '\u25A0' : ' ');  // TODO: use central color
       }
       System.out.println();
     }

@@ -1,18 +1,28 @@
 package com.cairns.rich.aoc._2016;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.mutable.MutableInt;
+
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.ReadDir;
+
 class Day17 extends Base2016 {
-  private static final Direction[] directions = Direction.values();
+  private static final ImmutablePoint target = new ImmutablePoint(3, 3);
   private static final Set<Character> openChars = Set.of('b', 'c', 'd', 'e', 'f');
+  private static final EnumMap<ReadDir, Integer> dirToIndex = new EnumMap<>(Map.of(
+      ReadDir.Up, 0,
+      ReadDir.Down, 1,
+      ReadDir.Left, 2,
+      ReadDir.Right, 3
+  ));
   
   @Override
   protected void run() {
@@ -31,127 +41,86 @@ class Day17 extends Base2016 {
   }
   
   private String getShortestPath(String prefix) {
-    Tracking tracking = new Tracking(prefix);
-    while (!tracking.candidates.isEmpty()) {
-      State candidate = tracking.candidates.poll();
-      for (Direction direction : directions) {
-        if (direction.canGo(candidate)) {
-          State newState = candidate.move(direction);
-          if ((newState.row == 3) && (newState.col == 3)) {
-            return newState.path.stream().map(Object::toString).collect(Collectors.joining());
-          }
-          tracking.registerNewState(newState);
-        }
-      }
-    }
-    throw fail();
+    return bfs(
+        new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
+        (s) -> s.location.equals(target),
+        (ss) -> ss.state.path.size(),
+        this::explore
+    ).get().state.path.stream().map(Object::toString).collect(Collectors.joining());
   }
   
   private int getLengthOfLongestPath(String prefix) {
-    Tracking tracking = new Tracking(prefix);
-    int maxLength = 0;
-    while (!tracking.candidates.isEmpty()) {
-      State candidate = tracking.candidates.poll();
-      for (Direction direction : directions) {
-        if (direction.canGo(candidate)) {
-          State newState = candidate.move(direction);
-          if ((newState.row == 3) && (newState.col == 3)) {
-            maxLength = Math.max(maxLength, newState.path.size());
+    MutableInt maxLength = new MutableInt(0);
+    bfs(
+        new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
+        (s) -> false,
+        (ss) -> ss.state.path.size(),
+        (candidate, registrar) -> {
+          if (candidate.location.equals(target)) {
+            if (maxLength.getValue() < candidate.path.size()) {
+              maxLength.setValue(candidate.path.size());
+            }
+            return;
           }
-          else {
-            tracking.registerNewState(newState);
-          }
+          explore(candidate, registrar);
         }
-      }
-    }
-    return maxLength;
+    );
+    return maxLength.getValue();
   }
   
-  private static class Tracking {
-    private final Set<State> seenStates = new HashSet<>();
-    PriorityQueue<State> candidates = new PriorityQueue<>(Comparator.comparing((state) -> state.path.size()));
-    
-    private Tracking(String prefix) {
-      State initialState = new State(prefix, 0, 0, new ArrayList<>());
-      seenStates.add(initialState);
-      candidates.add(initialState);
-    }
-    
-    private void registerNewState(State newState) {
-      if (!seenStates.contains(newState)) {
-        seenStates.add(newState);
-        candidates.add(newState);
+  private void explore(State candidate, Consumer<State> registrar) {
+    for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
+      if (canGo(candidate, dir)) {
+        registrar.accept(candidate.move(dir));
       }
     }
   }
   
-  private static enum Direction {
-    Up(-1, 0),
-    Down(1, 0),
-    Left(0, -1),
-    Right(0, 1);
-    
-    private final int dr;
-    private final int dc;
-    
-    private Direction(int dr, int dc) {
-      this.dr = dr;
-      this.dc = dc;
-    }
-    
-    private boolean canGo(State current) {
-      int newRow = current.row + dr;
-      int newCol = current.col + dc;
-      return (0 <= newRow) && (newRow < 4)
-          && (0 <= newCol) && (newCol < 4)
-          && current.doorsOpen[ordinal()];
-    }
+  private boolean canGo(State current, ReadDir dir) {
+    int nx = current.location.x() + dir.dx();
+    int ny = current.location.y() + dir.dy();
+    return (0 <= nx) && (nx < 4)
+        && (0 <= ny) && (ny < 4)
+        && current.doorsOpen[dirToIndex.get(dir)];
   }
   
   private static class State {
     private final String prefix;
-    private final int row;
-    private final int col;
+    private final ImmutablePoint location;
     private final List<Character> path;
     private final boolean[] doorsOpen;
     
-    private State(String prefix, int row, int col, List<Character> path) {
+    private State(String prefix, ImmutablePoint location, List<Character> path) {
       this.prefix = prefix;
-      this.row = row;
-      this.col = col;
+      this.location = location;
       this.path = path;
       this.doorsOpen = getDoorsOpen();
     }
     
-    private State move(Direction go) {
+    private State move(ReadDir go) {
       List<Character> newPath = new ArrayList<>(path);
       newPath.add(go.name().charAt(0));
-      return new State(prefix, row + go.dr, col + go.dc, newPath);
+      return new State(prefix, location.move(go), newPath);
     }
     
     private boolean[] getDoorsOpen() {
-      return quietly(() -> {
-        boolean[] doorsOpen = new boolean[4];
-        String hash = md5(prefix + path.stream().map(Object::toString).collect(Collectors.joining()));
-        for (int i = 0; i < doorsOpen.length; ++i) {
-          doorsOpen[i] = openChars.contains(hash.charAt(i));
-        }
-        return doorsOpen;
-      });
+      boolean[] doorsOpen = new boolean[4];
+      String hash = md5(prefix + path.stream().map(Object::toString).collect(Collectors.joining()));
+      for (int i = 0; i < doorsOpen.length; ++i) {
+        doorsOpen[i] = openChars.contains(hash.charAt(i));
+      }
+      return doorsOpen;
     }
     
     @Override
-    public boolean equals(Object obj) {
-      State other = (State) obj;
-      return (row == other.row)
-          && (col == other.col)
-          && Arrays.equals(doorsOpen, other.doorsOpen);
+    public boolean equals(Object other) {
+      return location.equals(((State) other).location)
+          && path.equals(((State) other).path);
     }
 
     @Override
     public int hashCode() {
-      return ThreadLocalRandom.current().nextInt(); // TODO: this is broken....  basically caching doesnt work. lolz
-      //return row ^ col;
+      return location.hashCode() ^ path.hashCode();
     }
   }
 }

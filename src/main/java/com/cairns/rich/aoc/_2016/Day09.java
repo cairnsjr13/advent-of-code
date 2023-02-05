@@ -8,7 +8,7 @@ class Day09 extends Base2016 {
   
   @Override
   protected void run() {
-    String input = fullLoader.ml().get(0);
+    String input = fullLoader.sl();
     System.out.println(getDecompressedLength(input, false));
     System.out.println(getDecompressedLength(input, true));
   }
