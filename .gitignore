@@ -1,0 +1,8 @@
+/target/
+/src/main/java/com/cairns/rich/aoc/other/
+/src/main/resources/com/cairns/rich/aoc/other/
+/.DS_Store
+/.classpath
+/.metadata
+/.project
+/.settings
