@@ -30,14 +30,14 @@ class Day21 extends Base2015 {
       new Item("No Ring 1", 0, 0, 0),
       new Item("No Ring 2", 0, 0, 0)
   );
-  
+
   @Override
   protected void run() {
     Stats boss = new Stats(8, 2);
     System.out.println(computeCost(boss, Integer.MAX_VALUE, true, (l, r) -> l < r));
     System.out.println(computeCost(boss, 0, false, (l, r) -> l > r));
   }
-  
+
   private int computeCost(
       Stats boss,
       int seed,
@@ -61,7 +61,7 @@ class Day21 extends Base2015 {
     }
     return bestCost;
   }
-  
+
   private boolean doesPlayerWins(Stats player, Stats boss) {
     int playerHp = 100;
     int bossHp = 100;
@@ -76,46 +76,46 @@ class Day21 extends Base2015 {
       }
     }
   }
-  
+
   private static class Stats {
     private final int damage;
     private final int armor;
     private final int cost;
     private final Item[] items;
-    
+
     private Stats(int damage, int armor) {
       this.damage = damage;
       this.armor = armor;
       this.cost = 0;
       items = null;
     }
-    
+
     private Stats(int hp, Item... items) {
       this.damage = Arrays.asList(items).stream().mapToInt((item) -> item.damage).sum();
       this.armor = Arrays.asList(items).stream().mapToInt((item) -> item.armor).sum();
       this.cost = Arrays.asList(items).stream().mapToInt((item) -> item.cost).sum();
       this.items = items;
     }
-    
+
     @Override
     public String toString() {
       return Arrays.toString(items);
     }
   }
-  
+
   private static class Item {
     private final String name;
     private final int cost;
     private final int damage;
     private final int armor;
-    
+
     private Item(String name, int cost, int damage, int armor) {
       this.name = name;
       this.cost = cost;
       this.damage = damage;
       this.armor = armor;
     }
-    
+
     @Override
     public String toString() {
       return name;

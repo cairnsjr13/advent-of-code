@@ -1,5 +1,7 @@
 package com.cairns.rich.aoc._2015;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,9 +10,6 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 class Day19 extends Base2015 {
   @Override
@@ -31,7 +30,7 @@ class Day19 extends Base2015 {
       }
     }
   }
-  
+
   private Integer greedyDistance(String end, Multimap<String, String> replacements) {
     Map<String, String> contractions =
         replacements.entries().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
@@ -45,7 +44,7 @@ class Day19 extends Base2015 {
       if (candidates.isEmpty()) {
         return null;
       }
-      String candidate = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));      
+      String candidate = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
       int index = end.indexOf(candidate);
       if (index != -1) {
         ++steps;
@@ -53,17 +52,17 @@ class Day19 extends Base2015 {
       }
     }
   }
-  
+
   private List<String> getCandidates(String end, List<String> rightSides) {
     return rightSides.stream().filter((r) -> end.contains(r)).collect(Collectors.toList());
   }
-  
+
   private int getUniqueSingleReplacementMolecules(String start, Multimap<String, String> replacements) {
     Set<String> molecules = new HashSet<>();
     forEachReplacement(start, replacements, molecules::add);
     return molecules.size();
   }
-  
+
   private void forEachReplacement(
       String molecule,
       Multimap<String, String> replacements,

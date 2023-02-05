@@ -1,21 +1,20 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.EnumUtils;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.cairns.rich.aoc.EnumUtils;
-
 class Day23 extends Base2015 {
   private static final Map<String, InstructionType> instsByName = EnumUtils.getLookup(InstructionType.class);
-  
+
   @Override
   protected void run() {
     List<Consumer<State>> instructions = fullLoader.ml(this::parseInstruction);
     System.out.println(runAndGetRegisterB(instructions, 0, 0));
     System.out.println(runAndGetRegisterB(instructions, 1, 0));
   }
-  
+
   private int runAndGetRegisterB(List<Consumer<State>> instructions, int initA, int initB) {
     State state = new State(initA, initB);
     while (state.currentInstruction < instructions.size()) {
@@ -23,7 +22,7 @@ class Day23 extends Base2015 {
     }
     return state.registers[1];
   }
-  
+
   private Consumer<State> parseInstruction(String spec) {
     String[] parts = spec.split(",? ");
     String inst = parts[0];
@@ -45,12 +44,12 @@ class Day23 extends Base2015 {
   private static class State {
     private int[] registers;
     private int currentInstruction;
-    
+
     private State(int a, int b) {
       this.registers = new int[] { a, b };
     }
   }
-  
+
   private enum InstructionType implements HasId<String> {
     Hlf {
       @Override
@@ -91,12 +90,12 @@ class Day23 extends Base2015 {
         state.currentInstruction += (state.registers[register] == 1) ? offset : 1;
       }
     };
-    
+
     @Override
     public String getId() {
       return name().toLowerCase();
     }
-    
+
     protected abstract void execute(State state, int register, int offset);
-  }  
+  }
 }

@@ -17,11 +17,11 @@ class Day07 extends Base2015 {
       "LSHIFT", (l, r) -> l << r,
       "RSHIFT", (l, r) -> l >> r
   );
-  
+
   @Override
   protected void run() {
     List<Instruction> instructions = fullLoader.ml(Instruction::new);
-    
+
     Map<String, Integer> circuit = new HashMap<>();
     Map<String, Instruction> instructionsByOutput = instructions.stream().collect(Collectors.toMap(
         (instruction) -> instruction.output,
@@ -29,13 +29,13 @@ class Day07 extends Base2015 {
     ));
     int originalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
     System.out.println("originalA = " + originalValue);
-    
+
     circuit.clear();
     circuit.put("b", originalValue);
     int finalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
     System.out.println("FinalA = " + finalValue);
   }
-  
+
   private int compute(
       Map<String, Integer> circuit,
       Map<String, Instruction> instructionsByOutput,
@@ -71,12 +71,12 @@ class Day07 extends Base2015 {
     circuit.put(output, value);
     return value;
   }
-  
+
   private static class Instruction {
     private static final Pattern pattern = Pattern.compile("^(.+) -> (.+)$");
     private final String[] leftSide;
     private final String output;
-    
+
     private Instruction(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.leftSide = matcher.group(1).split(" ");

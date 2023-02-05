@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 class Day11 extends Base2015 {
   private static final Pattern allLegalPattern = Pattern.compile("^[^iol]+$");
   private static final Pattern twoPairsPattern = Pattern.compile("^.*(.)\\1.*(.)\\2.*$");
-  
+
   @Override
   protected void run() {
     String input = "hepxcrrq";
@@ -15,14 +15,14 @@ class Day11 extends Base2015 {
     System.out.println(next);
     System.out.println(last);
   }
-  
+
   private String findNextPassword(String input) {
     do {
       input = nextOption(input);
     } while (!isValid(input));
     return input;
   }
-  
+
   private String nextOption(String password) {
     char[] chs = password.toCharArray();
     for (int i = chs.length - 1; i >= 0; --i) {
@@ -42,7 +42,7 @@ class Day11 extends Base2015 {
     }
     return new String(chs);
   }
-  
+
   private boolean isValid(String password) {
     Matcher allLegalMatcher = allLegalPattern.matcher(password);
     Matcher twoPairsMatcher = twoPairsPattern.matcher(password);

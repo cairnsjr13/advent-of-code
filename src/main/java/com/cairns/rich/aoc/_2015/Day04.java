@@ -6,7 +6,7 @@ class Day04 extends Base2015 {
     System.out.println(findLowestFiveZeros("iwrupvqb", 5));
     System.out.println(findLowestFiveZeros("iwrupvqb", 6));
   }
-  
+
   private int findLowestFiveZeros(String input, int numLeadingZeroes) {
     String prefix = "0".repeat(numLeadingZeroes);
     return quietly(() -> {

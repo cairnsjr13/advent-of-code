@@ -7,7 +7,7 @@ class Day01 extends Base2015 {
     System.out.println(getFinalFloor(input));
     System.out.println(getFirstBasementInstruction(input));
   }
-  
+
   private int getFinalFloor(String input) {
     int floor = 0;
     for (int i = 0; i < input.length(); ++i) {
@@ -15,7 +15,7 @@ class Day01 extends Base2015 {
     }
     return floor;
   }
-  
+
   private int getFirstBasementInstruction(String input) {
     int floor = 0;
     for (int i = 0; i < input.length(); ++i) {

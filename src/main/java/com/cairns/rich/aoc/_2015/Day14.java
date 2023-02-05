@@ -14,7 +14,7 @@ class Day14 extends Base2015 {
     System.out.println(getDistanceTravelledByWinner(reindeers, 2503));
     System.out.println(getMaxPoints(reindeers, 2503));
   }
-  
+
   private int getDistanceTravelledByWinner(List<Reindeer> reindeers, int totalSeconds) {
     int maxDistance = 0;
     for (Reindeer reindeer : reindeers) {
@@ -27,7 +27,7 @@ class Day14 extends Base2015 {
     }
     return maxDistance;
   }
-  
+
   private int getMaxPoints(List<Reindeer> reindeers, int totalSeconds) {
     List<State> states = reindeers.stream().map(State::new).collect(Collectors.toList());
     for (int second = 0; second < totalSeconds; ++second) {
@@ -36,7 +36,7 @@ class Day14 extends Base2015 {
     }
     return states.stream().mapToInt((s) -> s.points).max().getAsInt();
   }
-  
+
   private Set<State> findLeader(List<State> states) {
     int leadingDistance = 0;
     Set<State> leaders = new HashSet<>();
@@ -52,19 +52,19 @@ class Day14 extends Base2015 {
     }
     return leaders;
   }
-  
+
   private static class State {
     private final Reindeer reindeer;
     private int points = 0;
     private int distance = 0;
     private boolean flying = true;
     private int secondsLeft;
-    
+
     private State(Reindeer reindeer) {
       this.reindeer = reindeer;
       this.secondsLeft = reindeer.stamina;
     }
-    
+
     private void tick() {
       if (flying) {
         distance += reindeer.speed;
@@ -76,14 +76,14 @@ class Day14 extends Base2015 {
       }
     }
   }
-  
+
   private static class Reindeer {
     private static final Pattern pattern = Pattern.compile("^[^\\d]+[^\\d]*(\\d+)[^\\d]*(\\d+)[^\\d]*(\\d+).*$");
-    
+
     private final int speed;
     private final int stamina;
     private final int rest;
-    
+
     private Reindeer(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.speed = Integer.parseInt(matcher.group(1));

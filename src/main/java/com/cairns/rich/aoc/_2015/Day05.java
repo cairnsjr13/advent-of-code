@@ -11,18 +11,18 @@ class Day05 extends Base2015 {
   private static final Set<String> illegals = Set.of("ab", "cd", "pq", "xy");
   private static final Pattern twoCharRepeat = Pattern.compile("^.*(..).*\\1.*$");
   private static final Pattern oneCharRepeat = Pattern.compile("^.*(.).\\1.*$");
-  
+
   @Override
   protected void run() {
     List<String> inputs = fullLoader.ml();
     System.out.println(numNice(inputs, this::isOriginallyNice));
     System.out.println(numNice(inputs, this::isNewNice));
   }
-  
+
   private long numNice(List<String> inputs, Predicate<String> filter) {
     return inputs.stream().filter(filter).count();
   }
-  
+
   private boolean isOriginallyNice(String input) {
     int numVowels = (vowels.contains(input.charAt(0))) ? 1 : 0;
     boolean hasRepeat = false;
@@ -41,7 +41,7 @@ class Day05 extends Base2015 {
     }
     return (numVowels >= 3) && hasRepeat;
   }
-  
+
   private boolean isNewNice(String input) {
     Matcher twoCharMatcher = twoCharRepeat.matcher(input);
     Matcher oneCharMatcher = oneCharRepeat.matcher(input);

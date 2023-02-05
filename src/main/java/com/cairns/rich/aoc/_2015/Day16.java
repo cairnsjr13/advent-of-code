@@ -14,7 +14,7 @@ class Day16 extends Base2015 {
       (att) -> att.name().toLowerCase(),
       Function.identity()
   ));
-  
+
   @Override
   protected void run() {
     List<EnumMap<Att, Integer>> sues = fullLoader.ml(this::parseLine);
@@ -30,14 +30,14 @@ class Day16 extends Base2015 {
     filters.put(Att.Cars, (v) -> v == 2);
     filters.put(Att.Perfumes, (v) -> v == 1);
     System.out.println(filter(sues, filters));
-    
+
     filters.put(Att.Cats, (v) -> v > 7);
     filters.put(Att.Trees, (v) -> v > 3);
     filters.put(Att.Pomeranians, (v) -> v < 3);
     filters.put(Att.Goldfish, (v) -> v < 5);
     System.out.println(filter(sues, filters));
   }
-  
+
   private int filter(List<EnumMap<Att, Integer>> sues, Map<Att, Predicate<Integer>> tests) {
     for (int i = 0; i < sues.size(); ++i) {
       EnumMap<Att, Integer> sue = sues.get(i);
@@ -47,7 +47,7 @@ class Day16 extends Base2015 {
     }
     throw fail();
   }
-  
+
   private boolean passes(EnumMap<Att, Integer> sue, Map<Att, Predicate<Integer>> tests) {
     for (Att att : tests.keySet()) {
       if (sue.containsKey(att) && !tests.get(att).test(sue.get(att))) {
@@ -56,7 +56,7 @@ class Day16 extends Base2015 {
     }
     return true;
   }
-  
+
   private enum Att {
     Children,
     Cats,
@@ -69,7 +69,7 @@ class Day16 extends Base2015 {
     Cars,
     Perfumes;
   }
-  
+
   private EnumMap<Att, Integer> parseLine(String line) {
     EnumMap<Att, Integer> sue = new EnumMap<>(Att.class);
     String right = line.substring(line.indexOf(':') + 2);

@@ -1,13 +1,12 @@
 package com.cairns.rich.aoc._2015;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 class Day13 extends Base2015 {
   @Override
@@ -20,7 +19,7 @@ class Day13 extends Base2015 {
     Candidate best = computeBest(impacts, people, new ArrayList<>());
     System.out.println(best.order);
     System.out.println(best.score);
-    
+
     people.forEach((person) -> {
       impacts.put("", person, 0);
       impacts.put(person, "", 0);
@@ -30,7 +29,7 @@ class Day13 extends Base2015 {
     System.out.println(newBest.order);
     System.out.println(newBest.score);
   }
-  
+
   private Candidate computeBest(Table<String, String, Integer> impacts, List<String> peopleLeft, List<String> order) {
     if (peopleLeft.isEmpty()) {
       return computeScore(impacts, order);
@@ -46,7 +45,7 @@ class Day13 extends Base2015 {
     }
     return best;
   }
-  
+
   private Candidate computeScore(Table<String, String, Integer> impacts, List<String> order) {
     int score = 0;
     for (int i = 0; i < order.size(); ++i) {
@@ -55,25 +54,25 @@ class Day13 extends Base2015 {
     }
     return new Candidate(score, order);
   }
-  
+
   private static class Candidate {
     private final int score;
     private final List<String> order;
-    
+
     private Candidate(int score, List<String> order) {
       this.score = score;
       this.order = new ArrayList<>(order);
     }
   }
-  
+
   private static class Line {
     private static final Pattern pattern =
         Pattern.compile("^(.+) would (gain|lose) (\\d+) happiness units by sitting next to (.+)\\.$");
-    
+
     private final String impacted;
     private final String neighbor;
     private final int value;
-    
+
     private Line(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.impacted = matcher.group(1);

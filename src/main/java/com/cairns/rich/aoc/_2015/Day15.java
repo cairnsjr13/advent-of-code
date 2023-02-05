@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.EnumUtils;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +8,6 @@ import java.util.Map;
 import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.cairns.rich.aoc.EnumUtils;
 
 class Day15 extends Base2015 {
   @Override
@@ -19,7 +18,7 @@ class Day15 extends Base2015 {
     int healthyBest = findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> (c == 500) ? 1 : 0);
     System.out.println(healthyBest);
   }
-  
+
   private int findBestDistribution(
       int spaceLeft,
       int placeIndex,
@@ -41,7 +40,7 @@ class Day15 extends Base2015 {
     }
     return maxScore;
   }
-  
+
   private int scoreDistribution(Map<Ingredient, Integer> distribution, IntUnaryOperator calorieHandler) {
     int score = 1;
     for (Metric metric : EnumUtils.enumValues(Metric.class)) {
@@ -59,7 +58,7 @@ class Day15 extends Base2015 {
     }
     return score;
   }
-  
+
   private enum Metric {
     Capacity,
     Durability,
@@ -67,14 +66,14 @@ class Day15 extends Base2015 {
     Texture,
     Calories;
   }
-  
+
   private static class Ingredient {
     private static final Pattern pattern = Pattern.compile(
         ".+: capacity (-?\\d+), durability (-?\\d+), flavor (-?\\d+), texture (-?\\d+), calories (-?\\d+)"
     );
-    
+
     private final EnumMap<Metric, Integer> metrics = new EnumMap<>(Metric.class);
-    
+
     private Ingredient(String spec) {
       Matcher matcher = matcher(pattern, spec);
       for (Metric metric : EnumUtils.enumValues(Metric.class)) {

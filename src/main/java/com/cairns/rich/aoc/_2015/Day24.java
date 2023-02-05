@@ -9,11 +9,11 @@ class Day24 extends Base2015 {
   protected void run() {
     List<Integer> pkgs = fullLoader.ml(Integer::parseInt);
     int totalSum = pkgs.stream().mapToInt(Integer::intValue).sum();
-    
+
     System.out.println(getBestQe3(pkgs, totalSum / 3));
     System.out.println(getBestQe4(pkgs, totalSum / 4));
   }
-  
+
   private long getBestQe3(List<Integer> pkgs, int correctSize) {
     return getBestQe(pkgs, correctSize, (mask) -> canEvenlyPartition(pkgs, correctSize, 2, ~mask));
   }
@@ -25,7 +25,7 @@ class Day24 extends Base2015 {
         (mask) -> -1 != getBestQe3(buildGroupFromMask(pkgs, ~mask), correctSize)
     );
   }
-  
+
   private long getBestQe(List<Integer> pkgs, int correctSize, IntPredicate isPartitionableCorrect) {
     for (int passengerSize = 1; passengerSize < pkgs.size(); ++passengerSize) {
       List<Integer> correctGroupMasks = computeMasksForCorrectPassengerGroupWithSize(pkgs, correctSize, passengerSize);
@@ -43,7 +43,7 @@ class Day24 extends Base2015 {
     }
     throw fail();
   }
-  
+
   private boolean canEvenlyPartition(List<Integer> pkgs, int correctSize, int numGroups, int leftOverMask) {
     List<Integer> pkgsLeft = buildGroupFromMask(pkgs, leftOverMask);
     for (int partitionMask = 0; partitionMask < 1 << pkgsLeft.size(); ++partitionMask) {
@@ -54,7 +54,7 @@ class Day24 extends Base2015 {
     }
     return false;
   }
-  
+
   private List<Integer> buildGroupFromMask(List<Integer> pkgs, int mask) {
     List<Integer> filteredPkgs = new ArrayList<>();
     for (int i = 0; i < pkgs.size(); ++i) {
@@ -64,7 +64,7 @@ class Day24 extends Base2015 {
     }
     return filteredPkgs;
   }
-  
+
   private List<Integer> computeMasksForCorrectPassengerGroupWithSize(
       List<Integer> pkgs,
       int correctSize,
@@ -80,7 +80,7 @@ class Day24 extends Base2015 {
     }
     return correctGroupMasks;
   }
-  
+
   private int groupSize(List<Integer> pkgs, int mask) {
     int total = 0;
     for (int i = 0; i < pkgs.size(); ++i) {
@@ -90,7 +90,7 @@ class Day24 extends Base2015 {
     }
     return total;
   }
-  
+
   private long computeProduct(List<Integer> pkgs, int mask) {
     long product = 1;
     for (int i = 0; i < pkgs.size(); ++i) {

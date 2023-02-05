@@ -11,14 +11,14 @@ class Day10 extends Base2015 {
     System.out.println(getLengthOfAnswer(input, 40));
     System.out.println(getLengthOfAnswer(input, 50));
   }
-  
+
   private int getLengthOfAnswer(String input, int numItrs) {
     for (int i = 0; i < numItrs; ++i) {
       input = process(input);
     }
     return input.length();
   }
-  
+
   private String process(String input) {
     List<Integer> nums = new ArrayList<>();
     for (int i = 0; i < input.length();) {
@@ -29,7 +29,7 @@ class Day10 extends Base2015 {
     }
     return nums.stream().map(Object::toString).collect(Collectors.joining());
   }
-  
+
   private int count(String input, int i) {
     char ch = input.charAt(i);
     int j = i;

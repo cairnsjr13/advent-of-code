@@ -1,13 +1,12 @@
 package com.cairns.rich.aoc._2015;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntBinaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 class Day09 extends Base2015 {
   @Override
@@ -46,14 +45,14 @@ class Day09 extends Base2015 {
     }
     return extreme;
   }
-  
+
   private static class Leg {
     private static final Pattern pattern = Pattern.compile("^(.+) to (.+) = (\\d+)$");
-    
+
     private final String start;
     private final String end;
     private final int distance;
-    
+
     private Leg(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.start = matcher.group(1);
