@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 class Day02 extends Base2016 {
   private static final String moves = "UDLR";
-  
+
   // 123
   // 456
   // 789
@@ -22,7 +22,7 @@ class Day02 extends Base2016 {
       "8-5879",
       "9-6989"
   );
-  
+
   //   1
   //  234
   // 56789
@@ -43,21 +43,21 @@ class Day02 extends Base2016 {
       "C-8CBC",
       "D-BDDD"
   );
-  
+
   private static Map<Character, char[]> buildButtons(String... specs) {
     return Arrays.stream(specs).collect(Collectors.toMap(
         (spec) -> spec.charAt(0),
         (spec) -> spec.substring(2).toCharArray()
     ));
   }
-  
+
   @Override
   protected void run() {
     List<String> specs = fullLoader.ml();
     printCode(imagineButts, specs, '5');
     printCode(actualButts, specs, '5');
   }
-  
+
   private void printCode(Map<Character, char[]> buttons, List<String> specs, char current) {
     for (String spec : specs) {
       for (char move : spec.toCharArray()) {

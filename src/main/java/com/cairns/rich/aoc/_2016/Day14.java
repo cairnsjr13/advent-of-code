@@ -8,7 +8,7 @@ class Day14 extends Base2016 {
     System.out.println(getIndexOf64th("zpqevtbw", 0));
     System.out.println(getIndexOf64th("zpqevtbw", 2016));
   }
-  
+
   private int getIndexOf64th(String salt, int numExtraHashings) {
     State state = new State(salt, numExtraHashings);
     int hashIndex = -1;
@@ -27,7 +27,7 @@ class Day14 extends Base2016 {
     }
     return hashIndex;
   }
-  
+
   private Character findFirstTriple(String hash) {
     for (int i = 0; i < hash.length() - 2; ++i) {
       char ch = hash.charAt(i);
@@ -37,7 +37,7 @@ class Day14 extends Base2016 {
     }
     return null;
   }
-  
+
   private boolean windowHasRepeat5(State state, char ch) {
     for (String hash : state.hashes) {
       if (hasRepeat5(hash, ch)) {
@@ -46,7 +46,7 @@ class Day14 extends Base2016 {
     }
     return false;
   }
-  
+
   private boolean hasRepeat5(String hash, char ch) {
     for (int i = 0; i < hash.length() - 4; ++i) {
       if ((ch == hash.charAt(i + 0)) && (ch == hash.charAt(i + 1)) && (ch == hash.charAt(i + 2)) &&
@@ -57,18 +57,18 @@ class Day14 extends Base2016 {
     }
     return false;
   }
-  
+
   private static class State {
     private final String salt;
     private final int numExtraHashings;
     private int hashIndexToGen = 0;
     private final LinkedList<String> hashes = new LinkedList<>();
-    
+
     private State(String salt, int numExtraHashings) {
       this.salt = salt;
       this.numExtraHashings = numExtraHashings;
     }
-    
+
     private void ensureEnoughHashes() {
       while (hashes.size() < 1001) {
         String hash = md5(salt + hashIndexToGen);

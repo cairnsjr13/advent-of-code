@@ -1,10 +1,9 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc._2016.AssemBunny.Inst;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import com.cairns.rich.aoc._2016.AssemBunny.Inst;
 
 class Day23 extends Base2016 {
   @Override
@@ -13,7 +12,7 @@ class Day23 extends Base2016 {
     System.out.println(execute(fullLoader::ml, 7));
     System.out.println(execute(fullLoader::ml, 12));
   }
-  
+
   private int execute(Function<Function<String, Inst>, List<Inst>> load, int initA) {
     return AssemBunny.execute(load.apply(Inst::new), Map.of('a', initA));
   }

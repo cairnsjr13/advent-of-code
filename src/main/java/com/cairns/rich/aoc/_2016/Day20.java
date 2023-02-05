@@ -1,11 +1,10 @@
 package com.cairns.rich.aoc._2016;
 
+import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import com.google.common.collect.Range;
 
 class Day20 extends Base2016 {
   @Override
@@ -15,11 +14,11 @@ class Day20 extends Base2016 {
     System.out.println(getLowestAllowable(disjointBlacklist));
     System.out.println(getNumAllowable(disjointBlacklist));
   }
-  
+
   private long getLowestAllowable(List<Range<Long>> disjointBlacklist) {
     return disjointBlacklist.get(0).upperEndpoint() + 1;
   }
-  
+
   private long getNumAllowable(List<Range<Long>> disjointBlacklist) {
     long numAllowed = 0;
     for (int i = 0; i < disjointBlacklist.size() - 1; ++i) {
@@ -29,7 +28,7 @@ class Day20 extends Base2016 {
     }
     return numAllowed;
   }
-  
+
   private List<Range<Long>> getDisjointBlacklists(List<Range<Long>> blacklist) {
     Collections.sort(blacklist, Comparator.comparing((r) -> r.lowerEndpoint()));
     List<Range<Long>> condensed = new ArrayList<>();
@@ -47,12 +46,12 @@ class Day20 extends Base2016 {
     condensed.add(current);
     return condensed;
   }
-  
+
   private boolean canBeCollapsed(Range<Long> left, Range<Long> right) {
     return left.contains(right.lowerEndpoint())
         || (left.upperEndpoint() == right.lowerEndpoint() - 1);
   }
-  
+
   private Range<Long> parse(String spec) {
     String[] parts = spec.split("-");
     return Range.closed(Long.parseLong(parts[0]), Long.parseLong(parts[1]));

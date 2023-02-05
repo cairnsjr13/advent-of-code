@@ -5,14 +5,14 @@ import java.util.regex.Pattern;
 
 class Day09 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^(\\((\\d+)x(\\d+)\\)).*$");
-  
+
   @Override
   protected void run() {
     String input = fullLoader.sl();
     System.out.println(getDecompressedLength(input, false));
     System.out.println(getDecompressedLength(input, true));
   }
-  
+
   private long getDecompressedLength(String input, boolean recursive) {
     long length = 0;
     for (int i = 0; i < input.length(); ++i) {

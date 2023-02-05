@@ -9,7 +9,7 @@ class Day19 extends Base2016 {
     System.out.println(getIndexOfLastElfStealAcross(6));
     System.out.println(getIndexOfLastElfStealAcross(3001330));
   }
-  
+
   private int getIndexOfLastElfStealLeft(int numElfs) {
     Elf current = createElfChain(numElfs);
     while (current.next != current) {
@@ -17,7 +17,7 @@ class Day19 extends Base2016 {
     }
     return current.index;
   }
-  
+
   private int getIndexOfLastElfStealAcross(int numElfs) {
     Elf current = createElfChain(numElfs);
     Elf remove = current.next;
@@ -36,7 +36,7 @@ class Day19 extends Base2016 {
     }
     return current.index;
   }
-  
+
   private Elf createElfChain(int numElfs) {
     Elf first = new Elf(1);
     Elf last = first;
@@ -45,11 +45,11 @@ class Day19 extends Base2016 {
     }
     return last.next = first;
   }
-  
+
   private static class Elf {
     private final int index;
     private Elf next = null;
-    
+
     private Elf(int index) {
       this.index = index;
     }

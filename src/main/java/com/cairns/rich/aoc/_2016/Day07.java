@@ -11,7 +11,7 @@ class Day07 extends Base2016 {
     System.out.println(lines.stream().filter(this::supportsTls).count());
     System.out.println(lines.stream().filter(this::supportsSsl).count());
   }
-  
+
   private boolean supportsTls(String line) {
     boolean inBrackets = false;
     boolean foundGood = false;
@@ -28,7 +28,7 @@ class Day07 extends Base2016 {
     }
     return foundGood;
   }
-  
+
   private boolean supportsSsl(String line) {
     boolean inBrackets = false;
     Set<String> abasSeen = new HashSet<>();
@@ -56,7 +56,7 @@ class Day07 extends Base2016 {
     }
     return false;
   }
-  
+
   private boolean getUpdatedInBrackets(char ch, boolean inBrackets) {
     if ((ch == '[') || (ch == ']')) {
       inBrackets = !inBrackets;

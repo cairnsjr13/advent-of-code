@@ -15,21 +15,21 @@ class Day21 extends Base2016 {
       6, 8,
       7, 4
   );
-  
+
   @Override
   protected void run() {
     System.out.println(part1("abcdefgh"));
     System.out.println(part2("gfdhebac"));
     System.out.println(part2("fbgdceah"));
   }
-  
+
   private String part1(String input) {
     List<Consumer<StringBuilder>> insts = fullLoader.ml(this::parsePart1);
     StringBuilder state = new StringBuilder(input);
     insts.forEach((inst) -> inst.accept(state));
     return state.toString();
   }
-  
+
   private Consumer<StringBuilder> parsePart1(String spec) {
     if (spec.startsWith("swap position ")) {
       return swapPosition(spec);
@@ -54,7 +54,7 @@ class Day21 extends Base2016 {
     }
     throw fail(spec);
   }
-  
+
   private String part2(String input) {
     List<Consumer<StringBuilder>> insts = fullLoader.ml(this::parsePart2);
     StringBuilder state = new StringBuilder(input);
@@ -63,7 +63,7 @@ class Day21 extends Base2016 {
     }
     return state.toString();
   }
-  
+
   private Consumer<StringBuilder> parsePart2(String spec) {
     if (spec.startsWith("swap position ")) {
       return swapPosition(spec);
@@ -94,7 +94,7 @@ class Day21 extends Base2016 {
     }
     throw fail(spec);
   }
-  
+
   private Consumer<StringBuilder> swapPosition(String spec) {
     int index1 = parseIndex(spec, "swap position ");
     int index2 = Integer.parseInt(spec.substring(spec.length() - 1));
@@ -105,7 +105,7 @@ class Day21 extends Base2016 {
       state.setCharAt(index2, ch1);
     };
   }
-  
+
   private Consumer<StringBuilder> swapLetter(String spec) {
     String letter1 = parseVal(spec, "swap letter ");
     String letter2 = spec.substring(spec.length() - 1);
@@ -116,7 +116,7 @@ class Day21 extends Base2016 {
       state.setCharAt(letter2Index, letter1.charAt(0));
     };
   }
-  
+
   private Consumer<StringBuilder> reverse(String spec) {
     int index1 = parseIndex(spec, "reverse positions ");
     int index2 = Integer.parseInt(spec.substring(spec.length() - 1));
@@ -125,12 +125,12 @@ class Day21 extends Base2016 {
       state.replace(index1, index2 + 1, reverser.reverse().toString());
     };
   }
-    
+
 
   private Consumer<StringBuilder> rotateLeft(String spec) {
     return rotateLeft(parseIndex(spec, "rotate left "));
   }
-  
+
   private Consumer<StringBuilder> rotateLeft(int unmodedNumSteps) {
     return (state) -> {
       int numSteps = unmodedNumSteps % state.length();
@@ -139,11 +139,11 @@ class Day21 extends Base2016 {
       state.append(leftSide);
     };
   }
-  
+
   private Consumer<StringBuilder> rotateRight(String spec) {
     return rotateRight(parseIndex(spec, "rotate right "));
   }
-  
+
   private Consumer<StringBuilder> rotateRight(int unmodedNumSteps) {
     return (state) -> {
       int numSteps = unmodedNumSteps % state.length();
@@ -152,7 +152,7 @@ class Day21 extends Base2016 {
       state.insert(0, rightSide);
     };
   }
-  
+
   private Consumer<StringBuilder> rotateBased(String spec) {
     String basedOn = spec.substring(spec.length() - 1);
     return (state) -> {
@@ -160,13 +160,13 @@ class Day21 extends Base2016 {
       rotateRight(1 + indexOf + ((indexOf >= 4) ? 1 : 0)).accept(state);
     };
   }
-  
+
   private Consumer<StringBuilder> move(String spec) {
     int index1 = parseIndex(spec, "move position ");
     int index2 = Integer.parseInt(spec.substring(spec.length() - 1));
     return move(index1, index2);
   }
-  
+
   private Consumer<StringBuilder> move(int index1, int index2) {
     return (state) -> {
       String moving = state.substring(index1, index1 + 1);
@@ -174,12 +174,12 @@ class Day21 extends Base2016 {
       state.insert(index2, moving);
     };
   }
-  
+
   private String parseVal(String spec, String prefix) {
     int pos = prefix.length();
     return spec.substring(pos, pos + 1);
   }
-  
+
   private int parseIndex(String spec, String prefix) {
     return Integer.parseInt(parseVal(spec, prefix));
   }

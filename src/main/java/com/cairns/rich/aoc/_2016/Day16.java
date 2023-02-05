@@ -7,7 +7,7 @@ class Day16 extends Base2016 {
     System.out.println(getChecksum("11100010111110100", 272));
     System.out.println(getChecksum("11100010111110100", 35651584));
   }
-  
+
   private String getChecksum(String initialState, int toFill) {
     String state = initialState;
     while (state.length() < toFill) {

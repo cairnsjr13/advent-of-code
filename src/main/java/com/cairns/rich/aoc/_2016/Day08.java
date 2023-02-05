@@ -9,7 +9,7 @@ class Day08 extends Base2016 {
   private static final InstType[] instTypes = InstType.values();
   private static final int NUM_ROWS = 6;
   private static final int NUM_COLS = 50;
-  
+
   @Override
   protected void run() {
     List<Consumer<boolean[][]>> insts = fullLoader.ml(InstType::generateInstruction);
@@ -26,7 +26,7 @@ class Day08 extends Base2016 {
     System.out.println(sum);
     print(grid);
   }
-  
+
   private void print(boolean[][] grid) {
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
@@ -35,7 +35,7 @@ class Day08 extends Base2016 {
       System.out.println();
     }
   }
-  
+
   private enum InstType {
     Rect("rect", "^rect (\\d+)x(\\d+)$") {
       @Override
@@ -71,17 +71,17 @@ class Day08 extends Base2016 {
         }
       }
     };
-    
+
     private final String name;
     private final Pattern pattern;
-    
+
     private InstType(String name, String regex) {
       this.name = name;
       this.pattern = Pattern.compile(regex);
     }
-    
+
     protected abstract void apply(boolean[][] grid, int arg0, int arg1);
-    
+
     private static Consumer<boolean[][]> generateInstruction(String line) {
       for (InstType instType : instTypes) {
         if (line.startsWith(instType.name)) {

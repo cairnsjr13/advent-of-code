@@ -1,5 +1,8 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -7,12 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.mutable.MutableInt;
-
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.ReadDir;
 
 class Day17 extends Base2016 {
   private static final ImmutablePoint target = new ImmutablePoint(3, 3);
@@ -23,7 +21,7 @@ class Day17 extends Base2016 {
       ReadDir.Left, 2,
       ReadDir.Right, 3
   ));
-  
+
   @Override
   protected void run() {
     System.out.println("PART 1");
@@ -31,7 +29,7 @@ class Day17 extends Base2016 {
     System.out.println(getShortestPath("kglvqrro"));
     System.out.println(getShortestPath("ulqzkmiv"));
     System.out.println(getShortestPath("vkjiggvb"));
-    
+
     System.out.println();
     System.out.println("PART 2");
     System.out.println(getLengthOfLongestPath("ihgpwlah"));
@@ -39,7 +37,7 @@ class Day17 extends Base2016 {
     System.out.println(getLengthOfLongestPath("ulqzkmiv"));
     System.out.println(getLengthOfLongestPath("vkjiggvb"));
   }
-  
+
   private String getShortestPath(String prefix) {
     return bfs(
         new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
@@ -48,7 +46,7 @@ class Day17 extends Base2016 {
         this::explore
     ).get().state.path.stream().map(Object::toString).collect(Collectors.joining());
   }
-  
+
   private int getLengthOfLongestPath(String prefix) {
     MutableInt maxLength = new MutableInt(0);
     bfs(
@@ -67,7 +65,7 @@ class Day17 extends Base2016 {
     );
     return maxLength.getValue();
   }
-  
+
   private void explore(State candidate, Consumer<State> registrar) {
     for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
       if (canGo(candidate, dir)) {
@@ -75,7 +73,7 @@ class Day17 extends Base2016 {
       }
     }
   }
-  
+
   private boolean canGo(State current, ReadDir dir) {
     int nx = current.location.x() + dir.dx();
     int ny = current.location.y() + dir.dy();
@@ -83,26 +81,26 @@ class Day17 extends Base2016 {
         && (0 <= ny) && (ny < 4)
         && current.doorsOpen[dirToIndex.get(dir)];
   }
-  
+
   private static class State {
     private final String prefix;
     private final ImmutablePoint location;
     private final List<Character> path;
     private final boolean[] doorsOpen;
-    
+
     private State(String prefix, ImmutablePoint location, List<Character> path) {
       this.prefix = prefix;
       this.location = location;
       this.path = path;
       this.doorsOpen = getDoorsOpen();
     }
-    
+
     private State move(ReadDir go) {
       List<Character> newPath = new ArrayList<>(path);
       newPath.add(go.name().charAt(0));
       return new State(prefix, location.move(go), newPath);
     }
-    
+
     private boolean[] getDoorsOpen() {
       boolean[] doorsOpen = new boolean[4];
       String hash = md5(prefix + path.stream().map(Object::toString).collect(Collectors.joining()));
@@ -111,7 +109,7 @@ class Day17 extends Base2016 {
       }
       return doorsOpen;
     }
-    
+
     @Override
     public boolean equals(Object other) {
       return location.equals(((State) other).location)

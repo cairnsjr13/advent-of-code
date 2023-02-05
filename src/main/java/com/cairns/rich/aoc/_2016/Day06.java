@@ -1,10 +1,9 @@
 package com.cairns.rich.aoc._2016;
 
-import java.util.List;
-import java.util.function.BiPredicate;
-
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import java.util.List;
+import java.util.function.BiPredicate;
 
 class Day06 extends Base2016 {
   @Override
@@ -13,7 +12,7 @@ class Day06 extends Base2016 {
     System.out.println(decode(lines, (l, r) -> l > r));
     System.out.println(decode(lines, (l, r) -> l < r));
   }
-  
+
   private String decode(List<String> lines, BiPredicate<Integer, Integer> better) {
     StringBuilder str = new StringBuilder();
     int numChars = lines.get(0).length();

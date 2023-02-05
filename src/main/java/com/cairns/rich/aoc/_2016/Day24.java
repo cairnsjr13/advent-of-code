@@ -1,30 +1,29 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.ReadDir;
+import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.ReadDir;
-import com.google.common.collect.Table;
-import com.google.common.collect.TreeBasedTable;
-
 class Day24 extends Base2016 {
   @Override
   protected void run() {
     State state = new State(fullLoader.ml());
     Table<Integer, Integer, Long> minStepsFromTo = calculateMinStepsFromTo(state);
-    
+
     List<Integer> marksToBePlaced = new ArrayList<>(minStepsFromTo.columnKeySet());
     marksToBePlaced.remove(0);
     List<Integer> placedMarks = new ArrayList<>(Arrays.asList(0));
     System.out.println(findMinSteps(minStepsFromTo, marksToBePlaced, placedMarks, 0, false));
     System.out.println(findMinSteps(minStepsFromTo, marksToBePlaced, placedMarks, 0, true));
   }
-  
+
   private long findMinSteps(
       Table<Integer, Integer, Long> minStepsFromTo,
       List<Integer> marksToBePlaced,
@@ -50,7 +49,7 @@ class Day24 extends Base2016 {
     }
     return minSteps;
   }
-  
+
   private Table<Integer, Integer, Long> calculateMinStepsFromTo(State state) {
     Table<Integer, Integer, Long> minStepsFromTo = TreeBasedTable.create();
     for (int mark : state.markToLocation.keySet()) {
@@ -58,7 +57,7 @@ class Day24 extends Base2016 {
     }
     return minStepsFromTo;
   }
-  
+
   private void fillInFromMark(State state, Table<Integer, Integer, Long> minStepsFromTo, int mark) {
     bfs(
         state.markToLocation.get(mark),
@@ -78,11 +77,11 @@ class Day24 extends Base2016 {
         }
     );
   }
-  
+
   private class State {
     private final Map<Integer, ImmutablePoint> markToLocation = new HashMap<>();
     private final char[][] grid;
-    
+
     private State(List<String> lines) {
       this.grid = new char[lines.size()][lines.get(0).length()];
       for (int y = 0; y < grid.length; ++y) {

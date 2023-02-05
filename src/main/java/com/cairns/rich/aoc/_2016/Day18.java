@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 class Day18 extends Base2016 {
   private static final BiPredicate<List<Boolean>, Integer> isSet =
       (previousRow, col) -> (0 <= col) && (col < previousRow.size()) && previousRow.get(col);
-  
+
   @Override
   protected void run() {
     System.out.println(getSafeCount(3, "..^^."));
@@ -16,7 +16,7 @@ class Day18 extends Base2016 {
     System.out.println(getSafeCount(40, "......^.^^.....^^^^^^^^^...^.^..^^.^^^..^.^..^.^^^.^^^^..^^.^.^.....^^^^^..^..^^^..^^.^.^..^^..^^^.."));
     System.out.println(getSafeCount(400_000, "......^.^^.....^^^^^^^^^...^.^..^^.^^^..^.^..^.^^^.^^^^..^^.^.^.....^^^^^..^..^^^..^^.^.^..^^..^^^.."));
   }
-  
+
   private long getSafeCount(int numRows, String init) {
     List<Boolean> previousRow = init.chars().mapToObj((ch) -> ch == '^').collect(Collectors.toList());
     List<Boolean> currentRow = new ArrayList<>(previousRow);
@@ -35,7 +35,7 @@ class Day18 extends Base2016 {
     }
     return numSafe;
   }
-  
+
   private boolean isCurrentTrap(List<Boolean> previousRow, int col) {
     boolean left = isSet.test(previousRow, col - 1);
     boolean middle = isSet.test(previousRow, col);

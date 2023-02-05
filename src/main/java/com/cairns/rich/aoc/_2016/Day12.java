@@ -1,8 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
-import java.util.Map;
-
 import com.cairns.rich.aoc._2016.AssemBunny.Inst;
+import java.util.Map;
 
 class Day12 extends Base2016 {
   @Override

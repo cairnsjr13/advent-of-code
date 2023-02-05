@@ -1,12 +1,10 @@
 package com.cairns.rich.aoc._2016;
 
-import java.util.function.Consumer;
-
-import org.apache.commons.lang3.mutable.MutableInt;
-
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
+import java.util.function.Consumer;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day13 extends Base2016 {
   @Override
@@ -15,7 +13,7 @@ class Day13 extends Base2016 {
     System.out.println(findMinSteps(new Spec(1350, 31, 39)));
     System.out.println(numIn50(new Spec(1350, -1, -1)));
   }
-  
+
   private int numIn50(Spec spec) {
     MutableInt numLocations = new MutableInt(0);
     bfs(
@@ -31,7 +29,7 @@ class Day13 extends Base2016 {
     );
     return numLocations.getValue();
   }
-  
+
   private long findMinSteps(Spec spec) {
     return bfs(
         new ImmutablePoint(1, 1),
@@ -40,7 +38,7 @@ class Day13 extends Base2016 {
         (candidate, registrar) -> explore(spec, candidate, registrar)
     ).get().getNumSteps();
   }
-  
+
   private void explore(Spec spec, ImmutablePoint candidate, Consumer<ImmutablePoint> registrar) {
     for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
       ImmutablePoint next = candidate.move(dir);
@@ -49,16 +47,16 @@ class Day13 extends Base2016 {
       }
     }
   }
-  
+
   private static class Spec {
     private final int seed;
     private final ImmutablePoint target;
-    
+
     private Spec(int seed, int targetX, int targetY) {
       this.seed = seed;
       this.target = new ImmutablePoint(targetX, targetY);
     }
-    
+
     private boolean isOpen(ImmutablePoint location) {
       int x = location.x();
       int y = location.y();

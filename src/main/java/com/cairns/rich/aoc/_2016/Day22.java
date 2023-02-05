@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 class Day22 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^/dev/grid/node-x(\\d+)-y(\\d+) +\\d+T +(\\d+)T +(\\d+)T +\\d+%$");
-  
+
   @Override
   protected void run() {
     List<String> nodeSpecs = fullLoader.ml();
@@ -14,7 +14,7 @@ class Day22 extends Base2016 {
     System.out.println(countViablePairs(nodes));
     System.out.println(getFewestOperations(nodes));
   }
-  
+
   private int countViablePairs(short[][] grid) {
     int numPairs = 0;
     for (int x1 = 0; x1 < grid.length; ++x1) {
@@ -34,7 +34,7 @@ class Day22 extends Base2016 {
     }
     return numPairs;
   }
-  
+
   private int getEncodedLocationOfEmptyNode(short[][] grid) {
     for (int x = 0; x < grid.length; ++x) {
       for (int y = 0; y < grid[0].length; ++y) {
@@ -45,7 +45,7 @@ class Day22 extends Base2016 {
     }
     throw fail();
   }
-  
+
   private int getFewestOperations(short[][] grid) {
     int encodedLocationOfEmptyNode = getEncodedLocationOfEmptyNode(grid);
     int xOfEmpty = (encodedLocationOfEmptyNode >> 0) & 0xff;
@@ -53,7 +53,7 @@ class Day22 extends Base2016 {
     int distanceEmptyMustMove = grid.length - 2;
     return xOfEmpty + yOfEmpty + distanceEmptyMustMove + 5 * distanceEmptyMustMove + 1;
   }
-  
+
   private short[][] getGrid(List<String> nodeSpecs, int cols, int rows) {
     short[][] grid = new short[cols][rows];
     for (String nodeSpec : nodeSpecs) {
@@ -66,15 +66,15 @@ class Day22 extends Base2016 {
     }
     return grid;
   }
-  
+
   private int getUsed(short encoded) {
     return (encoded >> 0) & 0xff;
   }
-  
+
   private int getAvail(short encoded) {
     return (encoded >> 8) & 0xff;
   }
-  
+
   private short encode(int used, int avail) {
     return (short) ((used << 0) + (avail << 8));
   }

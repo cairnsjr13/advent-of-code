@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.google.common.collect.TreeMultimap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +12,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-import com.google.common.collect.TreeMultimap;
-
 class Day10 extends Base2016 {
   private static final Pattern valPattern = Pattern.compile("^value (\\d+) goes to (bot \\d+)$");
   private static final Pattern botPattern = Pattern.compile("^(bot \\d+) gives low to ((bot|output) \\d+) and high to ((bot|output) \\d+)$");
-  
+
   @Override
   protected void run() {
     List<String> lines = fullLoader.ml();

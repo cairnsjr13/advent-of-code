@@ -10,11 +10,11 @@ class Day03 extends Base2016 {
     System.out.println(getNumValidTrianglesRowBased(rows));
     System.out.println(getNumValidTrianglesColBased(rows));
   }
-  
+
   private long getNumValidTrianglesRowBased(List<int[]> rows) {
     return rows.stream().filter(this::isValidTriangle).count();
   }
-  
+
   private long getNumValidTrianglesColBased(List<int[]> rows) {
     int numValidTriangles = 0;
     for (int col = 0; col < 3; ++col) {
@@ -26,7 +26,7 @@ class Day03 extends Base2016 {
     }
     return numValidTriangles;
   }
-  
+
   private boolean isValidTriangle(int... edges) {
     int sum = Arrays.stream(edges).sum();
     for (int i = 0; i < edges.length; ++i) {
@@ -36,7 +36,7 @@ class Day03 extends Base2016 {
     }
     return true;
   }
-  
+
   private int[] parseRow(String spec) {
     return Arrays.stream(spec.trim().split(" +")).mapToInt(Integer::parseInt).toArray();
   }

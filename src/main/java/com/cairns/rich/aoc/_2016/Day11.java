@@ -1,20 +1,19 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.EnumUtils;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.ToLongFunction;
 
-import com.cairns.rich.aoc.EnumUtils;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-
 /**
  * 6666555555555544444444443333333333222222222211111111110000000000
  * 3210987654321098765432109876543210987654321098765432109876543210
  *               RRRQQQPPPOOONNNMMMLLLKKKJJJIIIHHHGGGFFFEEEDDDCCCAA
- * 
+ *
  * A - elevator floor       -> offset  0
  *
  *     (gen, chip) counts   -> offset  [2+3*(4g+c)]
@@ -39,9 +38,9 @@ class Day11 extends Base2016 {
   private static final int[] DIRS = { 1, -1 };
   private static final int ELEVATOR_FLOOR_MASK = 0b11;
   private static final int NUM_FLOORS = 4;
-  private static final int LOCATION_COUNT_BITS = 3; 
+  private static final int LOCATION_COUNT_BITS = 3;
   private static final int LOCATION_COUNT_MASK = 0b111;
-  
+
   @Override
   protected void run() {
     List<Location> testLocations = List.of(
@@ -70,7 +69,7 @@ class Day11 extends Base2016 {
     System.out.println(computeMinMoves(part2Locations));
     System.out.println("Time: " + (System.currentTimeMillis() - start));
   }
-  
+
   private long computeMinMoves(List<Location> initLocations) {
     return bfs(
         buildState(0, initLocations),
@@ -95,7 +94,7 @@ class Day11 extends Base2016 {
         }
     ).get().getNumSteps();
   }
-  
+
   private void registerAllOptions(
       Consumer<Long> registrar,
       long oldElevatorFloor,
@@ -135,7 +134,7 @@ class Day11 extends Base2016 {
       }
     }
   }
-  
+
   private boolean isSafe(List<Location> locations) {
     for (Location location : locations) {
       if (location.genFloor != location.chipFloor) {
@@ -148,7 +147,7 @@ class Day11 extends Base2016 {
     }
     return true;
   }
-  
+
   private boolean isDone(List<Location> locations) {
     for (Location location : locations) {
       if ((location.genFloor != (NUM_FLOORS - 1)) || (location.chipFloor != (NUM_FLOORS - 1))) {
@@ -157,7 +156,7 @@ class Day11 extends Base2016 {
     }
     return true;
   }
-  
+
   private int getPriority(SearchState<Long> searchState) {
     int numMovesMoreMin = 0;
     for (Location location : getLocations(searchState.state)) {
@@ -166,11 +165,11 @@ class Day11 extends Base2016 {
     }
     return (int) (searchState.getNumSteps() + numMovesMoreMin);
   }
-  
+
   private long getElevatorFloor(long state) {
     return state & ELEVATOR_FLOOR_MASK;
   }
-  
+
   private List<Location> getLocations(long state) {
     List<Location> locations = new ArrayList<>();
     for (int genFloor = 0; genFloor < NUM_FLOORS; ++genFloor) {
@@ -184,7 +183,7 @@ class Day11 extends Base2016 {
     }
     return locations;
   }
-  
+
   private long buildState(long elevatorFloor, List<Location> locations) {
     long state = elevatorFloor;
     Multiset<Location> locationSet = HashMultiset.create(locations);
@@ -193,49 +192,49 @@ class Day11 extends Base2016 {
     }
     return state;
   }
-  
+
   private static class Location {
     private long genFloor;
     private long chipFloor;
-    
+
     private Location(long genFloor, long chipFloor) {
       this.genFloor = genFloor;
       this.chipFloor = chipFloor;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
       Location other = (Location) obj;
       return (genFloor == other.genFloor)
           && (chipFloor == other.chipFloor);
     }
-    
+
     @Override
     public int hashCode() {
       return (int) ((genFloor << 3) + chipFloor);
     }
-    
+
     @Override
     public String toString() {
       return "[" + genFloor + ", " + chipFloor + "]";
     }
-    
+
     private int computeOffset() {
       return computeOffset(genFloor, chipFloor);
     }
-    
+
     private static int computeOffset(long genFloor, long chipFloor) {
       return (int) (2 + LOCATION_COUNT_BITS * (NUM_FLOORS * genFloor + chipFloor));
     }
   }
-  
+
   private enum Field {
     GenFloor((location) -> location.genFloor, (location, floor) -> location.genFloor = floor),
     ChipFloor((location) -> location.chipFloor, (location, floor) -> location.chipFloor = floor);
-    
+
     private final ToLongFunction<Location> getter;
     private final BiConsumer<Location, Long> setter;
-    
+
     private Field(ToLongFunction<Location> getter, BiConsumer<Location, Long> setter) {
       this.getter = getter;
       this.setter = setter;
