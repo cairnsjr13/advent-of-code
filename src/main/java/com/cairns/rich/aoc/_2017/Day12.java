@@ -1,73 +1,50 @@
 package com.cairns.rich.aoc._2017;
 
-import java.util.ArrayDeque;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 class Day12 extends Base2017 {
   @Override
   protected void run() {
-    Map<Integer, Connection> connections = getLookup(fullLoader.ml(Connection::new));
+    Multimap<Integer, Integer> connections = parse(fullLoader.ml((line) -> line.split(" <-> ")));
     List<Set<Integer>> groups = computeGroups(connections);
-    for (Set<Integer> group : groups) {
-      if (group.contains(0)) {
-        System.out.println("Part 1: " + group.size());
-        break;
-      }
-    }
+    System.out.println("Part 1: " + groups.stream().filter((g) -> g.contains(0)).findFirst().get().size());
     System.out.println("Part 2: " + groups.size());
   }
-  
-  private List<Set<Integer>> computeGroups(Map<Integer, Connection> connections) {
+
+  private List<Set<Integer>> computeGroups(Multimap<Integer, Integer> connections) {
     List<Set<Integer>> groups = new ArrayList<>();
     Set<Integer> visited = new HashSet<>();
     for (int startingFrom : connections.keySet()) {
       if (!visited.contains(startingFrom)) {
-        Set<Integer> group = computeGroup(connections, startingFrom);
-        visited.addAll(group);
+        Set<Integer> group = new HashSet<>();
+        bfs(
+            startingFrom,
+            (s) -> false,
+            SearchState::getNumSteps,
+            (visit, registrar) -> {
+              group.add(visit);
+              connections.get(visit).forEach(registrar::accept);
+            }
+        );
         groups.add(group);
+        visited.addAll(group);
       }
     }
     return groups;
   }
-  
-  private Set<Integer> computeGroup(Map<Integer, Connection> connections, int startingFrom) {
-    Set<Integer> group = new HashSet<>();
-    Set<Integer> visited = new HashSet<>();
-    Queue<Integer> toVisit = new ArrayDeque<>();
-    toVisit.add(startingFrom);
-    while (!toVisit.isEmpty()) {
-      int visit = toVisit.poll();
-      group.add(visit);
-      for (int to : connections.get(visit).pipesTo) {
-        if (!visited.contains(to)) {
-          visited.add(to);
-          toVisit.add(to);
-        }
-      }
+
+  private Multimap<Integer, Integer> parse(List<String[]> connectionDescs) {
+    Multimap<Integer, Integer> connections = HashMultimap.create();
+    for (String[] connectionDesc : connectionDescs) {
+      int from = Integer.parseInt(connectionDesc[0]);
+      Arrays.stream(connectionDesc[1].split(", *")).map(Integer::parseInt).forEach((to) -> connections.put(from, to));
     }
-    return group;
-  }
-  
-  private static class Connection implements HasId<Integer> {
-    private final int id;
-    private final Set<Integer> pipesTo;
-    
-    private Connection(String spec) {
-      String parts[] = spec.split(" <-> ");
-      this.id = Integer.parseInt(parts[0]);
-      this.pipesTo = Arrays.stream(parts[1].split(", ")).map(Integer::parseInt).collect(Collectors.toSet());
-    }
-    
-    @Override
-    public Integer getId() {
-      return id;
-    }
+    return connections;
   }
 }

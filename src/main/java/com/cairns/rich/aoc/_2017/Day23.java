@@ -1,11 +1,10 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc._2017.TabletCode.State;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
-
-import com.cairns.rich.aoc._2017.TabletCode.State;
 
 class Day23 extends Base2017 {
   @Override
@@ -17,7 +16,7 @@ class Day23 extends Base2017 {
     System.out.println(numCompositesBetweenInclusive(109300, 126300, 17));
     System.out.println(numCompositesWithTabletCode(109300, 126300, 17));
   }
-  
+
   private int numCompositesBetweenInclusive(int min, int max, int step) {
     int numComposites = 0;
     for (int target = min; target <= max; target += step) {
@@ -30,7 +29,7 @@ class Day23 extends Base2017 {
     }
     return numComposites;
   }
-  
+
   private long numCompositesWithTabletCode(int min, int max, int step) {
     List<ToIntFunction<State>> insts = Arrays.asList(
         "set a " + min,

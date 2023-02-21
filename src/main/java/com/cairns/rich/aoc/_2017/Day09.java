@@ -11,7 +11,7 @@ class Day09 extends Base2017 {
       System.out.println(state.totalScore + ", " + state.removedNonCancelledGarbage);
     }
   }
-  
+
   private State runCleanup(String input) {
     State state = new State();
     for (int i = 0; i < input.length(); ++i) {
@@ -40,10 +40,10 @@ class Day09 extends Base2017 {
     }
     return state;
   }
-    
+
   private static class State {
     private int nest = 1;
-    private boolean inGarbage = false;;
+    private boolean inGarbage = false;
     private int totalScore = 0;
     private int removedNonCancelledGarbage = 0;
   }

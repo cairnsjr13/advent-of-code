@@ -9,11 +9,11 @@ class Day13 extends Base2017 {
     System.out.println(getSeverityScore(scanners));
     System.out.println(getDelayToPass(scanners));
   }
-  
+
   private int getSeverityScore(List<Scanner> scanners) {
     return scanners.stream().filter((s) -> s.atTopAtTime(s.layer)).mapToInt((s) -> s.depth * s.layer).sum();
   }
-  
+
   private int getDelayToPass(List<Scanner> scanners) {
     for (int d = 0; true; ++d) {
       int delay = d;
@@ -22,11 +22,11 @@ class Day13 extends Base2017 {
       }
     }
   }
-  
-  private static class Scanner implements HasId<Integer> {
+
+  private static class Scanner {
     private final int layer;
     private final int depth;
-    
+
     private Scanner(String spec) {
       String[] parts = spec.split(": +");
       this.layer = Integer.parseInt(parts[0]);
@@ -35,14 +35,9 @@ class Day13 extends Base2017 {
         throw fail(layer + ", " + depth);
       }
     }
-    
-    @Override
-    public Integer getId() {
-      return layer;
-    }
-    
+
     private boolean atTopAtTime(int t) {
-      return t % (2 * (depth - 1)) == 0; 
+      return t % (2 * (depth - 1)) == 0;
     }
   }
 }

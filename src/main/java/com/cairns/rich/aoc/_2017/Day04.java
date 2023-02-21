@@ -13,11 +13,11 @@ class Day04 extends Base2017 {
     System.out.println(passphrases.stream().filter(this::isSimpleValid).count());
     System.out.println(passphrases.stream().filter(this::isComplexValid).count());
   }
-  
+
   private boolean isSimpleValid(String[] passphrase) {
     return isValid(passphrase, Function.identity());
   }
-  
+
   private boolean isComplexValid(String[] passphrase) {
     return isValid(passphrase, (word) -> {
       char[] chs = word.toCharArray();
@@ -25,7 +25,7 @@ class Day04 extends Base2017 {
       return new String(chs);
     });
   }
-  
+
   private <T> boolean isValid(String[] passphrase, Function<String, T> transform) {
     Set<T> seen = new HashSet<>();
     for (String word : passphrase) {

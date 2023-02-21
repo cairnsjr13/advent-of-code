@@ -11,11 +11,11 @@ import java.util.function.Function;
 public class Day21 extends Base2017 {
   @Override
   protected void run() {
-    Map<State, State> rules = Rule.lookup(fullLoader.ml(Rule::new));
+    Map<State, State> rules = rulesLookup(fullLoader.ml(Rule::new));
     System.out.println(getNumSetAfter(rules, 5));
     System.out.println(getNumSetAfter(rules, 18));
   }
-  
+
   private int getNumSetAfter(Map<State, State> rules, int iterations) {
     State state = new State(".#./..#/###");
     for (int i = 0; i < iterations; ++i) {
@@ -23,7 +23,7 @@ public class Day21 extends Base2017 {
     }
     return state.grid.cardinality();
   }
-  
+
   private State iterate(Map<State, State> rules, State state) {
     int chunkSize = (state.size % 2 == 0) ? 2 : 3;
     int numChunks = state.size / chunkSize;
@@ -37,7 +37,7 @@ public class Day21 extends Base2017 {
     }
     return next;
   }
-  
+
   private State chunk(State state, int chunkSize, int chunkRow, int chunkCol) {
     State subState = new State(chunkSize, new BitSet());
     for (int relRow = 0; relRow < chunkSize; ++relRow) {
@@ -49,7 +49,7 @@ public class Day21 extends Base2017 {
     }
     return subState;
   }
-  
+
   private void put(State output, int chunkRow, int chunkCol, State chunk) {
     for (int relRow = 0; relRow < chunk.size; ++relRow) {
       for (int relCol = 0; relCol < chunk.size; ++relCol) {
@@ -59,20 +59,26 @@ public class Day21 extends Base2017 {
       }
     }
   }
-  
+
   private static int toI(int size, int row, int col) {
     return row * size + col;
   }
-  
+
+  private static Map<State, State> rulesLookup(List<Rule> rules) {
+    Map<State, State> lookup = new HashMap<>();
+    rules.forEach((rule) -> rule.inputs.forEach((input) -> lookup.put(input, rule.output)));
+    return lookup;
+  }
+
   private static class State {
     private final int size;
     private final BitSet grid;
-    
+
     private State(int size, BitSet grid) {
       this.size = size;
       this.grid = grid;
     }
-    
+
     private State(String spec) {
       String[] lines = spec.split("/");
       this.size = lines.length;
@@ -85,35 +91,29 @@ public class Day21 extends Base2017 {
         }
       }
     }
-    
+
     @Override
     public boolean equals(Object other) {
       return (size == ((State) other).size)
           && grid.equals(((State) other).grid);
     }
-    
+
     @Override
     public int hashCode() {
       return (size * 31) + grid.hashCode();
     }
   }
-  
+
   private static class Rule {
     private final Set<State> inputs = new HashSet<>();
     private final State output;
-    
-    private static Map<State, State> lookup(List<Rule> rules) {
-      Map<State, State> lookup = new HashMap<>();
-      rules.forEach((rule) -> rule.inputs.forEach((input) -> lookup.put(input, rule.output)));
-      return lookup;
-    }
-    
+
     private Rule(String spec) {
       int indexOfArrow = spec.indexOf(" => ");
       addAllInputs(spec.substring(0, indexOfArrow));
       this.output = new State(spec.substring(indexOfArrow + " => ".length()));
     }
-    
+
     private void addAllInputs(String spec) {
       State state = new State(spec);
       inputs.add(state);
@@ -125,13 +125,13 @@ public class Day21 extends Base2017 {
       state = transformAddAndGet(state, this::rotate);
       state = transformAddAndGet(state, this::rotate);
     }
-    
+
     private State transformAddAndGet(State cur, Function<State, State> transform) {
       cur = transform.apply(cur);
       inputs.add(cur);
       return cur;
     }
-    
+
     private State rotate(State input) {
       State output = new State(input.size, new BitSet());
       for (int row = 0; row < input.size; ++row) {
@@ -143,7 +143,7 @@ public class Day21 extends Base2017 {
       }
       return output;
     }
-    
+
     private State flip(State input) {
       State output = new State(input.size, new BitSet());
       for (int row = 0; row < input.size; ++row) {

@@ -1,10 +1,9 @@
 package com.cairns.rich.aoc._2017;
 
-import java.util.List;
-import java.util.Stack;
-
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import java.util.List;
+import java.util.Stack;
 
 class Day24 extends Base2017 {
   @Override
@@ -20,7 +19,7 @@ class Day24 extends Base2017 {
     System.out.println(strongest);
     System.out.println(best.strength);
   }
-  
+
   private int maxFrom(
       BestBridge best,
       Multimap<Integer, Component> lookupByPin,
@@ -48,22 +47,22 @@ class Day24 extends Base2017 {
     }
     return maxFrom;
   }
-  
+
   private static class BestBridge {
     private int length;
     private int strength;
   }
-  
+
   private static class Component {
     private final int first;
     private final int second;
-    
+
     private Component(String spec) {
       String[] parts = spec.split("/");
       this.first = Integer.parseInt(parts[0]);
       this.second = Integer.parseInt(parts[1]);
     }
-    
+
     private int strength() {
       return first + second;
     }
