@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -131,13 +132,22 @@ public abstract class Base extends SafeAccessor {
       ToLongFunction<SearchState<S>> priorityComputer,
       StepperWithStepsSoFar<S> step
   ) {
+    return bfs(initial, (state, steps) -> search.test(state), priorityComputer, step);
+  }
+
+  protected <S> Optional<SearchState<S>> bfs(
+      S initial,
+      BiPredicate<S, Long> searchWithSteps,
+      ToLongFunction<SearchState<S>> priorityComputer,
+      StepperWithStepsSoFar<S> step
+  ) {
     Set<S> visited = new HashSet<>();
     visited.add(initial);
     PriorityQueue<SearchState<S>> pq = new PriorityQueue<>(Comparator.comparingLong(priorityComputer));
     pq.offer(new SearchState<>(initial, 0));
     while (!pq.isEmpty()) {
       SearchState<S> current = pq.poll();
-      if (search.test(current.state)) {
+      if (searchWithSteps.test(current.state, current.numSteps)) {
         return Optional.of(current);
       }
       else {

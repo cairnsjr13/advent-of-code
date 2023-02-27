@@ -11,7 +11,7 @@ class Day01 extends Base2018 {
     System.out.println(changes.stream().mapToInt(Integer::intValue).sum());
     System.out.println(findFirstRepeat(changes));
   }
-  
+
   private int findFirstRepeat(List<Integer> changes) {
     Set<Integer> seen = new HashSet<>();
     int current = 0;

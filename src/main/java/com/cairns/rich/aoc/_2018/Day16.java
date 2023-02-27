@@ -1,5 +1,8 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc._2018.OpProgram.Op;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -7,10 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.cairns.rich.aoc._2018.OpProgram.Op;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 class Day16 extends Base2018 {
   @Override
@@ -27,11 +26,11 @@ class Day16 extends Base2018 {
     Map<Integer, String> opCodeToName = findOpCodes(specs);
     long[] registers = new long[4];
     for (int[] inst : program) {
-      OpProgram.ops.get(opCodeToName.get(inst[0])).action.accept(registers, inst);;
+      OpProgram.ops.get(opCodeToName.get(inst[0])).action.accept(registers, inst);
     }
     System.out.println(registers[0]);
   }
-  
+
   private Map<Integer, String> findOpCodes(List<Spec> specs) {
     Multimap<String, Integer> opCodeOptions = getOpCodeOptions(specs);
     Map<Integer, String> opCodeToName = new HashMap<>();
@@ -41,19 +40,13 @@ class Day16 extends Base2018 {
         if (options.size() == 1) {
           int opCode = options.iterator().next();
           opCodeToName.put(opCode, opName);
-          removeFromAll(opCodeOptions, opCode);
+          OpProgram.ops.keySet().forEach((opn) -> opCodeOptions.remove(opn, opCode));
         }
       }
     }
     return opCodeToName;
   }
-  
-  private void removeFromAll(Multimap<String, Integer> opCodeOptions, int optionToRemove) {
-    for (String opName : OpProgram.ops.keySet()) {
-      opCodeOptions.remove(opName, optionToRemove);
-    }
-  }
-  
+
   private Multimap<String, Integer> getOpCodeOptions(List<Spec> specs) {
     int numSpecsWithAtLeast3Matches = 0;
     Multimap<String, Integer> opCodeOptions = HashMultimap.create();
@@ -74,22 +67,22 @@ class Day16 extends Base2018 {
     System.out.println(numSpecsWithAtLeast3Matches);
     return opCodeOptions;
   }
-  
+
   private static int[] fromStrWithSep(String str, String sep) {
     return Arrays.stream(str.split(sep)).mapToInt(Integer::parseInt).toArray();
   }
-  
+
   private static class Spec {
     private final long[] before;
     private final int[] instruction;
     private final long[] after;
-    
+
     private Spec(List<String> lines, int startingAt) {
       this.before = beforeAfter(lines.get(startingAt));
       this.instruction = fromStrWithSep(lines.get(startingAt + 1), " ");
       this.after = beforeAfter(lines.get(startingAt + 2));
     }
-    
+
     private long[] beforeAfter(String line) {
       return Arrays
           .stream(fromStrWithSep(line.substring(line.indexOf('[') + 1, line.length() - 1), ", "))

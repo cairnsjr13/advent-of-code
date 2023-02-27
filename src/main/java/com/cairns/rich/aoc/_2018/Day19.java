@@ -12,12 +12,12 @@ class Day19 extends Base2018 {
     int instructionRegister = ipLine.charAt(ipLine.length() - 1) - '0';
     List<Consumer<long[]>> instructions =
         lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());
-    
+
     System.out.println(OpProgram.run(instructionRegister, instructions)[0]);
     System.out.println(sumOfFactors(919));
     System.out.println(sumOfFactors(10551319));
   }
-  
+
   private int sumOfFactors(int num) {
     int upperBound = num;
     int sumOfFactors = 0;

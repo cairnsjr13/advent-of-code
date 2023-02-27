@@ -1,76 +1,34 @@
 package com.cairns.rich.aoc._2018;
 
-import java.util.ArrayDeque;
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.CardDir;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.CardDir;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.util.function.Function;
 
 class Day20 extends Base2018 {
   private static final Map<Character, CardDir> dirLookup = EnumUtils.getLookup(CardDir.class);
-  private static final Set<Character> atoms = Set.of('N', 'S', 'E', 'W');
-  
+
   @Override
   protected void run() {
-    String input = fullLoader.sl();
-    input = input.substring(1, input.length() - 1);
-    
-    AndPiece topLevelPiece = parse(input);
-
+    AndPiece topLevelPiece = parse(fullLoader.sl());
     ImmutablePoint origin = new ImmutablePoint(0, 0);
     Multimap<ImmutablePoint, ImmutablePoint> doors = HashMultimap.create();
     addDoors(HashMultimap.create(), doors, origin, new LinkedList<>(topLevelPiece.subs));
-    Map<ImmutablePoint, Integer> minDists = minDists(doors, origin);
-    Pair<Integer, Integer> results = findResults(minDists);
-    System.out.println(results.getLeft());
-    System.out.println(results.getRight());
+    Map<ImmutablePoint, Long> minDists = minDists(doors, origin);
+    System.out.println(getMax(minDists.values(), Function.identity()));
+    System.out.println(minDists.values().stream().filter((dist) -> dist >= 1000).count());
   }
-  
-  private Pair<Integer, Integer> findResults(Map<ImmutablePoint, Integer> minDists) {
-    int largestDistance = 0;
-    int numAtLeast1000 = 0;
-    for (ImmutablePoint point : minDists.keySet()) {
-      int dist = minDists.get(point);
-      if (largestDistance < dist) {
-        largestDistance = dist;
-      }
-      if (dist >= 1000) {
-        ++numAtLeast1000;
-      }
-    }
-    return Pair.of(largestDistance, numAtLeast1000);
-  }
-  
-  private Map<ImmutablePoint, Integer> minDists(Multimap<ImmutablePoint, ImmutablePoint> doors, ImmutablePoint origin) {
-    Map<ImmutablePoint, Integer> minDists = new HashMap<>();
-    Queue<Candidate> candidates = new ArrayDeque<>();
-    minDists.put(origin, 0);
-    candidates.add(new Candidate(0, origin));
-    while (!candidates.isEmpty()) {
-      Candidate candidate = candidates.poll();
-      for (ImmutablePoint nextStep : doors.get(candidate.location)) {
-        if (!minDists.containsKey(nextStep)) {
-          minDists.put(nextStep, candidate.numSteps + 1);
-          candidates.offer(new Candidate(candidate.numSteps + 1, nextStep));
-        }
-      }
-    }
-    return minDists;
-  }
-  
+
   private void addDoors(
       Multimap<ImmutablePoint, Piece<?>> visited,
       Multimap<ImmutablePoint, ImmutablePoint> doors,
@@ -115,21 +73,37 @@ class Day20 extends Base2018 {
       throw fail(piece.getClass());
     }
   }
-  
+
+  private Map<ImmutablePoint, Long> minDists(Multimap<ImmutablePoint, ImmutablePoint> doors, ImmutablePoint origin) {
+    Map<ImmutablePoint, Long> minDists = new HashMap<>();
+    bfs(
+        origin,
+        (s) -> false,
+        SearchState::getNumSteps,
+        (current, steps, registrar) -> {
+          if (!minDists.containsKey(current)) {
+            minDists.put(current, steps);
+            doors.get(current).forEach(registrar::accept);
+          }
+        }
+    );
+    return minDists;
+  }
+
   private AndPiece parse(String spec) {
     AndPiece topLevelAnd = new AndPiece();
     Stack<Piece<?>> stack = new Stack<>();
     stack.add(topLevelAnd);
-    for (int i = 0; i < spec.length(); ++i) {
+    for (int i = 1; i < spec.length() - 1; ++i) {   // trim the ^$
       char ch = spec.charAt(i);
       if (ch == '(') {
         GroupPiece holding = (GroupPiece) stack.peek();
         OrPiece newOr = new OrPiece();
         AndPiece newAnd = new AndPiece();
-        
+
         holding.subs.add(newOr);
         newOr.subs.add(newAnd);
-        
+
         stack.push(newOr);
         stack.push(newAnd);
       }
@@ -146,7 +120,7 @@ class Day20 extends Base2018 {
       else {
         AtomPiece atomPiece = new AtomPiece();
         ((GroupPiece) stack.peek()).subs.add(atomPiece);
-        for (; (i < spec.length()) && atoms.contains(spec.charAt(i)); ++i) {
+        for (; (i < spec.length()) && AtomPiece.atoms.contains(spec.charAt(i)); ++i) {
           atomPiece.subs.add(dirLookup.get(spec.charAt(i)));
         }
         --i;
@@ -154,52 +128,44 @@ class Day20 extends Base2018 {
     }
     return topLevelAnd;
   }
-  
+
   private static abstract class Piece<T> {
     private final char marker;
     protected final List<T> subs = new ArrayList<>();
-    
+
     protected Piece(char marker) {
       this.marker = marker;
     }
-    
+
     @Override
     public String toString() {
       return "{" + marker + ":" + subs + "}";
     }
   }
-  
+
   private static class AtomPiece extends Piece<CardDir> {
+    private static final Set<Character> atoms = Set.of('N', 'S', 'E', 'W');
+
     private AtomPiece() {
       super('A');
     }
   }
-  
+
   private static class GroupPiece extends Piece<Piece<?>> {
     private GroupPiece(char marker) {
       super(marker);
     }
   }
-  
+
   private static class AndPiece extends GroupPiece {
     private AndPiece() {
       super('&');
     }
   }
-  
+
   private static class OrPiece extends GroupPiece {
     private OrPiece() {
       super('|');
-    }
-  }
-  
-  private static class Candidate {
-    private final int numSteps;
-    private final ImmutablePoint location;
-    
-    private Candidate(int numSteps, ImmutablePoint location) {
-      this.numSteps = numSteps;
-      this.location = location;
     }
   }
 }

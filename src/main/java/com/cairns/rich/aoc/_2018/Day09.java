@@ -5,7 +5,7 @@ import java.util.stream.LongStream;
 class Day09 extends Base2018 {
   @Override
   protected void run() {
-    System.out.println(getHighestScore(9, 25)); 
+    System.out.println(getHighestScore(9, 25));
     System.out.println(getHighestScore(10, 1_618));
     System.out.println(getHighestScore(13, 7_999));
     System.out.println(getHighestScore(17, 1_104));
@@ -15,12 +15,12 @@ class Day09 extends Base2018 {
     System.out.println(getHighestScore(429, 70_901));
     System.out.println(getHighestScore(429, 7_090_100));
   }
-  
+
   private long getHighestScore(int numElves, int lastMarble) {
     long[] elves = new long[numElves];
     Marble currentMarble = new Marble(0);
     currentMarble.ccw = currentMarble.cw = currentMarble;
-    
+
     int currentElf = 1;
     for (long i = 1; i <= lastMarble; ++i, ++currentElf) {
       if (i % 23 == 0) {
@@ -39,19 +39,19 @@ class Day09 extends Base2018 {
     }
     return LongStream.of(elves).max().getAsLong();
   }
-  
+
   private Marble findToRemove(Marble currentMarble) {
     for (int i = 0; i < 7; ++i) {
       currentMarble = currentMarble.ccw;
     }
     return currentMarble;
   }
-  
+
   private static class Marble {
     private final long value;
     private Marble ccw;
     private Marble cw;
-    
+
     private Marble(long value) {
       this.value = value;
     }

@@ -10,51 +10,38 @@ class Day25 extends Base2018 {
   @Override
   protected void run() {
     List<Star> stars = fullLoader.ml(Star::new);
-    List<Constellation> constellations = new LinkedList<>();
+    List<List<Star>> constellations = new LinkedList<>();
     for (Star star : stars) {
-      Iterator<Constellation> itr = constellations.iterator();
-      Constellation firstConnected = null;
+      Iterator<List<Star>> itr = constellations.iterator();
+      List<Star> firstConnected = null;
       while (itr.hasNext()) {
-        Constellation candidate = itr.next();
-        if (candidate.connects(star)) {
+        List<Star> candidate = itr.next();
+        if (candidate.stream().anyMatch((cStar) -> cStar.manhattan(star) <= 3)) {
           if (firstConnected == null) {
             firstConnected = candidate;
           }
           else {
-            firstConnected.stars.addAll(candidate.stars);
+            firstConnected.addAll(candidate);
             itr.remove();
           }
         }
       }
       if (firstConnected == null) {
-        firstConnected = new Constellation();
+        firstConnected = new ArrayList<>();
         constellations.add(firstConnected);
       }
-      firstConnected.stars.add(star);
+      firstConnected.add(star);
     }
     System.out.println(constellations.size());
   }
-  
-  private static class Constellation {
-    private final List<Star> stars = new ArrayList<>();
-    
-    private boolean connects(Star candidate) {
-      for (Star star : stars) {
-        if (candidate.manhattan(star) <= 3) {
-          return true;
-        }
-      }
-      return false;
-    }
-  }
-  
+
   private static class Star {
     private final int[] coords;
-    
+
     private Star(String spec) {
       this.coords = Arrays.stream(spec.split(",")).mapToInt(Integer::parseInt).toArray();
     }
-    
+
     private int manhattan(Star other) {
       int manhattan = 0;
       for (int i = 0; i < coords.length; ++i) {

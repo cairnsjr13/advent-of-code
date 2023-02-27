@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day21 extends Base2018 {
@@ -16,7 +15,7 @@ class Day21 extends Base2018 {
     int instructionRegister = ipLine.charAt(ipLine.length() - 1) - '0';
     List<Consumer<long[]>> instructions =
         lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());
-    
+
     MutableLong lastSeen = new MutableLong(-1);
     Set<Long> seen = new HashSet<>();
     OpProgram.run(instructionRegister, instructions, (instructionPtr, registers) -> {

@@ -18,7 +18,7 @@ class Day06 extends Base2018 {
     System.out.println(getLargestNonInfiniteSize(state));
     System.out.println(getSizeOfSafeRegion(state, 10_000));
   }
-  
+
   private int getLargestNonInfiniteSize(State state) {
     Multiset<ImmutablePoint> closestCounts = HashMultiset.create();
     Set<ImmutablePoint> infinites = new HashSet<>();
@@ -42,7 +42,7 @@ class Day06 extends Base2018 {
     closestCounts.removeAll(infinites);
     return closestCounts.count(getMax(closestCounts.elementSet(), closestCounts::count));
   }
-  
+
   private int getSizeOfSafeRegion(State state, int maxExclusive) {
     int size = 0;
     for (int x = state.minX; x <= state.maxX; ++x) {
@@ -58,23 +58,23 @@ class Day06 extends Base2018 {
     }
     return size;
   }
-  
+
   private int manhattan(ImmutablePoint point, int x, int y) {
     return Math.abs(point.x() - x) + Math.abs(point.y() - y);
   }
-  
+
   private ImmutablePoint parse(String spec) {
     String[] parts = spec.split(", +");
     return new ImmutablePoint(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
   }
-  
+
   private static class State {
     private final List<ImmutablePoint> points;
     private final int minX;
     private final int minY;
     private final int maxX;
     private final int maxY;
-    
+
     private State(List<ImmutablePoint> points) {
       this.points = points;
       this.minX = getMin(points, ImmutablePoint::x).x();

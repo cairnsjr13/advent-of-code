@@ -1,40 +1,38 @@
 package com.cairns.rich.aoc._2018;
 
-import java.util.ArrayDeque;
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.MutablePoint;
+import com.cairns.rich.aoc.grid.Point;
+import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.MutablePoint;
-import com.cairns.rich.aoc.grid.Point;
-import com.cairns.rich.aoc.grid.RelDir;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day15 extends Base2018 {
   @Override
   protected void run() {
-    char[][] map = loadMap(fullLoader.ml());
+    char[][] map = fullLoader.ml(String::toCharArray).stream().toArray(char[][]::new);
     System.out.println(computeOutcome(getResult(map, 3)));
     System.out.println(getOutcomeOfWeakestNoDeathElfVictory(map));
   }
-  
+
   private int getOutcomeOfWeakestNoDeathElfVictory(char[][] map) {
     for (int elfStrength = 4; true; ++elfStrength) {
       Result result = getResult(map, elfStrength);
-      if (result.units.stream().filter((u) -> u.marker == 'E').allMatch((e) -> e.hp > 0)) {
+      if (result.units.stream().filter(Unit::isElf).allMatch((e) -> e.hp > 0)) {
         return computeOutcome(result);
       }
     }
   }
-  
+
   private Result getResult(char[][] map, int elfStrength) {
-    map = copyMap(map);
+    map = Arrays.stream(map).map((r) -> Arrays.copyOf(r, r.length)).toArray(char[][]::new);
     List<Unit> units = findUnits(map, elfStrength);
     for (int turn = 0; true; ++turn) {
       units.sort(Unit.locationCmp);
@@ -46,7 +44,7 @@ class Day15 extends Base2018 {
           }
           List<Unit> inRange = getInRange(targets, attacker);
           if (inRange.isEmpty()) {
-            RelDir moveDir = getMoveDir(map, attacker, targets);
+            ReadDir moveDir = getMoveDir(map, attacker, targets);
             if (moveDir == null) {
               continue;
             }
@@ -60,72 +58,69 @@ class Day15 extends Base2018 {
       }
     }
   }
-  
+
   private int computeOutcome(Result result) {
     return result.turns * result.units.stream().mapToInt((u) -> Math.max(0, u.hp)).sum();
   }
-  
+
   private List<Unit> getTargets(List<Unit> units, Unit attacker) {
     return units.stream().filter((u) -> (u.isElf() != attacker.isElf()) && (u.hp > 0)).collect(Collectors.toList());
   }
-  
+
   private List<Unit> getInRange(List<Unit> targets, Unit of) {
     return targets.stream()
         .filter((t) -> 1 == Math.abs(t.location.x() - of.location.x()) + Math.abs((t.location.y() - of.location.y())))
         .collect(Collectors.toList());
   }
-  
-  private RelDir getMoveDir(char[][] map, Unit mover, List<Unit> targets) {
+
+  // TODO: NOTE: this is slower than the original impl because its an exhaustive search without a quick hook terminal
+  private ReadDir getMoveDir(char[][] map, Unit mover, List<Unit> targets) {
     Set<Point<?>> attackLocations = getAttackLocations(map, targets);
-    Set<Point<?>> visited = new HashSet<>();
-    visited.add(mover.location);
-    Queue<MoveDesc> candidates = new ArrayDeque<>();
-    candidates.add(new MoveDesc(null, null, new ImmutablePoint(mover.location), 0));
+    MutableInt stepsToReachables = new MutableInt();
     List<MoveDesc> reachable = new ArrayList<>();
-    while (!candidates.isEmpty() && (reachable.isEmpty() || (reachable.get(0).numSteps > candidates.peek().numSteps))) {
-      MoveDesc candidate = candidates.poll();
-      for (RelDir dir : MoveDesc.dirOrder) {
-        if (canMove(map, candidate.location, dir)) {
-          ImmutablePoint newLocation = candidate.location.move(dir);
-          if (!visited.contains(newLocation)) {
-            visited.add(newLocation);
-            MoveDesc option = new MoveDesc(candidate.initDir, dir, newLocation, candidate.numSteps + 1);
-            if (attackLocations.contains(newLocation)) {
-              reachable.add(option);
-            }
-            else {
-              candidates.offer(option);
+    bfs(
+        new MoveDesc(null, null, new ImmutablePoint(mover.location)),
+        (s, steps) -> !reachable.isEmpty() && (steps == stepsToReachables.intValue()),  // TODO: exhaustive search but terminate fast
+        SearchState::getNumSteps,
+        (current, steps, registrar) -> {
+          for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
+            if (canMove(map, current.location, dir)) {
+              MoveDesc option = new MoveDesc(current.initDir, dir, current.location.move(dir));
+              if (attackLocations.contains(option.location)) {
+                reachable.add(option);
+                stepsToReachables.setValue(steps + 1);
+              }
+              else {
+                registrar.accept(option);
+              }
             }
           }
         }
-      }
-    }
+    );
     reachable.sort(MoveDesc.cmp);
-    return (!reachable.isEmpty()) ? reachable.get(0).initDir : null;
+    return (reachable.isEmpty()) ? null : reachable.get(0).initDir;
   }
-  
-  private boolean canMove(char[][] map, Point<?> location, RelDir dir) {
+
+  private boolean canMove(char[][] map, Point<?> location, ReadDir dir) {
     int newX = location.x() + dir.dx();
     int newY = location.y() + dir.dy();
     return map[newY][newX] == '.';
   }
-  
+
   private Set<Point<?>> getAttackLocations(char[][] map, List<Unit> targets) {
     Set<Point<?>> attackLocations = new HashSet<>();
     for (Unit target : targets) {
-      for (RelDir dir : EnumUtils.enumValues(RelDir.class)) {
+      for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
         int inspectX = target.location.x() + dir.dx();
         int inspectY = target.location.y() + dir.dy();
-        if ((0 <= inspectX) && (inspectX < map[0].length) && (0 <= inspectY) && (inspectY < map.length)) {
-          if (map[inspectY][inspectX] == '.') {
-            attackLocations.add(new ImmutablePoint(inspectX, inspectY));
-          }
+        if (map[inspectY][inspectX] == '.') {
+          attackLocations.add(new ImmutablePoint(inspectX, inspectY));
         }
       }
     }
     return attackLocations;
   }
-  
+
   private void attack(char[][] map, Unit attacker, List<Unit> inRange) {
     if (!inRange.isEmpty()) {
       inRange.sort(Unit.attackCmp);
@@ -136,25 +131,7 @@ class Day15 extends Base2018 {
       }
     }
   }
-  
-  private char[][] loadMap(List<String> lines) {
-    char[][] map = new char[lines.size()][lines.get(0).length()];
-    for (int y = 0; y < lines.size(); ++y) {
-      for (int x = 0; x < lines.get(0).length(); ++x) {
-        map[lines.size() - y - 1][x] = lines.get(y).charAt(x);
-      }
-    }
-    return map;
-  }
-  
-  private char[][] copyMap(char[][] orig) {
-    char[][] copy = new char[orig.length][];
-    for (int i = 0; i < orig.length; ++i) {
-      copy[i] = Arrays.copyOf(orig[i], orig[i].length);
-    }
-    return copy;
-  }
-  
+
   private List<Unit> findUnits(char[][] map, int elfStrength) {
     List<Unit> units = new ArrayList<>();
     for (int y = 0; y < map.length; ++y) {
@@ -166,59 +143,59 @@ class Day15 extends Base2018 {
     }
     return units;
   }
-  
+
   private static class Unit {
     private static final Comparator<Unit> locationCmp =
-        Comparator.<Unit, Integer>comparing((u) -> -u.location.y()).thenComparing((u) -> u.location.x());
-    private static final Comparator<Unit> attackCmp =
-        Comparator.<Unit, Integer>comparing((u) -> u.hp).thenComparing(locationCmp);
-    
+        Comparator.<Unit>comparingInt((u) -> u.location.y()).thenComparingInt((u) -> u.location.x());
+    private static final Comparator<Unit> attackCmp = Comparator.<Unit>comparingInt((u) -> u.hp).thenComparing(locationCmp);
+
     private final char marker;
     private final MutablePoint location;
     private final int strength;
     private int hp = 200;
-    
+
     private Unit(char marker, int x, int y, int elfStrength) {
       this.marker = marker;
       this.location = new MutablePoint(x, y);
-      this.strength = (marker == 'E') ? elfStrength : 3;
+      this.strength = (isElf()) ? elfStrength : 3;
     }
-    
+
     private boolean isElf() {
       return marker == 'E';
     }
-    
-    @Override
-      public String toString() {
-        return "{" + marker + " " + location + " " + hp + "}";
-      }
   }
-  
+
   private static class MoveDesc {
-    private static final List<RelDir> dirOrder = List.of(RelDir.Up, RelDir.Left, RelDir.Right, RelDir.Down);
-    private static final Comparator<MoveDesc> cmp =
-        Comparator.<MoveDesc, Integer>comparing((md) -> -md.location.y()).thenComparing((md) -> md.location.x()).thenComparing((md) -> dirOrder.indexOf(md.initDir));
-    
-    private final RelDir initDir;
+    private static final List<ReadDir> dirOrder = List.of(ReadDir.Up, ReadDir.Left, ReadDir.Right, ReadDir.Down);
+    private static final Comparator<MoveDesc> cmp = Comparator
+        .<MoveDesc>comparingInt((md) -> md.location.y())
+        .thenComparingInt((md) -> md.location.x())
+        .thenComparingInt((md) -> dirOrder.indexOf(md.initDir));
+
+    private final ReadDir initDir;
     private final ImmutablePoint location;
-    private final int numSteps;
-    
-    private MoveDesc(RelDir previousMoveDescDir, RelDir dir, ImmutablePoint location, int numSteps) {
+
+    private MoveDesc(ReadDir previousMoveDescDir, ReadDir dir, ImmutablePoint location) {
       this.initDir = (previousMoveDescDir != null) ? previousMoveDescDir : dir;
       this.location = location;
-      this.numSteps = numSteps;
     }
-    
+
     @Override
-    public String toString() {
-      return "{" + initDir + " " + location + " " + numSteps + "}";
+    public boolean equals(Object other) {
+      return location.equals(((MoveDesc) other).location)
+          && (initDir == ((MoveDesc) other).initDir);
+    }
+
+    @Override
+    public int hashCode() {
+      return location.hashCode();
     }
   }
-  
+
   private static class Result {
     private final List<Unit> units;
     private final int turns;
-    
+
     private Result(List<Unit> units, int turns) {
       this.units = units;
       this.turns = turns;

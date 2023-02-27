@@ -12,13 +12,13 @@ class Day14 extends Base2018 {
     System.out.println(usingInputAsRecipeCount(input));
     System.out.println(usingInputAsSuffix(input));
   }
-  
+
   private String usingInputAsRecipeCount(int recipeCount) {
     List<Integer> scores = runWhile((s) -> s.size() < recipeCount + 10);
     return scores.subList(scores.size() - 10, scores.size()).stream()
         .map(Object::toString).collect(Collectors.joining());
   }
-  
+
   private int usingInputAsSuffix(int suffixInt) {
     String suffix = Integer.toString(suffixInt);
     List<Integer> scores = runWhile((s) -> {
@@ -34,7 +34,7 @@ class Day14 extends Base2018 {
     });
     return scores.size() - suffix.length();
   }
-  
+
   private List<Integer> runWhile(Predicate<List<Integer>> condition) {
     List<Integer> scores = new ArrayList<>();
     scores.add(3);
