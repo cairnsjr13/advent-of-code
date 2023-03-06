@@ -1,17 +1,15 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc._2019.IntCode.State;
+import com.cairns.rich.aoc.grid.CardDir;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.commons.lang3.mutable.MutableObject;
-
-import com.cairns.rich.aoc._2019.IntCode.State;
-import com.cairns.rich.aoc.grid.CardDir;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.google.common.base.Preconditions;
 
 class Day15 extends Base2019 {
   private static final Map<CardDir, Long> dirCodes = Map.of(
@@ -20,20 +18,19 @@ class Day15 extends Base2019 {
       CardDir.West, 3L,
       CardDir.East, 4L
   );
-  
+
   @Override
   protected void run() {
     List<Long> program = IntCode.parseProgram(fullLoader);
     State state = IntCode.run(program);
-    
+
     MutableObject<ImmutablePoint> oxygenSystem = new MutableObject<>();
     HashMap<ImmutablePoint, Character> grid = new HashMap<>();
-    int minStepsToOxygenSystem =
-        getMinStepsToOxygenSystem(state, oxygenSystem, grid, new ImmutablePoint(0, 0), 0);
+    int minStepsToOxygenSystem = getMinStepsToOxygenSystem(state, oxygenSystem, grid, new ImmutablePoint(0, 0), 0);
     System.out.println(minStepsToOxygenSystem);
     System.out.println(getTimeToFillSpace(oxygenSystem, grid));
   }
-  
+
   private int getMinStepsToOxygenSystem(
       State state,
       MutableObject<ImmutablePoint> oxygenSystem,
@@ -67,7 +64,7 @@ class Day15 extends Base2019 {
     }
     return minSteps;
   }
-  
+
   private int getTimeToFillSpace(MutableObject<ImmutablePoint> oxygenSystem, Map<ImmutablePoint, Character> grid) {
     Set<ImmutablePoint> locationsWithOxygen = new HashSet<>();
     Set<ImmutablePoint> locationsToExpandFrom = new HashSet<>();

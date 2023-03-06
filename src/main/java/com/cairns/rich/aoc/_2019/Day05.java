@@ -1,9 +1,8 @@
 package com.cairns.rich.aoc._2019;
 
-import java.util.List;
-
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
+import java.util.List;
 
 class Day05 extends Base2019 {
   @Override
@@ -12,7 +11,7 @@ class Day05 extends Base2019 {
     System.out.println(runWithInput(program, 1));
     System.out.println(runWithInput(program, 5));
   }
-  
+
   private IO runWithInput(List<Long> program, long input) {
     State state = IntCode.run(program);
     state.programInput.put(input);

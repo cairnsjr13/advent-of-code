@@ -1,14 +1,13 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc._2019.IntCode.IO;
+import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-
-import com.cairns.rich.aoc._2019.IntCode.IO;
-import com.cairns.rich.aoc._2019.IntCode.State;
 
 class Day07 extends Base2019 {
   @Override
@@ -17,11 +16,11 @@ class Day07 extends Base2019 {
     System.out.println(getMaxThrust(ConnType.Simple, program));
     System.out.println(getMaxThrust(ConnType.Feedback, program));
   }
-  
+
   private long getMaxThrust(ConnType connType, List<Long> program) {
     return getMaxThrust(connType, program, new ArrayList<>(connType.phases), new ArrayList<>());
   }
-  
+
   private long getMaxThrust(
       ConnType connType,
       List<Long> program,
@@ -41,21 +40,21 @@ class Day07 extends Base2019 {
     }
     return maxThrust;
   }
-  
+
   private enum ConnType {
     Simple(0, 4, 6, (size) -> size - 1),
     Feedback(5, 9, 5, (size) -> 0);
-    
+
     private final List<Long> phases;
     private final int numIos;
     private final IntUnaryOperator sizeToResultIoIndex;
-    
+
     private ConnType(long minPhase, long maxPhase, int numIos, IntUnaryOperator sizeToResultIoIndex) {
       this.phases = LongStream.rangeClosed(minPhase, maxPhase).boxed().collect(Collectors.toList());
       this.numIos = numIos;
       this.sizeToResultIoIndex = sizeToResultIoIndex;
     }
-    
+
     private long getThrust(List<Long> program, List<Long> order) {
       List<IO> ios = IntStream.range(0, numIos).mapToObj((i) -> new IO()).collect(Collectors.toList());
       List<State> states = IntStream.range(0, 5)

@@ -10,7 +10,7 @@ class Day08 extends Base2019 {
     System.out.println(computeChecksum(image));
     printImage(image);
   }
-  
+
   private int computeChecksum(int[][][] image) {
     int[] fewestZeroLayerCount = { Integer.MAX_VALUE, 0, 0 };
     for (int layer = 0; layer < image.length; ++layer) {
@@ -26,9 +26,9 @@ class Day08 extends Base2019 {
     }
     return fewestZeroLayerCount[1] * fewestZeroLayerCount[2];
   }
-  
+
   private void printImage(int[][][] image) {
-    char setPixel = 0x2588;
+    char setPixel = 0x2588; // TODO: centralize dark pixel
     System.out.println(StringUtils.repeat(setPixel, image[0][0].length + 1));
     for (int row = 0; row < image[0].length; ++row) {
       System.out.print(setPixel);
@@ -39,7 +39,7 @@ class Day08 extends Base2019 {
     }
     System.out.println(StringUtils.repeat(setPixel, image[0][0].length + 1));
   }
-  
+
   private boolean isPixelSet(int[][][] image, int row, int col) {
     for (int layer = 0; layer < image.length; ++layer) {
       if (image[layer][row][col] != 2) {
@@ -48,7 +48,7 @@ class Day08 extends Base2019 {
     }
     throw fail(row + ", " + col);
   }
-  
+
   private int[][][] parseLayerRowCol(String input, int numCols, int numRows) {
     int numLayers = input.length() / (numCols * numRows);
     int[][][] image = new int[numLayers][numRows][numCols];

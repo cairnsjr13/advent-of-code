@@ -1,51 +1,48 @@
 package com.cairns.rich.aoc._2019;
 
-import java.util.ArrayDeque;
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.ReadDir;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Table;
+import com.google.common.collect.TreeBasedTable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.RelDir;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Table;
-import com.google.common.collect.TreeBasedTable;
-
 class Day18 extends Base2019 {
-  private RelDir[] dirs = EnumUtils.enumValues(RelDir.class);
-  
+  private ReadDir[] dirs = EnumUtils.enumValues(ReadDir.class);
+
   @Override
   protected void run() {
     char[][] grid = fullLoader.ml(String::toCharArray).toArray(char[][]::new);
     List<Table<Character, Character, PathDesc>> pathsByRobot = computePaths(grid);
     int numKeysNeeded = pathsByRobot.get(0).columnKeySet().size();
-    ToIntFunction<List<Table<Character, Character, PathDesc>>> getFastestSteps = (ps) -> getFastestPathSteps(
+    ToLongFunction<List<Table<Character, Character, PathDesc>>> getFastestSteps = (ps) -> getFastestPathSteps(
         numKeysNeeded,
         ps,
         HashBasedTable.create(),
         ps.stream().map((i) -> '@').collect(Collectors.toList()),
         new HashSet<>()
     );
-    System.out.println(getFastestSteps.applyAsInt(pathsByRobot));
-    System.out.println(getFastestSteps.applyAsInt(computePaths(split(grid))));
+    System.out.println(getFastestSteps.applyAsLong(pathsByRobot));
+    System.out.println(getFastestSteps.applyAsLong(computePaths(split(grid))));
   }
-  
-  private int getFastestPathSteps(
+
+  private long getFastestPathSteps(
       int numKeysNeeded,
       List<Table<Character, Character, PathDesc>> pathsByRobot,
-      Table<List<Character>, Set<Character>, Integer> stepsCache,
+      Table<List<Character>, Set<Character>, Long> stepsCache,
       List<Character> currentKeysByRobot,
       Set<Character> heldKeys
   ) {
@@ -53,7 +50,7 @@ class Day18 extends Base2019 {
       return 0;
     }
     if (!stepsCache.contains(currentKeysByRobot, heldKeys)) {
-      int best = Short.MAX_VALUE;
+      long best = Short.MAX_VALUE;
       List<List<Character>> reachables = getReachables(pathsByRobot, currentKeysByRobot, heldKeys);
       for (int i = 0; i < reachables.size(); ++i) {
         Table<Character, Character, PathDesc> paths = pathsByRobot.get(i);
@@ -61,8 +58,8 @@ class Day18 extends Base2019 {
         for (char next : reachables.get(i)) {
           currentKeysByRobot.set(i, next);
           heldKeys.add(next);
-          int cost = paths.get(current, next).numSteps
-                   + getFastestPathSteps(numKeysNeeded, pathsByRobot, stepsCache, currentKeysByRobot, heldKeys);
+          long cost = paths.get(current, next).numSteps
+                    + getFastestPathSteps(numKeysNeeded, pathsByRobot, stepsCache, currentKeysByRobot, heldKeys);
           best = Math.min(best, cost);
           heldKeys.remove(next);
           currentKeysByRobot.set(i, current);
@@ -72,7 +69,7 @@ class Day18 extends Base2019 {
     }
     return stepsCache.get(currentKeysByRobot, heldKeys);
   }
-  
+
   private List<List<Character>> getReachables(
       List<Table<Character, Character, PathDesc>> pathsByRobot,
       List<Character> currentKeysByRobot,
@@ -85,7 +82,7 @@ class Day18 extends Base2019 {
           .collect(Collectors.toList());
     }).collect(Collectors.toList());
   }
-  
+
   private List<Table<Character, Character, PathDesc>> computePaths(char[][]... grids) {
     return Arrays.stream(grids)
         .map((grid) -> {
@@ -93,37 +90,33 @@ class Day18 extends Base2019 {
           Table<Character, Character, PathDesc> paths = TreeBasedTable.create();
           for (char from : mapState.keyLookup.keySet()) {
             Multimap<Integer, Integer> visited = HashMultimap.create();
-            Queue<WalkDesc> queue = new ArrayDeque<>();
-            
-            WalkDesc init = new WalkDesc(0, mapState.keyLookup.get(from), new HashSet<>());
-            visited.put(init.location.x(), init.location.y());
-            queue.add(init);
-            
-            while (!queue.isEmpty()) {
-              WalkDesc current = queue.poll();
-              for (RelDir dir : dirs) {
-                if (mapState.canMove(visited, current.location, dir)) {
-                  ImmutablePoint move = current.location.move(dir);
-                  char moveSymbol = mapState.map.get(move.x(), move.y());
-                  Set<Character> keysNeededOnMovePath = current.keysNeededOnThisPath;
-                  if (Character.isUpperCase(moveSymbol)) {
-                    keysNeededOnMovePath = new HashSet<>(keysNeededOnMovePath);
-                    keysNeededOnMovePath.add(Character.toLowerCase(moveSymbol));
+            bfs(
+                new WalkDesc(mapState.keyLookup.get(from), new HashSet<>()),
+                (s) -> false,
+                SearchState::getNumSteps,
+                (current, numSteps, registrar) -> Arrays.stream(dirs).forEach((dir) -> {
+                  if (mapState.canMove(visited, current.location, dir)) {
+                    ImmutablePoint move = current.location.move(dir);
+                    char moveSymbol = mapState.map.get(move.x(), move.y());
+                    Set<Character> keysNeededOnMovePath = current.keysNeededOnThisPath;
+                    if (Character.isUpperCase(moveSymbol)) {
+                      keysNeededOnMovePath = new HashSet<>(keysNeededOnMovePath);
+                      keysNeededOnMovePath.add(Character.toLowerCase(moveSymbol));
+                    }
+                    else if (Character.isLowerCase(moveSymbol)) {
+                      paths.put(from, moveSymbol, new PathDesc(numSteps + 1, keysNeededOnMovePath));
+                    }
+                    visited.put(move.x(), move.y());
+                    registrar.accept(new WalkDesc(move, keysNeededOnMovePath));
                   }
-                  else if (Character.isLowerCase(moveSymbol)) {
-                    paths.put(from, moveSymbol, new PathDesc(current.numSteps + 1, keysNeededOnMovePath));
-                  }
-                  visited.put(move.x(), move.y());
-                  queue.add(new WalkDesc(current.numSteps + 1, move, keysNeededOnMovePath));
-                }
-              }
-            }
+                })
+            );
           }
           return paths;
         })
         .collect(Collectors.toList());
   }
-  
+
   private static char[][][] split(char[][] orig) {
     int splitHeight = orig.length / 2 + 1;
     int splitWidth = orig[0].length / 2 + 1;
@@ -142,51 +135,44 @@ class Day18 extends Base2019 {
     };
     return new char[][][] { split.apply(0, 0), split.apply(0, 1), split.apply(1, 0), split.apply(1, 1) };
   }
-  
+
   private static class WalkDesc {
-    private final int numSteps;
     private final ImmutablePoint location;
     private final Set<Character> keysNeededOnThisPath;
-    
-    private WalkDesc(int numSteps, ImmutablePoint location, Set<Character> keysNeededOnThisPath) {
-      this.numSteps = numSteps;
+
+    private WalkDesc(ImmutablePoint location, Set<Character> keysNeededOnThisPath) {
       this.location = location;
       this.keysNeededOnThisPath = keysNeededOnThisPath;
     }
   }
-  
+
   private static class PathDesc {
-    private final int numSteps;
+    private final long numSteps;
     private final Set<Character> keysNeeded;
-    
-    private PathDesc(int numSteps, Set<Character> keysNeeded) {
+
+    private PathDesc(long numSteps, Set<Character> keysNeeded) {
       this.numSteps = numSteps;
       this.keysNeeded = new HashSet<>(keysNeeded);
     }
-    
-    @Override
-    public String toString() {
-      return "{" + numSteps + " " + keysNeeded + "}";
-    }
   }
-  
+
   private static class MapState {
     private final Table<Integer, Integer, Character> map = HashBasedTable.create();
     private final Map<Character, ImmutablePoint> keyLookup = new HashMap<>();
-    
+
     private MapState(char[][] grid) {
       for (int y = 0; y < grid.length; ++y) {
         for (int x = 0; x < grid[0].length; ++x) {
           char ch = grid[y][x];
-          map.put(x, -y, ch);
+          map.put(x, y, ch);
           if ((ch == '@') || Character.isLowerCase(ch)) {
-            keyLookup.put(ch, new ImmutablePoint(x, -y));
+            keyLookup.put(ch, new ImmutablePoint(x, y));
           }
         }
       }
     }
-    
-    private boolean canMove(Multimap<Integer, Integer> visited, ImmutablePoint location, RelDir dir) {
+
+    private boolean canMove(Multimap<Integer, Integer> visited, ImmutablePoint location, ReadDir dir) {
       int nx = location.x() + dir.dx();
       int ny = location.y() + dir.dy();
       return !visited.containsEntry(nx, ny) && (map.get(nx, ny) != '#');

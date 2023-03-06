@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,8 +10,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.cairns.rich.aoc._2019.IntCode.State;
-
+// TODO: The threading synchronization could be better...
 class Day23 extends Base2019 {
   @Override
   protected void run() {
@@ -23,7 +23,7 @@ class Day23 extends Base2019 {
     Nat nat = new Nat(computers, packetsToSend);
     computers.forEach((computer) -> machines.put(computer.addr, computer));
     machines.put(nat.addr, nat);
-    
+
     while (!nat.shouldTerminate) {
       if (packetsToSend.isEmpty()) {
         Thread.yield();
@@ -34,28 +34,28 @@ class Day23 extends Base2019 {
       }
     }
   }
-  
+
   private static abstract class Machine {
     protected final long addr;
     protected final ConcurrentLinkedDeque<Packet> packetsToReceive = new ConcurrentLinkedDeque<>();
-    
+
     private Machine(long addr) {
       this.addr = addr;
     }
-    
+
     protected abstract void receive(Packet packet);
   }
-  
+
   private static class Nat extends Machine {
     private boolean hasRecv = false;
     private Packet lastRecv;
     private volatile boolean shouldTerminate = false;
-    
+
     public Nat(List<Computer> computers, ConcurrentLinkedDeque<Packet> packetsToSend) {
       super(255);
       startDaemon(() -> restartLoop(computers, packetsToSend));
     }
-    
+
     private void restartLoop(List<Computer> computers, ConcurrentLinkedDeque<Packet> packetsToSend) {
       Set<Long> ysSentToAddrZero = new HashSet<>();
       while (true) {
@@ -72,7 +72,7 @@ class Day23 extends Base2019 {
         Thread.yield();
       }
     }
-    
+
     @Override
     protected void receive(Packet packet) {
       if (!hasRecv) {
@@ -82,12 +82,12 @@ class Day23 extends Base2019 {
       lastRecv = packet;
     }
   }
-  
+
   private static class Computer extends Machine {
     private final State state;
     private volatile boolean notReceiving;
     private volatile int noneToRecvCount = 0;
-    
+
     private Computer(List<Long> program, long addr, ConcurrentLinkedDeque<Packet> packetsToSend) {
       super(addr);
       this.state = IntCode.run(program);
@@ -95,7 +95,7 @@ class Day23 extends Base2019 {
       startDaemon(() -> packetSenderLoop(packetsToSend));
       startDaemon(this::packetReceiverLoop);
     }
-    
+
     private void packetSenderLoop(ConcurrentLinkedDeque<Packet> packetsToSend) {
       while (true) {
         state.blockUntilHaltOrOutput();
@@ -107,7 +107,7 @@ class Day23 extends Base2019 {
         packetsToSend.add(new Packet(dst, x, y));
       }
     }
-    
+
     private void packetReceiverLoop() {
       while (true) {
         notReceiving = true;
@@ -125,18 +125,18 @@ class Day23 extends Base2019 {
         }
       }
     }
-    
+
     @Override
     protected void receive(Packet packet) {
       packetsToReceive.offer(packet);
     }
   }
-  
+
   private static class Packet {
     private final long dst;
     private final long x;
     private final long y;
-    
+
     private Packet(long dst, long x, long y) {
       this.dst = dst;
       this.x = x;

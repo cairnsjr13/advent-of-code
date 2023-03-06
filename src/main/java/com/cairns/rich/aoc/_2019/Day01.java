@@ -9,11 +9,11 @@ class Day01 extends Base2019 {
     System.out.println(getFuelReq(masses, false));
     System.out.println(getFuelReq(masses, true));
   }
-  
+
   private int getFuelReq(List<Integer> masses, boolean recursive) {
     return masses.stream().mapToInt((m) -> fuelReq(m, recursive)).sum();
   }
-  
+
   private int fuelReq(int mass, boolean recursive) {
     int totalFuel = 0;
     do {
@@ -22,7 +22,8 @@ class Day01 extends Base2019 {
         break;
       }
       totalFuel += mass;
-    } while (recursive);
+    }
+    while (recursive);
     return totalFuel;
   }
 }

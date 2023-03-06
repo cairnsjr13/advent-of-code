@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day14 extends Base2019 {
@@ -22,7 +21,18 @@ class Day14 extends Base2019 {
     System.out.println(getOreRequiredForNFuel(reactions, numOre, avail, 1));
     System.out.println(getFuelPossibleWithTrillionOre(reactions, numOre, avail, numOre.longValue()));
   }
-  
+
+  private long getOreRequiredForNFuel(
+      Map<String, Reaction> reactions,
+      MutableLong numOre,
+      Map<String, MutableLong> avail,
+      long nFuel
+  ) {
+    initAvail(numOre, reactions, avail);
+    ensureEnough(reactions, numOre, avail, "FUEL", nFuel);
+    return numOre.longValue();
+  }
+
   private long getFuelPossibleWithTrillionOre(
       Map<String, Reaction> reactions,
       MutableLong numOre,
@@ -44,18 +54,7 @@ class Day14 extends Base2019 {
     }
     return minFuel;
   }
-  
-  private long getOreRequiredForNFuel(
-      Map<String, Reaction> reactions,
-      MutableLong numOre,
-      Map<String, MutableLong> avail,
-      long nFuel
-  ) {
-    initAvail(numOre, reactions, avail);
-    ensureEnough(reactions, numOre, avail, "FUEL", nFuel);
-    return numOre.longValue();
-  }
-  
+
   private void ensureEnough(
       Map<String, Reaction> reactions,
       MutableLong numOre,
@@ -79,31 +78,31 @@ class Day14 extends Base2019 {
         }
         elemAvail.add(numBatches * reaction.output.qty);
       }
-    } 
+    }
   }
-  
+
   private void initAvail(MutableLong numOre, Map<String, Reaction> reactions, Map<String, MutableLong> avail) {
     Consumer<String> initer = (output) -> avail.computeIfAbsent(output, (i) -> new MutableLong(0)).setValue(0);
     numOre.setValue(0);
     reactions.keySet().forEach(initer);
     initer.accept("ORE");
   }
-  
+
   private static final class Reaction {
     private final Component output;
-    private final Set<Component> inputs; 
-    
+    private final Set<Component> inputs;
+
     private Reaction(String spec) {
       String[] ioParts = spec.split(" => ");
       this.output = new Component(ioParts[1]);
       this.inputs = Arrays.stream(ioParts[0].split(", ")).map(Component::new).collect(Collectors.toSet());
     }
   }
-  
+
   private static final class Component {
     private final long qty;
     private final String elem;
-    
+
     private Component(String spec) {
       String[] parts = spec.split(" ");
       this.qty = Long.parseLong(parts[0]);

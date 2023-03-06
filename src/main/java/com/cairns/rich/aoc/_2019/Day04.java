@@ -2,29 +2,26 @@ package com.cairns.rich.aoc._2019;
 
 import java.util.Arrays;
 import java.util.function.IntPredicate;
+import java.util.stream.IntStream;
 
 class Day04 extends Base2019 {
   @Override
   protected void run() {
-    int numSimpleValid = 0;
-    int numComplexValid = 0;
-    for (int password = 353096; password <= 843212; ++password) {
-      if (isValid(password, (c) -> c >= 2)) {
-        ++numSimpleValid;
-      }
-      if (isValid(password, (c) -> c == 2)) {
-        ++numComplexValid;
-      }
-    }
-    System.out.println(numSimpleValid);
-    System.out.println(numComplexValid);
+    int minPassword = 353096;
+    int maxPassword = 843212;
+    System.out.println(numValidPasswords(minPassword, maxPassword, (c) -> c >= 2));
+    System.out.println(numValidPasswords(minPassword, maxPassword, (c) -> c == 2));
   }
-  
+
+  private long numValidPasswords(int min, int max, IntPredicate anyCountTest) {
+    return IntStream.rangeClosed(min, max).filter((password) -> isValid(password, anyCountTest)).count();
+  }
+
   private boolean isValid(int password, IntPredicate anyCountTest) {
     int[] places = new int[6];
     int[] valueCount = new int[10];
-    for (int i = 0; i < places.length; ++i) {
-      places[places.length - 1 - i] = (password / (int) Math.pow(10, i)) % 10;
+    for (int i = 0, m = 1; i < places.length; ++i, m *= 10) {
+      places[places.length - 1 - i] = (password / m) % 10;
       ++valueCount[places[places.length - 1 - i]];
     }
     for (int i = 0; i < places.length - 1; ++i) {

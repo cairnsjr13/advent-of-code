@@ -1,85 +1,58 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Day24 extends Base2019 {
-  private static final Multimap<Integer, Integer> emptyLayer = HashMultimap.create();
   private static final Map<ReadDir, List<ImmutablePoint>> recursiveLayerNeighbors = Map.of(
       ReadDir.Up, IntStream.range(0, 5).mapToObj((x) -> new ImmutablePoint(x, 4)).collect(Collectors.toList()),
       ReadDir.Down, IntStream.range(0, 5).mapToObj((x) -> new ImmutablePoint(x, 0)).collect(Collectors.toList()),
       ReadDir.Left, IntStream.range(0, 5).mapToObj((y) -> new ImmutablePoint(4, y)).collect(Collectors.toList()),
       ReadDir.Right, IntStream.range(0, 5).mapToObj((y) -> new ImmutablePoint(0,y)).collect(Collectors.toList())
   );
-  
+
   @Override
   protected void run() {
-    TreeMap<Integer, Multimap<Integer, Integer>> state = parse(fullLoader);
+    State state = new State(fullLoader.ml());
     System.out.println(singleLayerBioDiv(state));
     System.out.println(numBugsAfter(state, 200));
   }
-  
-  private int singleLayerBioDiv(TreeMap<Integer, Multimap<Integer, Integer>> state) {
-    Set<TreeMap<Integer, Multimap<Integer, Integer>>> seenStates = new HashSet<>();
+
+  private int singleLayerBioDiv(State state) {
+    Set<State> seenStates = new HashSet<>();
     seenStates.add(state);
     while (true) {
-      state = nextState(state, 0, 0, this::simpleCountNeighbors);
+      state = state.next(0, 0, this::simpleCountNeighbors);
       if (!seenStates.add(state)) {
-        break;
+        return state.grid.get(0);
       }
     }
-    return computeBioDiv(state);
   }
-  
-  private int numBugsAfter(TreeMap<Integer, Multimap<Integer, Integer>> state, int numMinutes) {
+
+  private int numBugsAfter(State state, int numMinutes) {
     for (int i = 0; i < numMinutes; ++i) {
-      state = nextState(state, state.firstKey() - 1, state.lastKey() + 1, this::complexCountNeighbors);
+      state = state.next(state.grid.firstKey() - 1, state.grid.lastKey() + 1, this::complexCountNeighbors);
     }
-    return state.values().stream().mapToInt(Multimap::size).sum();
+    return state.grid.values().stream().mapToInt(Integer::bitCount).sum();
   }
-  
-  private TreeMap<Integer, Multimap<Integer, Integer>> nextState(
-      TreeMap<Integer, Multimap<Integer, Integer>> state,
-      int minLayer,
-      int maxLayer,
-      NeighborCounter neighborCounter
-  ) {
-    TreeMap<Integer, Multimap<Integer, Integer>> nextState = new TreeMap<>();
-    for (int layer = minLayer; layer <= maxLayer; ++layer) {
-      for (int y = 0; y < 5; ++y) {
-        for (int x = 0; x < 5; ++x) {
-          int numNeighbors = neighborCounter.countNeighbors(state, layer, x, y);
-          if ((numNeighbors == 1) || ((numNeighbors == 2) && !state.getOrDefault(layer, emptyLayer).containsEntry(y, x))) {
-            nextState.computeIfAbsent(layer, (i) -> HashMultimap.create()).put(y, x);
-          }
-        }
-      }
-    }
-    return nextState;
+
+  private long simpleCountNeighbors(State state, int layer, int x, int y) {
+    return Arrays.stream(EnumUtils.enumValues(ReadDir.class))
+        .filter((dir) -> state.contains(layer, y + dir.dy(), x + dir.dx()))
+        .count();
   }
-  
-  private int simpleCountNeighbors(TreeMap<Integer, Multimap<Integer, Integer>> state, int layer, int x, int y) {
-    int numNeighbors = 0;
-    for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
-      if (state.get(layer).containsEntry(y + dir.dy(), x + dir.dx())) {
-        ++numNeighbors;
-      }
-    }
-    return numNeighbors;
-  }
-  
-  private int complexCountNeighbors(TreeMap<Integer, Multimap<Integer, Integer>> state, int layer, int x, int y) {
+
+  private long complexCountNeighbors(State state, int layer, int x, int y) {
     if ((x == 2) && (y == 2)) {
       return 0;
     }
@@ -91,7 +64,7 @@ class Day24 extends Base2019 {
       if ((nx == 2) && (ny == 2)) {
         ++nLayer;
         for (ImmutablePoint recursivePoint : recursiveLayerNeighbors.get(dir)) {
-          if (state.getOrDefault(nLayer, emptyLayer).containsEntry(recursivePoint.y(), recursivePoint.x())) {
+          if (state.contains(nLayer, recursivePoint.y(), recursivePoint.x())) {
             ++numNeighbors;
           }
         }
@@ -117,39 +90,65 @@ class Day24 extends Base2019 {
           nx = 2;
           ny = 3;
         }
-        if (state.getOrDefault(nLayer, emptyLayer).containsEntry(ny, nx)) {
+        if (state.contains(nLayer, ny, nx)) {
           ++numNeighbors;
         }
       }
     }
     return numNeighbors;
   }
-  
-  private int computeBioDiv(Map<Integer, Multimap<Integer, Integer>>  state) {
-    int bioDiv = 0;
-    for (int y : state.get(0).keySet()) {
-      for (int x : state.get(0).get(y)) {
-        bioDiv |= (1 << (y * 5 + x));
-      }
+
+  private static class State {
+    private final TreeMap<Integer, Integer> grid = new TreeMap<>();
+
+    private State() { }
+
+    private State(List<String> lines) {
+      grid.put(0, computeCells((x, y) -> '#' == lines.get(y).charAt(x)));
     }
-    return bioDiv;
-  }
-  
-  private TreeMap<Integer, Multimap<Integer, Integer>> parse(Loader2 loader) {
-    TreeMap<Integer, Multimap<Integer, Integer>> state = new TreeMap<>();
-    state.put(0, HashMultimap.create());
-    List<String> lines = loader.ml();
-    for (int y = 0; y < lines.size(); ++y) {
-      for (int x = 0; x < lines.get(y).length(); ++x) {
-        if (lines.get(y).charAt(x) == '#') {
-          state.get(0).put(y, x);
+
+    private boolean contains(int layer, int y, int x) {
+      return (0 <= x) && (x < 5) && (0 <= y) && (y < 5)
+          && (0 != (grid.getOrDefault(layer, 0) & cell(x, y)));
+    }
+
+    private State next(int minLayer, int maxLayer, NeighborCounter neighborCounter ) {
+      State nextState = new State();
+      IntStream.rangeClosed(minLayer, maxLayer).forEach((layer) -> nextState.grid.put(layer, computeCells((x, y) -> {
+        long numNeighbors = neighborCounter.countNeighbors(this, layer, x, y);
+        return (numNeighbors == 1) || ((numNeighbors == 2) && !contains(layer, y, x));
+      })));
+      return nextState;
+    }
+
+    private int computeCells(BiPredicate<Integer, Integer> test) {
+      int cells = 0;
+      for (int x = 0; x < 5; ++x) {
+        for (int y = 0; y < 5; ++y) {
+          if (test.test(x, y)) {
+            cells += cell(x, y);
+          }
         }
       }
+      return cells;
     }
-    return state;
+
+    private int cell(int x, int y) {
+      return 1 << ((y * 5) + x);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+      return grid.equals(((State) other).grid);
+    }
+
+    @Override
+    public int hashCode() {
+      return grid.hashCode();
+    }
   }
-  
+
   private interface NeighborCounter {
-    int countNeighbors(TreeMap<Integer, Multimap<Integer, Integer>> state, int layer, int x, int y);
+    long countNeighbors(State state, int layer, int x, int y);
   }
 }

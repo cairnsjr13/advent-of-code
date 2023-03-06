@@ -1,5 +1,9 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc._2019.IntCode.State;
+import com.cairns.rich.aoc.grid.CardDir;
+import com.google.common.base.Preconditions;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,11 +17,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc._2019.IntCode.State;
-import com.cairns.rich.aoc.grid.CardDir;
-import com.google.common.base.Preconditions;
 
 class Day25 extends Base2019 {
   private static final Map<Character, CardDir> dirs = EnumUtils.getLookup(CardDir.class);
@@ -34,8 +33,8 @@ class Day25 extends Base2019 {
     List<String> items = goToCheckpointAndDropAll(state, pathToSecurityCheckpoint);
     System.out.println(findPassword(state, items, 0));
   }
-  
-  protected void interactive(State state) throws IOException {
+
+  protected final void interactive(State state) throws IOException {
     state.blockUntilHaltOrWaitForInput();
     readAll(state).forEach(System.out::println);
     try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in))) {
@@ -44,14 +43,14 @@ class Day25 extends Base2019 {
       }
     }
   }
-  
+
   private List<CardDir> takeAllSafe(State state) {
     state.blockUntilHaltOrWaitForInput();
     List<CardDir> pathToTest = new ArrayList<>();
     findAndTakeAll(state, new ArrayDeque<>(), readAll(state), pathToTest);
     return pathToTest;
   }
-  
+
   private void findAndTakeAll(
       State state,
       Deque<CardDir> path,
@@ -76,14 +75,14 @@ class Day25 extends Base2019 {
       }
     }
   }
-  
+
   private List<String> goToCheckpointAndDropAll(State state, List<CardDir> pathToSecurityCheckpoint) {
     pathToSecurityCheckpoint.stream().map(dirToCmd::get).forEach((cmd) -> cmd(state, cmd));
     List<String> items = itemsHere(cmd(state, "inv"), "Items in your inventory:");
     items.forEach((item) -> cmd(state, "drop " + item));
     return items;
   }
-  
+
   private String findPassword(State state, List<String> items, int index) {
     if (index == items.size()) {
       List<String> output = cmd(state, "east");
@@ -100,24 +99,24 @@ class Day25 extends Base2019 {
     }
     return password;
   }
-  
+
   private List<CardDir> dirsOpen(List<String> lines) {
     return findElements(lines, "Doors here lead:", (ln) -> dirs.get(Character.toUpperCase(ln.charAt("- ".length()))));
   }
-  
+
   private List<String> itemsHere(List<String> lines, String header) {
     return findElements(lines, header, (line) -> line.substring("- ".length()));
   }
-  
+
   private <T> List<T> findElements(List<String> lines, String header, Function<String, T> transform) {
-    List<T> elements = new ArrayList<T>();
+    List<T> elements = new ArrayList<>();
     int indexOfHeader = lines.indexOf(header);
     for (int i = indexOfHeader + 1; !lines.get(i).isEmpty(); ++i) {
       elements.add(transform.apply(lines.get(i)));
     }
     return elements;
   }
-  
+
   private List<String> cmd(State state, String command) {
     command.chars().forEach(state.programInput::put);
     state.programInput.put('\n');
@@ -126,7 +125,7 @@ class Day25 extends Base2019 {
     }
     return readAll(state);
   }
-  
+
   private List<String> readAll(State state) {
     StringBuilder str = new StringBuilder();
     while (state.programOutput.hasMoreToTake()) {

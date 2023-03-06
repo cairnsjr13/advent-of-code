@@ -1,8 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
-import java.util.List;
-
 import com.cairns.rich.aoc._2019.IntCode.State;
+import java.util.List;
 
 class Day02 extends Base2019 {
   @Override
@@ -11,7 +10,7 @@ class Day02 extends Base2019 {
     System.out.println(getResultOf(program, 12, 2));
     System.out.println(getNounAndVerbAnsFor(program, 19690720));
   }
-  
+
   private int getNounAndVerbAnsFor(List<Long> program, long target) {
     for (int noun = 0; noun < 100; ++noun) {
       for (int verb = 0; verb < 100; ++verb) {
@@ -22,12 +21,12 @@ class Day02 extends Base2019 {
     }
     throw fail();
   }
-  
+
   private long getResultOf(List<Long> program, long noun, long verb) {
     program.set(1, noun);
     program.set(2, verb);
     State state = IntCode.run(program);
     state.blockUntilHaltOrWaitForInput();
     return state.getMem(0);
-  }  
+  }
 }

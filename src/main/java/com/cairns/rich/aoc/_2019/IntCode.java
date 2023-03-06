@@ -21,9 +21,9 @@ final class IntCode extends QuietCapable {
     return thread;
   });
   private static final Map<Long, ParamMode> paramModeLookup = EnumUtils.getLookup(ParamMode.class);
-  
+
   private IntCode() { }
-  
+
   static List<Long> parseProgram(Loader2 loader) {
     return loader.sl(",", Long::parseLong);
   }
@@ -31,7 +31,7 @@ final class IntCode extends QuietCapable {
   static State run(List<Long> program) {
     return run(program, new IO(), new IO());
   }
-  
+
   static State run(List<Long> program, IO programInput, IO programOutput) {
     return new State(program, programInput, programOutput, (state) -> {
       while (true) {
@@ -102,28 +102,28 @@ final class IntCode extends QuietCapable {
       }
     });
   }
-  
+
   static final class IO {
     final LinkedBlockingQueue<Long> queue = new LinkedBlockingQueue<>();
-    
+
     void put(long value) {
       quietly(() -> queue.put(value));
     }
-    
+
     long take() {
       return quietly(queue::take);
     }
-    
+
     boolean hasMoreToTake() {
       return !queue.isEmpty();
     }
-    
+
     @Override
     public String toString() {
       return queue.toString();
     }
   }
-  
+
   static class State {
     private long instPtr = 0;
     private final Map<Long, Long> mem = new HashMap<>();
@@ -132,7 +132,7 @@ final class IntCode extends QuietCapable {
     private final Semaphore waitingOnInput = new Semaphore(0);
     final IO programInput;
     final IO programOutput;
-    
+
     private State(List<Long> program, IO programInput, IO programOutput, Consumer<State> runner) {
       for (int i = 0; i < program.size(); ++i) {
         mem.put((long) i, program.get(i));
@@ -141,56 +141,56 @@ final class IntCode extends QuietCapable {
       this.programOutput = programOutput;
       this.future = exec.submit(() -> runner.accept(this));
     }
-    
+
     boolean hasHalted() {
       return future.isDone();
     }
-    
+
     // TODO: This is wrong, we need to make sure the input is EMPTY and still have permits
     boolean isWaitingForInput() {
       return waitingOnInput.tryAcquire();
     }
-    
+
     void blockUntilHalt() {
       while (!hasHalted()) {
         Thread.yield();
       }
     }
-    
+
     void blockUntilWaitForInput() {
       while (!isWaitingForInput()) {
         Thread.yield();
       }
     }
-    
+
     void blockUntilHaltOrWaitForInput() {
       while (!hasHalted() && !isWaitingForInput()) {
         Thread.yield();
       }
     }
-    
+
     void blockUntilHaltOrOutput() {
       while (!hasHalted() && !programOutput.hasMoreToTake()) {
         Thread.yield();
       }
     }
-    
+
     long getMem(long pos) {
       return mem.getOrDefault(pos, 0L);
     }
-    
+
     private void setMem(long pos, long value) {
       mem.put(pos, value);
     }
   }
-  
+
   private enum ParamMode implements HasId<Long> {
     Position(0) {
       @Override
       protected long getValue(State state, long param) {
         return state.getMem(param);
       }
-      
+
       @Override
       protected long getWriteLocation(State state, long param) {
         return param;
@@ -201,7 +201,7 @@ final class IntCode extends QuietCapable {
       protected long getValue(State state, long param) {
         return param;
       }
-      
+
       @Override
       protected long getWriteLocation(State state, long param) {
         throw new RuntimeException("Unsupported: " + param);
@@ -212,28 +212,28 @@ final class IntCode extends QuietCapable {
       protected long getValue(State state, long param) {
         return state.getMem(state.relativeBase + param);
       }
-      
+
       @Override
       protected long getWriteLocation(State state, long param) {
         return state.relativeBase + param;
       }
     };
-    
+
     private final long id;
-    
+
     private ParamMode(long id) {
       this.id = id;
     }
-    
+
     @Override
     public Long getId() {
       return id;
     }
-    
+
     protected abstract long getValue(State state, long param);
-    
+
     protected abstract long getWriteLocation(State state, long param);
-    
+
     private static long deref(DerefType derefType, State state, int paramIndex) {
       long param = state.getMem(state.instPtr + paramIndex);
       ParamMode paramMode =
@@ -243,7 +243,7 @@ final class IntCode extends QuietCapable {
           : paramMode.getWriteLocation(state, param);
     }
   }
-  
+
   private enum DerefType {
     Read,
     Write;
