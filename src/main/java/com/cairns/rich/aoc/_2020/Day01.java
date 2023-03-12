@@ -11,7 +11,7 @@ class Day01 extends Base2020 {
     System.out.println(findTwoExpenses(inputs));
     System.out.println(findThreeExpenses(inputs));
   }
-  
+
   private long findTwoExpenses(List<Integer> inputs) {
     Set<Long> seen = new HashSet<>();
     for (long input : inputs) {
@@ -24,7 +24,7 @@ class Day01 extends Base2020 {
     }
     throw fail();
   }
-  
+
   private long findThreeExpenses(List<Integer> inputs) {
     for (int i = 0; i < inputs.size(); ++i) {
       int iVal = inputs.get(i);

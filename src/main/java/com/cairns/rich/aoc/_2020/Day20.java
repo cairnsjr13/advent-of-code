@@ -1,5 +1,7 @@
 package com.cairns.rich.aoc._2020;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,10 +11,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
-// TODO: SOmething is broken in part 2
+// TODO: this could definitely be done better
+// TODO: There is something bizarre where part2 answer is wrong if we change the parsing?  something dependent on itr order
 class Day20 extends Base2020 {
   private static final int[][] monsterDeltaRowAndCols = {
       { 0, 0 },
@@ -29,19 +29,19 @@ class Day20 extends Base2020 {
       Day20::rotate,
       Day20::rotate
   );
-  
+
   @Override
   protected void run() {
-    List<String> lines = fullLoader.ml();
+    List<String> lines = fullLoader.ml(); // TODO: Candidate for gDelim
     Map<Long, Tile> tiles = parseTiles(lines);
     Set<Connection> cornerConnections = findCornerConnections(tiles);
     System.out.println(productOfCorners(cornerConnections));
-    
+
     boolean[][] picture = buildPicture(tiles, cornerConnections);
     int numMonsters = getNumMonsters(picture);
     System.out.println(countAll(picture) - numMonsters * monsterDeltaRowAndCols.length);
   }
-  
+
   private int getNumMonsters(boolean[][] picture) {
     List<Long> monsterHeadIndexes = findMonsterHeadIndexes(picture);
     for (int i = 0; monsterHeadIndexes.isEmpty(); ++i) {
@@ -50,7 +50,7 @@ class Day20 extends Base2020 {
     }
     return monsterHeadIndexes.size();
   }
-  
+
   private int countAll(boolean[][] picture) {
     int total = 0;
     for (int row = 0; row < picture.length; ++row) {
@@ -62,7 +62,7 @@ class Day20 extends Base2020 {
     }
     return total;
   }
-  
+
   private List<Long> findMonsterHeadIndexes(boolean[][] picture) {
     List<Long> monsterHeads = new ArrayList<>();
     for (int row = 0; row < picture.length - 2; ++row) {
@@ -74,7 +74,7 @@ class Day20 extends Base2020 {
     }
     return monsterHeads;
   }
-  
+
   private boolean doesMonsterStartHere(boolean[][] picture, int row, int col) {
     for (int[] monsterDeltaRowCol : monsterDeltaRowAndCols) {
       if (!picture[row + monsterDeltaRowCol[0]][col + monsterDeltaRowCol[1]]) {
@@ -83,7 +83,7 @@ class Day20 extends Base2020 {
     }
     return true;
   }
-  
+
   private boolean[][] buildPicture(
       Map<Long, Tile> tiles,
       Set<Connection> cornerConnections
@@ -96,7 +96,7 @@ class Day20 extends Base2020 {
       addRow(grid, tiles, findNextRowLeadConnection(grid, tiles));
     }
     orient(grid);
-    
+
     int pictureDim = dimension * (grid.get(0).get(0).tile.cells.length - 2);
     boolean[][] picture = new boolean[pictureDim][pictureDim];
     for (int gridRow = 0; gridRow < grid.size(); ++gridRow) {
@@ -111,7 +111,7 @@ class Day20 extends Base2020 {
     }
     return picture;
   }
-  
+
   private void orient(List<List<Connection>> grid) {
     for (int row = 0; row < grid.size(); ++row) {
       for (int col = 0; col < grid.get(row).size(); ++col) {
@@ -132,7 +132,7 @@ class Day20 extends Base2020 {
       }
     }
   }
-  
+
   private void addRow(
       List<List<Connection>> grid,
       Map<Long, Tile> tiles,
@@ -149,7 +149,7 @@ class Day20 extends Base2020 {
     }
     grid.add(row);
   }
-  
+
   private Connection findSecondRowLeadConnection(Map<Long, Tile> tiles, Connection cornerConnection) {
     int upperEdgeIndex = findIndexOfEdgeBorder(cornerConnection.tile, cornerConnection.connectedToPreviousByIndex);
     Connection downwardCornerConnection = new Connection(cornerConnection.tile, upperEdgeIndex);
@@ -159,7 +159,7 @@ class Day20 extends Base2020 {
         findIndexOfEdgeBorder(downwardConnectionSecondRowLead.tile, -1)
     );
   }
-  
+
   private Connection findNextRowLeadConnection(List<List<Connection>> grid, Map<Long, Tile> tiles) {
     Tile oneAbove = grid.get(grid.size() - 1).get(0).tile;
     Connection downwardConnection = new Connection(
@@ -172,7 +172,7 @@ class Day20 extends Base2020 {
         findIndexOfEdgeBorder(rowLeadDownwardConnection.tile, -1)
     );
   }
-  
+
   private int findIndexOfEdgeBorder(Tile tile, int avoidIndex) {
     for (int i = 0; i < 4; ++i) {
       if (i != avoidIndex) {
@@ -184,7 +184,7 @@ class Day20 extends Base2020 {
     }
     throw fail();
   }
-  
+
   private int findIndexOfSharedBorder(Tile left, Tile right) {
     for (int i = 0; i < 4; ++i) {
       String edge = left.borders.get(i).iterator().next();
@@ -196,7 +196,7 @@ class Day20 extends Base2020 {
     }
     throw fail(left + " - " + right);
   }
-  
+
   private Connection findConnection(Map<Long, Tile> tiles, Connection connectTo) {
     int connectingEdgeIndex = (connectTo.connectedToPreviousByIndex + 2) % 4;
     String connectingEdge = connectTo.tile.borders.get(connectingEdgeIndex).iterator().next();
@@ -211,15 +211,11 @@ class Day20 extends Base2020 {
     }
     return null;
   }
-  
+
   private long productOfCorners(Set<Connection> cornerConnections) {
-    long product = 1;
-    for (Connection cornerConnection : cornerConnections) {
-      product *= cornerConnection.tile.id;
-    }
-    return product;
+    return cornerConnections.stream().mapToLong((cc) -> cc.tile.id).reduce(1, Math::multiplyExact);
   }
-  
+
   private Set<Connection> findCornerConnections(Map<Long, Tile> tiles) {
     Set<Tile> cornerTiles = new HashSet<>();
     Set<Connection> cornerConnections = new HashSet<>();
@@ -239,7 +235,7 @@ class Day20 extends Base2020 {
     }
     return cornerConnections;
   }
-  
+
   private int findIndexOfEdge(Tile tile, String edge) {
     for (int i = 0; i < 4; ++i) {
       if (tile.borders.get(i).contains(edge)) {
@@ -248,7 +244,7 @@ class Day20 extends Base2020 {
     }
     throw new RuntimeException(edge + " !C " + tile.borders);
   }
-  
+
   private Map<Long, Tile> parseTiles(List<String> lines) {
     Map<Long, Tile> tilesById = new HashMap<>();
     while (!lines.isEmpty()) {
@@ -259,7 +255,7 @@ class Day20 extends Base2020 {
     }
     return tilesById;
   }
-  
+
   private static void rotate(boolean[][] grid) {
     boolean[][] save = new boolean[grid.length][grid[0].length];
     for (int i = 0; i < save.length; ++i) {
@@ -273,7 +269,7 @@ class Day20 extends Base2020 {
       }
     }
   }
-  
+
   private static void vertFlip(boolean[][] grid) {
     for (int col = 0; col < grid[0].length; ++col) {
       for (int row = 0; row < grid.length / 2; ++row) {
@@ -283,16 +279,16 @@ class Day20 extends Base2020 {
       }
     }
   }
-  
+
   private static class Connection {
     private final Tile tile;
     private final int connectedToPreviousByIndex;
-    
+
     private Connection(Tile tile, int connectedToPreviousByIndex) {
       this.tile = tile;
       this.connectedToPreviousByIndex = connectedToPreviousByIndex;
     }
-    
+
     @Override
     public String toString() {
       return "{"
@@ -301,15 +297,15 @@ class Day20 extends Base2020 {
            + "}";
     }
   }
-  
-  private static class Tile {
+
+  private static class Tile implements HasId<Long> {
     private static Multimap<String, Long> edgeToId = HashMultimap.create();
-    
+
     private final long id;
     private final List<String> rows;
     private final List<Set<String>> borders = new ArrayList<>();
     private final boolean[][] cells;
-    
+
     private Tile(List<String> lines) {
       this.id = parseId(lines.get(0));
       this.rows = lines.subList(1, lines.size());
@@ -320,23 +316,28 @@ class Day20 extends Base2020 {
       borders.stream().flatMap(Set::stream).forEach((border) -> edgeToId.put(border, id));
       this.cells = buildCells();
     }
-    
+
+    @Override
+    public Long getId() {
+      return id;
+    }
+
     private long parseId(String line) {
       return Long.parseLong(line.substring(line.indexOf(' ') + 1, line.length() - 1));
     }
-    
+
     private void addBorders(String border) {
       borders.add(Set.of(border, reverse(border)));
     }
-    
+
     private String column(int index) {
       return rows.stream().map((row) -> Character.toString(row.charAt(index))).collect(Collectors.joining());
     }
-    
+
     private String reverse(String line) {
       return (new StringBuilder(line)).reverse().toString();
     }
-    
+
     private boolean[][] buildCells() {
       boolean[][] cells = new boolean[10][10];
       for (int row = 0; row < rows.size(); ++row) {
@@ -346,7 +347,7 @@ class Day20 extends Base2020 {
       }
       return cells;
     }
-    
+
     private String rowToString(int index) {
       StringBuilder str = new StringBuilder();
       for (int col = 0; col < cells[index].length; ++col) {

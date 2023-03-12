@@ -17,7 +17,7 @@ class Day10 extends Base2020 {
     System.out.println(computeVoltageJumpProduct(adapters));
     System.out.println(computeNumWalks(adapters));
   }
-  
+
   private int computeVoltageJumpProduct(List<Integer> adapters) {
     int numOnes = 0;
     int numThrees = 0;
@@ -33,7 +33,7 @@ class Day10 extends Base2020 {
     }
     return numOnes * numThrees;
   }
-  
+
   private long computeNumWalks(List<Integer> adapters) {
     Map<Integer, Long> walkCache = new HashMap<>();
     List<Integer> jumps = IntStream.range(0, adapters.size() - 1)
@@ -47,7 +47,7 @@ class Day10 extends Base2020 {
     }
     return numWalks;
   }
-  
+
   private long computeWalksInRange(Map<Integer, Long> walkCache, int size) {
     if (size <= 2) {
       return (size > 0) ? 1 : 0;

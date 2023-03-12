@@ -13,7 +13,7 @@ class Day23 extends Base2020 {
     outputComplexGame("389125467", 10_000_000);
     outputComplexGame("685974213", 10_000_000);
   }
-  
+
   private void outputSimpleGame(String input, int numMoves) {
     Map<Integer, Node> lookup = runGame(input, numMoves, input.length());
     Node curCup = lookup.get(1);
@@ -23,14 +23,14 @@ class Day23 extends Base2020 {
     }
     System.out.println();
   }
-  
+
   private void outputComplexGame(String input, int numMoves) {
     Map<Integer, Node> lookup = runGame(input, numMoves, 1_000_000);
     Node curCup = lookup.get(1);
     long output = ((long) curCup.cw.label) * ((long) curCup.cw.cw.label);
     System.out.println(output);
   }
-  
+
   private Map<Integer, Node> runGame(String input, int numMoves, int padTo) {
     Map<Integer, Node> lookup = new HashMap<>();
     Node currentCup = build(input, lookup, padTo);
@@ -47,7 +47,7 @@ class Day23 extends Base2020 {
     }
     return lookup;
   }
-  
+
   private Node destinationCup(Map<Integer, Node> lookup, Node currentCup, Set<Node> nextCups) {
     while (true) {
       int destinationLabel = 1 + ((currentCup.label + (lookup.size() - 2)) % lookup.size());
@@ -57,7 +57,7 @@ class Day23 extends Base2020 {
       }
     }
   }
-  
+
   private Node build(String input, Map<Integer, Node> lookup, int padTo) {
     Node head = new Node(input, 0);
     Node tail = head;
@@ -75,15 +75,15 @@ class Day23 extends Base2020 {
     tail.cw = head;
     return head;
   }
-  
+
   private static class Node {
     private final int label;
     private Node cw;
-    
+
     private Node(int label) {
       this.label = label;
     }
-    
+
     private Node(String input, int index) {
       this(input.charAt(index) - '0');
     }
@@ -92,7 +92,7 @@ class Day23 extends Base2020 {
     public boolean equals(Object obj) {
       return label == ((Node) obj).label;
     }
-    
+
     @Override
     public int hashCode() {
       return label;

@@ -12,11 +12,11 @@ class Day03 extends Base2020 {
         countTrees(lines, 1, 5),
         countTrees(lines, 1, 7),
         countTrees(lines, 2, 1)
-    ); 
-    System.out.println(trees);
+    );
+    System.out.println(trees.get(1));
     System.out.println(trees.stream().reduce(1L, Math::multiplyExact));
   }
-  
+
   private long countTrees(List<String> inputs, int rowMove, int colMove) {
     int row = 0;
     int col = 0;

@@ -1,8 +1,7 @@
 package com.cairns.rich.aoc._2020;
 
-import java.util.List;
-
 import com.cairns.rich.aoc.grid.MutablePoint;
+import java.util.List;
 
 class Day12 extends Base2020 {
   @Override
@@ -11,19 +10,19 @@ class Day12 extends Base2020 {
     System.out.println(getManDistanceOfShipMovingInsts(insts));
     System.out.println(getManDistanceWithWaypointing(insts));
   }
-  
+
   private int getManDistanceOfShipMovingInsts(List<Inst> insts) {
     MutablePoint ship = new MutablePoint(0, 0);
     MutablePoint delta = new MutablePoint(1, 0);
     return getManDistance(insts, ship, ship, delta);
   }
-  
+
   private int getManDistanceWithWaypointing(List<Inst> insts) {
     MutablePoint ship = new MutablePoint(0, 0);
     MutablePoint way = new MutablePoint(10, 1);
     return getManDistance(insts, way, ship, way);
   }
-  
+
   private int getManDistance(
       List<Inst> insts,
       MutablePoint cardinal,
@@ -66,11 +65,11 @@ class Day12 extends Base2020 {
     }
     return Math.abs(forward.x()) + Math.abs(forward.y());
   }
-  
+
   private static class Inst {
     private final char dir;
     private final int mag;
-    
+
     private Inst(String spec) {
       this.dir = spec.charAt(0);
       this.mag = Integer.parseInt(spec.substring(1));

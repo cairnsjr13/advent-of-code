@@ -8,10 +8,14 @@ class Day18 extends Base2020 {
   @Override
   protected void run() {
     List<String> lines = fullLoader.ml();
-    System.out.println(lines.stream().mapToLong((line) -> eval(line, this::collapseWithoutPrecedence)).sum());
-    System.out.println(lines.stream().mapToLong((line) -> eval(line, this::collapseWithPrecedence)).sum());
+    System.out.println(getEvalSum(lines, this::collapseWithoutPrecedence));
+    System.out.println(getEvalSum(lines, this::collapseWithPrecedence));
   }
-  
+
+  private long getEvalSum(List<String> lines, ToLongFunction<List<Long>> collapse) {
+    return lines.stream().mapToLong((line) -> eval(line, collapse)).sum();
+  }
+
   private long eval(String line, ToLongFunction<List<Long>> collapse) {
     line = line.replaceAll(" +", "");
     List<Long> tokens = new ArrayList<>();
@@ -31,7 +35,7 @@ class Day18 extends Base2020 {
     }
     return collapse.applyAsLong(tokens);
   }
-  
+
   private long collapseWithoutPrecedence(List<Long> tokens) {
     long total = tokens.get(0);
     for (int i = 1; i < tokens.size(); i += 2) {
@@ -40,11 +44,11 @@ class Day18 extends Base2020 {
       total = (op == '+')
           ? total + operand
           : total * operand;
-          
+
     }
     return total;
   }
-  
+
   private long collapseWithPrecedence(List<Long> tokens) {
     while (tokens.size() > 1) {
       int indexOfPlus = tokens.indexOf(-((long) '+'));
@@ -62,7 +66,7 @@ class Day18 extends Base2020 {
     }
     return tokens.get(0);
   }
-      
+
   private int findClosing(String line, int openIndex) {
     int nest = 1;
     for (int i = openIndex + 1; true; ++i) {

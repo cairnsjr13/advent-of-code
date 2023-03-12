@@ -1,14 +1,13 @@
 package com.cairns.rich.aoc._2020;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 
 class Day19 extends Base2020 {
   @Override
@@ -17,17 +16,17 @@ class Day19 extends Base2020 {
     int indexOfBlank = lines.indexOf("");
     List<String> ruleLines = lines.subList(0, indexOfBlank);
     List<String> messages = lines.subList(indexOfBlank + 1, lines.size());
-    
+
     Map<Integer, Character> atomRules = new HashMap<>();
     Multimap<Integer, Rule> expansionRules = HashMultimap.create();
     parseRules(ruleLines, atomRules, expansionRules);
-    
+
     System.out.println(countMatches(atomRules, expansionRules, messages));
     expansionRules.put(8, new Rule(8, List.of(42, 8)));
     expansionRules.put(11, new Rule(11, List.of(42, 11, 31)));
     System.out.println(countMatches(atomRules, expansionRules, messages));
   }
-  
+
   private long countMatches(
       Map<Integer, Character> atomRules,
       Multimap<Integer, Rule> expansionRules,
@@ -35,16 +34,17 @@ class Day19 extends Base2020 {
   ) {
     Stack<Integer> remaining = new Stack<>();
     remaining.push(0);
-    return messages.stream().filter((message) -> match(atomRules, expansionRules, message, remaining)).count();
+    return messages.stream().filter((message) -> match(atomRules, expansionRules, message, 0, remaining)).count();
   }
-  
+
   private boolean match(
       Map<Integer, Character> atomRules,
       Multimap<Integer, Rule> expansionRules,
       String message,
+      int from,
       Stack<Integer> remaining
   ) {
-    if (message.length() == 0) {
+    if (from == message.length()) {
       return remaining.isEmpty();
     }
     else if (remaining.isEmpty()) {
@@ -54,14 +54,14 @@ class Day19 extends Base2020 {
     int nextRuleIndex = remaining.pop();
     try {
       if (atomRules.containsKey(nextRuleIndex)) {
-        return (message.charAt(0) == atomRules.get(nextRuleIndex))
-            && match(atomRules, expansionRules, message.substring(1), remaining);
+        return (message.charAt(from) == atomRules.get(nextRuleIndex))
+            && match(atomRules, expansionRules, message, from + 1, remaining);
       }
       else {
         for (Rule nextRule : expansionRules.get(nextRuleIndex)) {
           reversePush(nextRule, remaining);
           try {
-            if (match(atomRules, expansionRules, message, remaining)) {
+            if (match(atomRules, expansionRules, message, from, remaining)) {
               return true;
             }
           }
@@ -76,13 +76,13 @@ class Day19 extends Base2020 {
       remaining.push(nextRuleIndex);
     }
   }
-  
+
   private void reversePush(Rule rule, Stack<Integer> remaining) {
     for (int i = rule.subRules.size() - 1; i >= 0; --i) {
       remaining.push(rule.subRules.get(i));
     }
   }
-  
+
   private void popAll(Rule rule, Stack<Integer> remaining) {
     for (int i = 0; i < rule.subRules.size(); ++i) {
       int popped = remaining.pop();
@@ -91,7 +91,7 @@ class Day19 extends Base2020 {
       }
     }
   }
-  
+
   private void parseRules(
       List<String> lines,
       Map<Integer, Character> atomRules,
@@ -114,16 +114,16 @@ class Day19 extends Base2020 {
       }
     }
   }
-  
+
   private static class Rule {
     private final int index;
     private final List<Integer> subRules;
-    
+
     private Rule(int index, List<Integer> subRules) {
       this.index = index;
       this.subRules = subRules;
     }
-    
+
     @Override
     public String toString() {
       return "{" + index + "\t" + subRules + "}";

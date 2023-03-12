@@ -14,11 +14,11 @@ class Day13 extends Base2020 {
     System.out.println(getWaitTimesBus(earliest, busses));
     System.out.println(getContestTimestamp(busses));
   }
-  
+
   private double getWaitTimesBus(double earliest, String[] busses) {
     double min = Double.MAX_VALUE;
     int minBus = Integer.MAX_VALUE;
-    
+
     List<Integer> busIds = Arrays.stream(busses)
         .filter((i) -> !"x".equals(i)).map(Integer::parseInt)
         .collect(Collectors.toList());
@@ -31,7 +31,7 @@ class Day13 extends Base2020 {
     }
     return minBus * (min - earliest);
   }
-  
+
   private long getContestTimestamp(String[] consts) {
     List<Equation> eqs = new ArrayList<>();
     for (int i = 0; i < consts.length; ++i) {
@@ -54,11 +54,11 @@ class Day13 extends Base2020 {
     }
     return t;
   }
-  
+
   private static class Equation {
     private final long congruentTo;
     private final long mod;
-    
+
     private Equation(long congruentTO, long mod) {
       this.congruentTo = congruentTO;
       this.mod = mod;

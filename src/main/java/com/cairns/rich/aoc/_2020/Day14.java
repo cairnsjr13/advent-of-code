@@ -12,41 +12,39 @@ class Day14 extends Base2020 {
     System.out.println(runSimulation(1, insts));
     System.out.println(runSimulation(2, insts));
   }
-  
+
   private long runSimulation(int version, List<Inst> insts) {
     State state = new State(version);
-    for (Inst inst : insts) {
-      inst.apply(state);
-    }
+    insts.stream().forEach((inst) -> inst.apply(state));
     return state.memory.values().stream().mapToLong(Long::longValue).sum();
   }
-  
+
   private static class State {
     private final int version;
     private final List<String> masks = new ArrayList<>();
     private final Map<Long, Long> memory = new HashMap<>();
-    
+
     private State(int version) {
       this.version = version;
       this.masks.add("");
     }
   }
-  
+
   private interface Inst {
     void apply(State state);
-    
+
     private static Inst parse(String spec) {
       return (spec.startsWith("mask")) ? new MaskInst(spec) : new SetInst(spec);
     }
   }
-  
+
   private static class MaskInst implements Inst {
     private final String maskReset;
-    
+
     private MaskInst(String spec) {
       this.maskReset = spec.substring("mask = ".length());
     }
-    
+
     @Override
     public void apply(State state) {
       if (state.version == 1) {
@@ -57,7 +55,7 @@ class Day14 extends Base2020 {
         addMasksRec(state.masks, new StringBuilder(), 0);
       }
     }
-    
+
     private void addMasksRec(List<String> masks, StringBuilder built, int index) {
       if (index == 36) {
         masks.add(built.toString());
@@ -75,24 +73,24 @@ class Day14 extends Base2020 {
         }
       }
     }
-    
+
     private void recurse(List<String> masks, StringBuilder built, int index, char ch) {
       built.append(ch);
       addMasksRec(masks, built, index + 1);
       built.deleteCharAt(index);
     }
   }
-  
+
   private static class SetInst implements Inst {
     private final long addr;
     private final long value;
-    
+
     private SetInst(String spec) {
       String[] parts = spec.split(" = ");
       this.addr = Long.parseLong(parts[0].substring("mem[".length(), parts[0].length() - 1));
       this.value = Long.parseLong(parts[1]);
     }
-    
+
     @Override
     public void apply(State state) {
       if (state.version == 1) {
@@ -102,7 +100,7 @@ class Day14 extends Base2020 {
         state.masks.forEach((mask) -> state.memory.put(convert(mask, addr), value));
       }
     }
-    
+
     private long convert(String mask, long value) {
       long newValue = 0;
       for (int i = 0; i < 36; ++i) {

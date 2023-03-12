@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,15 +13,13 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.google.common.collect.Range;
-
 class Day16 extends Base2020 {
   @Override
   protected void run() {
-    List<String> lines = fullLoader.ml();
+    List<String> lines = fullLoader.ml(); // TODO: candidate for multiple group loader
     int indexOfFirstBlank = lines.indexOf("");
     List<Rule> rules = lines.subList(0, indexOfFirstBlank).stream().map(Rule::new).collect(Collectors.toList());
-    
+
     int indexOfLastBlank = lines.lastIndexOf("");
     int[] myTicket = parseTicketSpec(lines.get(indexOfLastBlank - 1));
     List<int[]> nearbyTickets = lines
@@ -30,9 +29,9 @@ class Day16 extends Base2020 {
         .collect(Collectors.toList());
 
     System.out.println(computeTotalErrorRate(rules, nearbyTickets));
-    System.out.println(hey(rules, myTicket, computeRuleAvailableByIndex(rules, nearbyTickets)));
+    System.out.println(computeDepartureFieldsProduct(rules, myTicket, computeRuleAvailableByIndex(rules, nearbyTickets)));
   }
-  
+
   private int computeTotalErrorRate(List<Rule> rules, List<int[]> nearbyTickets) {
     int totalErrorRate = 0;
     for (int[] nearbyTicket : nearbyTickets) {
@@ -43,8 +42,8 @@ class Day16 extends Base2020 {
     }
     return totalErrorRate;
   }
-  
-  private long hey(List<Rule> rules, int[] myTicket, List<Set<Integer>> rulesAvailableByIndex) {
+
+  private long computeDepartureFieldsProduct(List<Rule> rules, int[] myTicket, List<Set<Integer>> rulesAvailableByIndex) {
     Map<Rule, Integer> ruleIndexes = new HashMap<>();
     while (ruleIndexes.size() < rules.size()) {
       for (int i = 0; i < rulesAvailableByIndex.size(); ++i) {
@@ -56,13 +55,11 @@ class Day16 extends Base2020 {
         }
       }
     }
-    long product = 1;
-    for (int i = 0; i < 6; ++i) {
-      product *= myTicket[ruleIndexes.get(rules.get(i))];
-    }
-    return product;
+    return IntStream.range(0, 6)
+        .mapToLong((i) -> myTicket[ruleIndexes.get(rules.get(i))])
+        .reduce(1, Math::multiplyExact);
   }
-  
+
   private List<Set<Integer>> computeRuleAvailableByIndex(List<Rule> rules, List<int[]> nearbyTickets) {
     List<int[]> validTickets =
         nearbyTickets.stream().filter((fields) -> null == getErrorRate(rules, fields)).collect(Collectors.toList());
@@ -83,29 +80,29 @@ class Day16 extends Base2020 {
     }
     return rulesAvailableByIndex;
   }
-  
+
   private Integer getErrorRate(List<Rule> rules, int[] fields) {
     boolean hasError = false;
     int errorSum = 0;
     for (int field : fields) {
-      if (!rules.stream().anyMatch((rule) -> rule.matches(field))) {
+      if (rules.stream().noneMatch((rule) -> rule.matches(field))) {
         hasError = true;
         errorSum += field;
       }
     }
     return (hasError) ? errorSum : null;
   }
-  
+
   private int[] parseTicketSpec(String nearbyTicket) {
     return Arrays.stream(nearbyTicket.split(",")).mapToInt(Integer::parseInt).toArray();
   }
-  
+
   private static class Rule {
     private static final Pattern pattern = Pattern.compile("^([^:]+): (.+)$");
-    
+
     private final String name;
     private final List<Range<Integer>> ranges = new ArrayList<>();
-    
+
     private Rule(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.name = matcher.group(1);
@@ -117,12 +114,12 @@ class Day16 extends Base2020 {
         ));
       }
     }
-    
+
     @Override
     public String toString() {
       return name;
     }
-    
+
     private boolean matches(int value) {
       return ranges.stream().anyMatch((range) -> range.contains(value));
     }
