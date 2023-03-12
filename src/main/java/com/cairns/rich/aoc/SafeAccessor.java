@@ -13,7 +13,7 @@ public abstract class SafeAccessor extends QuietCapable {
   public static int safeGet(int[] arr, long unmodedIndex) {
     return arr[safeIndex(arr.length, unmodedIndex)];
   }
-  
+
   /**
    * Returns the element of the given long array at the appropriate circular indexed position.
    */
@@ -27,56 +27,70 @@ public abstract class SafeAccessor extends QuietCapable {
   public static boolean safeGet(boolean[] arr, long unmodedIndex) {
     return arr[safeIndex(arr.length, unmodedIndex)];
   }
-  
+
+  /**
+   * Returns the element of the given char array at the appropriate circular indexed position.
+   */
+  public static char safeGet(char[] arr, long unmodedIndex) {
+    return arr[safeIndex(arr.length, unmodedIndex)];
+  }
+
   /**
    * Returns the element of the given array at the appropriate circular indexed position.
    */
   public static <T> T safeGet(T[] arr, long unmodedIndex) {
     return arr[safeIndex(arr.length, unmodedIndex)];
   }
-  
+
   /**
    * Returns the element of the given list at the appropriate circular indexed position.
    */
   public static <T> T safeGet(List<T> list, long unmodedIndex) {
     return list.get(safeIndex(list.size(), unmodedIndex));
   }
-  
+
   /**
    * Sets the given element at the appropriate circular index of the given int array.
    */
   public static void safeSet(int[] arr, long unmodedIndex, int elem) {
     arr[safeIndex(arr.length, unmodedIndex)] = elem;
   }
-  
+
   /**
    * Sets the given element at the appropriate circular index of the given long array.
    */
   public static void safeSet(long[] arr, long unmodedIndex, long elem) {
     arr[safeIndex(arr.length, unmodedIndex)] = elem;
   }
-  
+
   /**
    * Sets the given element at the appropriate circular index of the given boolean array.
    */
   public static void safeSet(boolean[] arr, long unmodedIndex, boolean elem) {
     arr[safeIndex(arr.length, unmodedIndex)] = elem;
   }
-  
+
+  /**
+   * Sets the given element at the appropriate circular index of the given char array.
+   */
+  public static void safeSet(char[] arr, long unmodedIndex, char elem) {
+    arr[safeIndex(arr.length, unmodedIndex)] = elem;
+  }
+
   /**
    * Sets the given element at the appropriate circular index of the given array.
    */
   public static <T> void safeSet(T[] arr, long unmodedIndex, T elem) {
     arr[safeIndex(arr.length, unmodedIndex)] = elem;
   }
-  
+
   /**
    * Sets the given element at the appropriate circular index of the given list.
    */
   public static <T> void safeSet(List<T> list, long unmodedIndex, T elem) {
     list.set(safeIndex(list.size(), unmodedIndex), elem);
   }
-  
+
   /**
    * Computes the appropriate circular index position of an array/list of given size.
    */
