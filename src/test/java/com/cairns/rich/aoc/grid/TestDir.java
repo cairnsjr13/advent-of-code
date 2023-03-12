@@ -22,7 +22,7 @@ public class TestDir {
       SHexDir.class,
       UHexDir.class
   );
-  
+
   /**
    * This test ensures that each direction class has no conflicts in their Ids.
    */
@@ -30,7 +30,7 @@ public class TestDir {
   public void testHasId() {
     dirClasses.forEach((dirClass) -> TestUniqueness.test(dirClass.getEnumConstants(), HasId::getId));
   }
-  
+
   /**
    * This test ensures that each direction class has no conflicts in their ordinal values.
    */
@@ -38,7 +38,7 @@ public class TestDir {
   public void testOrdinal() {
     dirClasses.forEach((dirClass) -> TestUniqueness.test(dirClass.getEnumConstants(), Dir::ordinal));
   }
-  
+
   /**
    * This test ensures that turning left and turning right work as expected.
    */
@@ -46,7 +46,7 @@ public class TestDir {
   public void testTurnLeftTurnRight() {
     testTurns(dirClasses.stream(), Function.identity(), Dir::turnLeft, Dir::turnRight);
   }
-  
+
   /**
    * This test ensures that turning around for {@link EvenDir}s works as expected.
    */
@@ -59,7 +59,7 @@ public class TestDir {
         EvenDir::turnAround
     );
   }
-  
+
   /**
    * Helper method to ensure turning works for all of the given dirClasses.  Makes sure
    * that turning results in a different direction, but turning back results in the original direction.

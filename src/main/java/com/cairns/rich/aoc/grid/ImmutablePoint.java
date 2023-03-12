@@ -9,11 +9,11 @@ public class ImmutablePoint extends Point<ImmutablePoint> {
   public ImmutablePoint(Point<?> copy) {
     this(copy.x, copy.y);
   }
-  
+
   public ImmutablePoint(int x, int y) {
     super(x, y);
   }
-  
+
   @Override
   public final ImmutablePoint move(Dir<?, ?> dir, int magnitude) {
     return new ImmutablePoint(x + magnitude * dir.dx(), y + magnitude * dir.dy());
