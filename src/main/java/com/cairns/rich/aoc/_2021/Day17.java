@@ -1,17 +1,15 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.MutablePoint;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.MutablePoint;
-import com.cairns.rich.aoc.grid.Point;
-
-public class Day17 extends Base2021 {
+class Day17 extends Base2021 {
   @Override
   protected void run() {
     TargetArea targetArea = new TargetArea(fullLoader.sl());
-    
+
     int highestMaxHeight = 0;
     int numValidVelocities = 0;
     MutablePoint velocity = new MutablePoint(0, 0);
@@ -26,11 +24,11 @@ public class Day17 extends Base2021 {
         }
       }
     }
-    
+
     System.out.println(highestMaxHeight);
     System.out.println(numValidVelocities);
   }
-  
+
   private int findMaxHeight(TargetArea targetArea, MutablePoint velocity) {
     int maxHeight = 0;
     MutablePoint location = new MutablePoint(0, 0);
@@ -46,24 +44,24 @@ public class Day17 extends Base2021 {
     }
     return -1;
   }
-  
+
   private static class TargetArea {
     private static final Pattern pattern = Pattern.compile("^target area: x=(-?\\d+)\\.\\.(-?\\d+), y=(-?\\d+)\\.\\.(-?\\d+)$");
-    
+
     private final ImmutablePoint topLeft;
     private final ImmutablePoint bottomRight;
-    
+
     private TargetArea(String input) {
       Matcher matcher = matcher(pattern, input);
       this.topLeft = new ImmutablePoint(num(matcher, 1), num(matcher, 4));
       this.bottomRight = new ImmutablePoint(num(matcher, 2), num(matcher, 3));
     }
-    
-    private boolean isPast(Point<?> location) {
+
+    private boolean isPast(MutablePoint location) {
       return (bottomRight.x() < location.x()) || (location.y() < bottomRight.y());
     }
-    
-    private boolean contains(Point<?> location) {
+
+    private boolean contains(MutablePoint location) {
       return (topLeft.x() <= location.x()) && (location.x() <= bottomRight.x())
           && (bottomRight.y() <= location.y()) && (location.y() <= topLeft.y());
     }

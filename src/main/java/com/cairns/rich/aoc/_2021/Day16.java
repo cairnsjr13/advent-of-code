@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.LongBinaryOperator;
 
-public class Day16 extends Base2021 {
+class Day16 extends Base2021 {
   @Override
   protected void run() {
     BytePositioner input = new BytePositioner(fullLoader.sl());
@@ -13,22 +13,19 @@ public class Day16 extends Base2021 {
     System.out.println(rootPacket.sumOfAllVersions());
     System.out.println(rootPacket.getValue());
   }
-  
+
   private static Packet parsePacket(BytePositioner input) {
     int version = input.readValue(3);
     int typeId = input.readValue(3);
-    if (typeId == 4) {
-      return new LiteralPacket(version, input);
-    }
-    else {
-      return new OpPacket(version, typeId, input);
-    }
+    return (typeId == 4)
+        ? new LiteralPacket(version, input)
+        : new OpPacket(version, typeId, input);
   }
-  
+
   private static class BytePositioner {
     private final byte[] bytes;
     private int position = 0;
-    
+
     private BytePositioner(String input) {
       this.bytes = new byte[input.length() / 2];
       for (int i = 0; i < input.length(); i += 2) {
@@ -37,7 +34,7 @@ public class Day16 extends Base2021 {
         bytes[i / 2] = (byte) ((msb << 4) | (lsb << 0));
       }
     }
-    
+
     private int readValue(int numBits) {
       int value = 0;
       for (int i = 0; i < numBits; ++i, ++position) {
@@ -49,19 +46,19 @@ public class Day16 extends Base2021 {
       return value;
     }
   }
-  
+
   private static abstract class Packet {
     protected final int version;
-    
+
     protected Packet(int version) {
       this.version = version;
     }
-    
+
     protected abstract int sumOfAllVersions();
-    
+
     protected abstract long getValue();
   }
-  
+
   private static class OpPacket extends Packet {
     private static final Map<Integer, LongBinaryOperator> ops = Map.of(
         0, (l, r) -> l + r,
@@ -72,17 +69,17 @@ public class Day16 extends Base2021 {
         6, (l, r) -> (l < r) ? 1 : 0,
         7, (l ,r) -> (l == r) ? 1 : 0
     );
-    
+
     private final LongBinaryOperator op;
     private final List<Packet> packets = new ArrayList<>();
-    
+
     private OpPacket(int version, int typeId, BytePositioner input) {
       super(version);
       if (!ops.containsKey(typeId)) {
         throw fail("Unknown typeId op: " + typeId);
       }
       this.op = ops.get(typeId);
-      
+
       int lengthTypeId = input.readValue(1);
       if (lengthTypeId == 0) {
         int numBitsInSubPackets = input.readValue(15);
@@ -98,12 +95,12 @@ public class Day16 extends Base2021 {
         }
       }
     }
-    
+
     @Override
     protected int sumOfAllVersions() {
       return version + packets.stream().mapToInt(Packet::sumOfAllVersions).sum();
     }
-    
+
     @Override
     protected long getValue() {
       long value = packets.get(0).getValue();
@@ -113,10 +110,10 @@ public class Day16 extends Base2021 {
       return value;
     }
   }
-  
+
   private static class LiteralPacket extends Packet {
     private final long value;
-    
+
     private LiteralPacket(int version, BytePositioner input) {
       super(version);
       long value = 0;
@@ -126,12 +123,12 @@ public class Day16 extends Base2021 {
       }
       this.value = value;
     }
-    
+
     @Override
     protected int sumOfAllVersions() {
       return version;
     }
-    
+
     @Override
     protected long getValue() {
       return value;

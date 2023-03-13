@@ -8,9 +8,9 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Day21 extends Base2021 {
+class Day21 extends Base2021 {
   private static final Map<Integer, BigInteger> diceTotalToUniverseMultiplier = new HashMap<>();
-  
+
   static {
     diceTotalToUniverseMultiplier.put(3, BigInteger.ONE);         // (111)
     diceTotalToUniverseMultiplier.put(4, BigInteger.valueOf(3));  // (211), (121), (112)
@@ -20,7 +20,7 @@ public class Day21 extends Base2021 {
     diceTotalToUniverseMultiplier.put(8, BigInteger.valueOf(3));  // (211), (121), (112)
     diceTotalToUniverseMultiplier.put(9, BigInteger.ONE);         // (111)
   }
-  
+
   @Override
   protected void run() {
     List<String> inputs = fullLoader.ml();
@@ -28,7 +28,7 @@ public class Day21 extends Base2021 {
     System.out.println(deterministicGameResult(players.get()));
     System.out.println(diracGameHighestWins(players.get()));
   }
-  
+
   private long deterministicGameResult(List<Player> players) {
     DeterministicDice dice = new DeterministicDice();
     for (int playerIndex = 0; true; playerIndex = 1 - playerIndex) {
@@ -41,7 +41,7 @@ public class Day21 extends Base2021 {
       }
     }
   }
-  
+
   private BigInteger diracGameHighestWins(List<Player> players) {
     UniverseSummary[/* turn */][/* player1Position */][/* player2Position */][/* player1Score */][/* player2Score */] cache =
         new UniverseSummary[2][10][10][21][21];
@@ -49,14 +49,14 @@ public class Day21 extends Base2021 {
         getUniverseSummaryFrom(cache, 0, players.get(0).position0Based, players.get(1).position0Based, 0, 0);
     return fullGameSummary.player1Wins.max(fullGameSummary.player2Wins);
   }
-  
+
   private UniverseSummary getUniverseSummaryFrom(
       UniverseSummary[][][][][] cache,
-      final int playerTurn,
-      final int player1Position,
-      final int player2Position,
-      final int player1Score,
-      final int player2Score
+      int playerTurn,
+      int player1Position,
+      int player2Position,
+      int player1Score,
+      int player2Score
   ) {
     if (player1Score >= 21) {
       return UniverseSummary.player1Win;
@@ -89,11 +89,11 @@ public class Day21 extends Base2021 {
     }
     return cache[playerTurn][player1Position][player2Position][player1Score][player2Score];
   }
-  
+
   private static class DeterministicDice {
     private long numRolls = 0;
     private int nextValue0Based = 0;
-    
+
     private int roll() {
       ++numRolls;
       int value = nextValue0Based + 1;
@@ -101,35 +101,35 @@ public class Day21 extends Base2021 {
       return value;
     }
   }
-  
+
   private static class UniverseSummary {
     private static final UniverseSummary player1Win = new UniverseSummary(BigInteger.ONE, BigInteger.ZERO);
     private static final UniverseSummary player2Win = new UniverseSummary(BigInteger.ZERO, BigInteger.ONE);
-    
+
     private final BigInteger player1Wins;
     private final BigInteger player2Wins;
-    
+
     private UniverseSummary(BigInteger player1Wins, BigInteger player2Wins) {
       this.player1Wins = player1Wins;
       this.player2Wins = player2Wins;
     }
-    
+
     @Override
     public String toString() {
       return "(" + player1Wins + ", " + player2Wins + ")";
     }
   }
-  
+
   private static class Player {
     private static final Pattern pattern = Pattern.compile("^Player \\d starting position: (\\d)$");
-    
+
     private int position0Based;
     private long score = 0;
-    
+
     private Player(String line) {
       this.position0Based = num(matcher(pattern, line), 1) - 1;
     }
-    
+
     private void move(int spaces) {
       position0Based = (position0Based + spaces) % 10;
     }

@@ -1,56 +1,54 @@
 package com.cairns.rich.aoc._2021;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class Day23 extends Base2021 {
+class Day23 extends Base2021 {
   private static final Map<Character, Integer> typeToCost = Map.of('A', 1, 'B', 10, 'C', 100, 'D', 1000);
   private static final Set<ImmutablePoint> cantStop =
       IntStream.of(3, 5, 7, 9).mapToObj((x) -> new ImmutablePoint(x, 1)).collect(Collectors.toSet());
-  
+
   @Override
   protected void run() throws Throwable {
     Loader2 loader = fullLoader;
     System.out.println(findLeastCost(loader, 2));
     System.out.println(findLeastCost(loader, 4));
   }
-  
+
   private int findLeastCost(Loader2 loader, int numEachType) {
     Problem problem = new Problem(numEachType);
-    SortedMap<ImmutablePoint, Character> map = parse(loader, numEachType);
-    problem.pq.offer(new State(map, 0));
-    while (!problem.pq.isEmpty()) {
-      State current = problem.pq.poll();
-      if (current.map.equals(problem.allHome)) {
-        return current.costSoFar;
-      }
-      current.map.forEach((location, type) -> {
-        if (!isHome(problem, current.map, location, type)) {
-          tryAllMoves(problem, current.map, current.costSoFar, location, location, type);
-          problem.visited.clear();
+    return bfs(
+        new State(parse(loader, numEachType), 0),
+        (s) -> s.map.equals(problem.allHome),
+        (ss) -> ss.state.getWeight(),
+        (current, registrar) -> {
+          current.map.forEach((location, type) -> {
+            if (!isHome(problem, current.map, location, type)) {
+              tryAllMoves(registrar, problem, current.map, current.costSoFar, location, location, type);
+              problem.visited.clear();
+            }
+          });
         }
-      });
-    }
-    return -1;
+    ).get().state.costSoFar;
   }
-  
+
   private void tryAllMoves(
+      Consumer<State> registrar,
       Problem problem,
       SortedMap<ImmutablePoint, Character> map,
       int cost,
@@ -68,13 +66,13 @@ public class Day23 extends Base2021 {
         moveMap.remove(from);
         moveMap.put(to, type);
         if (canStop(problem, moveMap, origLocation, to, type) && problem.seenStates.add(serialize(moveMap))) {
-          problem.pq.add(new State(moveMap, newCost));
+          registrar.accept(new State(moveMap, newCost));
         }
-        tryAllMoves(problem, moveMap, newCost, origLocation, to, type);
+        tryAllMoves(registrar, problem, moveMap, newCost, origLocation, to, type);
       }
     });
   }
-  
+
   private boolean isHome(Problem problem, SortedMap<ImmutablePoint, Character> map, ImmutablePoint location, Character type) {
     if (location.x() != typeToX(type)) {
       return false;
@@ -86,7 +84,7 @@ public class Day23 extends Base2021 {
     }
     return true;
   }
-  
+
   private boolean canStop(
       Problem problem,
       SortedMap<ImmutablePoint, Character> map,
@@ -102,7 +100,7 @@ public class Day23 extends Base2021 {
     }
     return (to.y() == 1) || isHome(problem, map, to, type);
   }
-  
+
   /**
    * Serializes the given map into a short form "long" version.  This is to save space when tracking states we have
    * already seen.  The first set of bits are a bitmap indicating if there is an amphipods present or not.  After those
@@ -119,19 +117,18 @@ public class Day23 extends Base2021 {
     }
     return serialized;
   }
-  
+
   /**
    * Returns a unique index for each of the valid locations on the map.
    * The hallway locations occupy 0-10 (11 spots.
    * The home spaces occupy the indexes after those with y being most significant, and x being less significant.
    */
   private int locationToOffset(ImmutablePoint location) {
-    if (location.y() == 1) {
-      return location.x() - 1;  // 0 through 10 (total 11)
-    }
-    return 4 * location.y() + location.x() / 2 + 2;
+    return (location.y() == 1)
+        ? location.x() - 1    // 0 through 10 (total 11)
+        : 4 * location.y() + location.x() / 2 + 2;
   }
-  
+
   private SortedMap<ImmutablePoint, Character> parse(Loader2 loader, int numEachType) {
     List<String> inputs = loader.ml();
     BiFunction<Integer, Integer, Character> chAt = (y, x) -> inputs.get(y).charAt(x);
@@ -147,32 +144,30 @@ public class Day23 extends Base2021 {
     registerRow(map, lastY, chAt.apply(3, 3), chAt.apply(3, 5), chAt.apply(3, 7), chAt.apply(3, 9));
     return map;
   }
-  
+
   private void registerRow(SortedMap<ImmutablePoint, Character> map, int y, char... types) {
     for (int i = 0; i < types.length; ++i) {
       map.put(new ImmutablePoint(3 + 2 * i, y), types[i]);
     }
   }
-  
+
   private static int typeToX(char type) {
     return 3 + 2 * (type - 'A');
   }
-  
+
   private static class Problem {
     private final int numEachType;
-    private final PriorityQueue<State> pq;
     private final Map<Character, Multimap<ImmutablePoint, ImmutablePoint>> validMoves = new HashMap<>();
     private final Map<ImmutablePoint, Character> allHome = new HashMap<>();
     private final Set<Long> seenStates = new HashSet<>();
     private final Set<ImmutablePoint> visited = new HashSet<>();
-    
+
     private Problem(int numEachType) {
       this.numEachType = numEachType;
-      this.pq = new PriorityQueue<>(Comparator.comparing((state) -> state.getWeight()));
       initValidMoves();
       initAllHome();
     }
-    
+
     private void initValidMoves() {
       typeToCost.keySet().forEach((type) -> validMoves.put(type, HashMultimap.create()));
       validMoves.forEach((type, moves) -> moves.put(new ImmutablePoint(1, 1), new ImmutablePoint(2, 1)));
@@ -202,7 +197,7 @@ public class Day23 extends Base2021 {
         }
       });
     }
-    
+
     private void initAllHome() {
       typeToCost.keySet().forEach((type) -> {
         int x = typeToX(type);
@@ -212,16 +207,16 @@ public class Day23 extends Base2021 {
       });
     }
   }
-  
+
   private static class State {
     private final SortedMap<ImmutablePoint, Character> map;
     private final int costSoFar;
-    
+
     private State(SortedMap<ImmutablePoint, Character> map, int costSoFar) {
       this.map = map;
       this.costSoFar = costSoFar;
     }
-    
+
     /**
      * Returns the pq weight for this state.  Considers the existing cost to get to this state and the minimum required
      * cost to get to final state.  Technically this over counts the latter because not all amphipods need to get to the
@@ -230,7 +225,7 @@ public class Day23 extends Base2021 {
     private int getWeight() {
       return costSoFar + map.keySet().stream().mapToInt((location) -> minimumMoveCost(location, map.get(location))).sum();
     }
-    
+
     /**
      * Calculates the cost to directly move the type at the given location to the deepest home.
      */

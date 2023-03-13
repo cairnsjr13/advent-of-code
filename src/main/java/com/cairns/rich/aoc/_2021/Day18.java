@@ -5,14 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Day18 extends Base2021 {
+class Day18 extends Base2021 {
   @Override
   protected void run() {
     List<String> inputs = fullLoader.ml();
     System.out.println(getSumAllMagnitude(inputs));
     System.out.println(getMaxSumMagnitude(inputs));
   }
-  
+
   private long getSumAllMagnitude(List<String> inputs) {
     SnailfishNode accumulator = parse(inputs.get(0));
     for (int i = 1; i < inputs.size(); ++i) {
@@ -21,7 +21,7 @@ public class Day18 extends Base2021 {
     }
     return accumulator.magnitude();
   }
-  
+
   private long getMaxSumMagnitude(List<String> inputs) {
     long maxSumMagnitude = -1;
     for (int i = 0; i < inputs.size(); ++i) {
@@ -36,11 +36,11 @@ public class Day18 extends Base2021 {
     }
     return maxSumMagnitude;
   }
-  
+
   private SnailfishNode parse(String input) {
     return parse(null, input.chars().boxed().collect(Collectors.toList()).iterator());
   }
-  
+
   private SnailfishNode parse(PairNode parent, Iterator<Integer> chars) {
     char ch = (char) chars.next().intValue();
     if (ch == '[') {
@@ -57,20 +57,20 @@ public class Day18 extends Base2021 {
     }
     return new NumNode(parent, ch - '0');
   }
-  
+
   private static abstract class SnailfishNode {
     protected PairNode parent;
-    
+
     protected SnailfishNode(PairNode parent) {
       this.parent = parent;
     }
-    
+
     protected abstract boolean explode(int depth);
-    
+
     protected abstract boolean split();
-    
+
     protected abstract long magnitude();
-    
+
     protected void replaceInParent(SnailfishNode with) {
       for (int i = 0; i < parent.children.length; ++i) {
         if (parent.children[i] == this) {
@@ -84,11 +84,11 @@ public class Day18 extends Base2021 {
 
   private static class PairNode extends SnailfishNode {
     protected SnailfishNode[] children = new SnailfishNode[2];
-    
+
     private PairNode(PairNode parent) {
       super(parent);
     }
-    
+
     private PairNode(SnailfishNode left, SnailfishNode right) {
       super(null);
       children[0] = left;
@@ -96,12 +96,12 @@ public class Day18 extends Base2021 {
       left.parent = this;
       right.parent = this;
     }
-    
+
     @Override
     protected boolean explode(int depth) {
       return children[0].explode(depth + 1) || explodePair(depth) || children[1].explode(depth + 1);
     }
-    
+
     private boolean explodePair(int depth) {
       if (depth == 4) {
         addToNumNodeInDirection(0);
@@ -111,17 +111,17 @@ public class Day18 extends Base2021 {
       }
       return false;
     }
-    
+
     @Override
     protected boolean split() {
       return children[0].split() || children[1].split();
     }
-    
+
     @Override
     protected long magnitude() {
       return 3 * children[0].magnitude() + 2 * children[1].magnitude();
     }
-    
+
     private void addToNumNodeInDirection(int directionIndex) {
       PairNode from = this;
       while (from.parent.children[directionIndex] == from) {
@@ -137,20 +137,20 @@ public class Day18 extends Base2021 {
       ((NumNode) node).number += ((NumNode) children[directionIndex]).number;
     }
   }
-  
+
   private static class NumNode extends SnailfishNode {
     private int number;
-    
+
     private NumNode(PairNode parent, int number) {
       super(parent);
       this.number = number;
     }
-    
+
     @Override
     protected boolean explode(int depth) {
       return false;
     }
-    
+
     @Override
     protected boolean split() {
       if (number >= 10) {
@@ -162,7 +162,7 @@ public class Day18 extends Base2021 {
       }
       return false;
     }
-    
+
     @Override
     protected long magnitude() {
       return number;

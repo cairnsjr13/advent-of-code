@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-public class Day03 extends Base2021 {
+class Day03 extends Base2021 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<String> inputs = fullLoader.ml();
     System.out.println(partOne(inputs));
     System.out.println(partTwo(inputs));
   }
-  
+
   private int partOne(List<String> inputs) {
     int[][] counts = new int[inputs.get(0).length()][2];
     for (String input : inputs) {
@@ -19,7 +19,7 @@ public class Day03 extends Base2021 {
         ++counts[i][input.charAt(i) - '0'];
       }
     }
-    
+
     int gamma = 0;
     int epsilon = 0;
     for (int i = 0; i < counts.length; ++i) {
@@ -29,12 +29,12 @@ public class Day03 extends Base2021 {
     }
     return gamma * epsilon;
   }
-  
+
   private int partTwo(List<String> inputs) {
     return lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount > oneCount)
          * lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount <= oneCount);
   }
-  
+
   private int lifeSupportPiece(List<String> inputs, BiPredicate<Integer, Integer> useZero) {
     List<String> current = new ArrayList<>(inputs);
     for (int bitIndex = 0; current.size() > 1; ++bitIndex) {

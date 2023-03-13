@@ -9,20 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Day19 extends Base2021 {
+class Day19 extends Base2021 {
   private static final ToIntFunction<Beacon> toX = (b) -> b.x;
   private static final ToIntFunction<Beacon> toY = (b) -> b.y;
   private static final ToIntFunction<Beacon> toZ = (b) -> b.z;
   private static final ToIntFunction<Beacon> toNegX = (b) -> -b.x;
   private static final ToIntFunction<Beacon> toNegY = (b) -> -b.y;
-  
+
   private static final Transformation rotateAroundX = new Transformation(toX, toZ, toNegY);
   private static final Transformation rotateAroundY = new Transformation(toZ, toY, toNegX);
   private static final Transformation rotateAroundZ = new Transformation(toY, toNegX, toZ);
-  
+
   @Override
   protected void run() {
-    List<Scanner> scanners = parse(fullLoader.ml());
+    List<Scanner> scanners = fullLoader.gDelim("", Scanner::new);
     long mark = System.currentTimeMillis();
     baseScanners(scanners);
     System.out.println(countUniqueBeacons(scanners));
@@ -31,7 +31,7 @@ public class Day19 extends Base2021 {
     System.out.println(computeLargestManhattanDistance(scanners));
     System.out.println("\t" + (System.currentTimeMillis() - mark) + "ms");
   }
-  
+
   private void baseScanners(List<Scanner> scanners) {
     List<Scanner> basedScanners = new ArrayList<>();
     basedScanners.add(scanners.get(0));
@@ -40,7 +40,7 @@ public class Day19 extends Base2021 {
       tryToMatch(basedScanners, unbasedScanners);
     }
   }
-  
+
   private void tryToMatch(List<Scanner> basedScanners, List<Scanner> unbasedScanners) {
     for (Scanner basedScanner : basedScanners) {
       for (Scanner unbasedScanner : unbasedScanners) {
@@ -81,11 +81,11 @@ public class Day19 extends Base2021 {
       }
     }
   }
-  
+
   private int countUniqueBeacons(List<Scanner> scanners) {
     return scanners.stream().map((s) -> s.beacons).flatMap(Set::stream).collect(Collectors.toSet()).size();
   }
-  
+
   private int computeLargestManhattanDistance(List<Scanner> scanners) {
     int maxDist = 0;
     for (int i = 0; i < scanners.size(); ++i) {
@@ -95,7 +95,7 @@ public class Day19 extends Base2021 {
     }
     return maxDist;
   }
-  
+
   private boolean forEachRotation(Scanner scanner, BooleanSupplier action) {
     BooleanSupplier aroundAllY = () -> {
       for (int i = 0; i < 4; ++i) {
@@ -121,37 +121,17 @@ public class Day19 extends Base2021 {
     }
     return false;
   }
-  
-  private List<Scanner> parse(List<String> input) {
-    List<Scanner> scanners = new ArrayList<>();
-    while (input != null) {
-      List<String> toParse;
-      List<String> remaining;
-      int emptyLineIndex = input.indexOf("");
-      if (emptyLineIndex == -1) {
-        toParse = input;
-        remaining = null;
-      }
-      else {
-        toParse = input.subList(0, emptyLineIndex);
-        remaining = input.subList(emptyLineIndex + 1, input.size());
-      }
-      scanners.add(new Scanner(toParse.subList(1, toParse.size()).stream().map(Beacon::new).collect(Collectors.toSet())));
-      input = remaining;
-    }
-    return scanners;
-  }
-  
+
   private static class Scanner {
     private final Set<Beacon> beacons;
     private int dx;
     private int dy;
     private int dz;
-    
-    private Scanner(Set<Beacon> beacons) {
-      this.beacons = beacons;
+
+    private Scanner(List<String> lines) {
+      this.beacons = lines.subList(1, lines.size()).stream().map(Beacon::new).collect(Collectors.toSet());
     }
-    
+
     private void shift(int dx, int dy, int dz) {
       this.dx = dx;
       this.dy = dy;
@@ -161,44 +141,44 @@ public class Day19 extends Base2021 {
       beacons.clear();
       beaconsToRehash.forEach(beacons::add);
     }
-    
+
     private static int manhattanDist(Scanner first, Scanner second) {
       return Math.abs(first.dx - second.dx)
            + Math.abs(first.dy - second.dy)
            + Math.abs(first.dz - second.dz);
     }
   }
-  
+
   private static class Beacon {
     private static final Pattern pattern = Pattern.compile("^(-?\\d+),(-?\\d+),(-?\\d+)$");
-    
+
     private int x;
     private int y;
     private int z;
-    
+
     private Beacon(String input) {
       Matcher matcher = matcher(pattern, input);
       this.x = num(matcher, 1);
       this.y = num(matcher, 2);
       this.z = num(matcher, 3);
     }
-    
+
     private void apply(Transformation transformation) {
       int newX = transformation.xChange.applyAsInt(this);
       int newY = transformation.yChange.applyAsInt(this);
       int newZ = transformation.zChange.applyAsInt(this);
-      
+
       this.x = newX;
       this.y = newY;
       this.z = newZ;
     }
-    
+
     private void shift(int dx, int dy, int dz) {
       x += dx;
       y += dy;
       z += dz;
     }
-    
+
     @Override
     public boolean equals(Object other) {
       return (other instanceof Beacon)
@@ -206,18 +186,18 @@ public class Day19 extends Base2021 {
           && (y == ((Beacon) other).y)
           && (z == ((Beacon) other).z);
     }
-    
+
     @Override
     public int hashCode() {
       return Integer.hashCode(x + y + z);
     }
   }
-  
+
   private static class Transformation {
     private final ToIntFunction<Beacon> xChange;
     private final ToIntFunction<Beacon> yChange;
     private final ToIntFunction<Beacon> zChange;
-    
+
     private Transformation(ToIntFunction<Beacon> xChange, ToIntFunction<Beacon> yChange, ToIntFunction<Beacon> zChange) {
       this.xChange = xChange;
       this.yChange = yChange;

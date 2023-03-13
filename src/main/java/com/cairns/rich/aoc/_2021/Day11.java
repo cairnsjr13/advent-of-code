@@ -3,7 +3,7 @@ package com.cairns.rich.aoc._2021;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
-public class Day11 extends Base2021 {
+class Day11 extends Base2021 {
   @Override
   protected void run()  {
     int[][] grid = fullLoader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
@@ -15,7 +15,7 @@ public class Day11 extends Base2021 {
           grid[r][c] = grid[r][c] + 1;
         }
       }
-      
+
       Multimap<Integer, Integer> hasFlashed = HashMultimap.create();
       for (int r = 0; r < grid.length; ++r) {
         for (int c = 0; c < grid[0].length; ++c) {
@@ -24,10 +24,10 @@ public class Day11 extends Base2021 {
           }
         }
       }
-      
+
       hasFlashed.forEach((r, c) -> grid[r][c] = 0);
       totalFlashes += hasFlashed.size();
-      
+
       if (step == 100) {
         System.out.println(totalFlashes);
       }
@@ -37,7 +37,7 @@ public class Day11 extends Base2021 {
       }
     }
   }
-  
+
   private void flash(int[][] grid, int r, int c, Multimap<Integer, Integer> hasFlashed) {
     if (!hasFlashed.containsEntry(r, c)) {
       hasFlashed.put(r, c);

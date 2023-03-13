@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -8,24 +9,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Range;
-
-public class Day22 extends Base2021 {
+class Day22 extends Base2021 {
   private static final Range<Long> initRange = Range.closed(-50L, 50L);
   private static final Instruction initCuboid = new Instruction(false, initRange, initRange, initRange);
-  
+
   @Override
   protected void run() {
     List<Instruction> insts = fullLoader.ml(Instruction::new);
     System.out.println(countFinalOns(insts.stream().filter(initCuboid::isConnected).collect(Collectors.toList())));
     System.out.println(countFinalOns(insts));
   }
-  
+
   private long countFinalOns(List<Instruction> insts) {
     List<Instruction> finalList = new ArrayList<>();
     for (Instruction inst : insts) {
       List<Instruction> intersections =
-          finalList.stream().filter(inst::isConnected).map(inst::intersection).collect(Collectors.toList());      
+          finalList.stream().filter(inst::isConnected).map(inst::intersection).collect(Collectors.toList());
       if (inst.on) {
         finalList.add(inst);
       }
@@ -33,18 +32,18 @@ public class Day22 extends Base2021 {
     }
     return finalList.stream().mapToLong(Instruction::computeOnValue).sum();
   }
-  
+
   private static class Instruction {
     private static final Function<Character, String> rangePattern = (coord) -> coord + "=(-?\\d+)\\.\\.(-?\\d+)";
     private static final Pattern pattern = Pattern.compile(
         "^(on|off) " + rangePattern.apply('x') + "," + rangePattern.apply('y') + "," + rangePattern.apply('z') + "$"
     );
-    
+
     private final boolean on;
     private final Range<Long> xRange;
     private final Range<Long> yRange;
     private final Range<Long> zRange;
-    
+
     private Instruction(String input) {
       Matcher matcher = matcher(pattern, input);
       this.on = "on".equals(matcher.group(1));
@@ -53,20 +52,20 @@ public class Day22 extends Base2021 {
       this.yRange = toRange.apply(4);
       this.zRange = toRange.apply(6);
     }
-    
+
     private Instruction(boolean on, Range<Long> xRange, Range<Long> yRange, Range<Long> zRange) {
       this.on = on;
       this.xRange = xRange;
       this.yRange = yRange;
       this.zRange = zRange;
     }
-    
+
     private boolean isConnected(Instruction other) {
       return xRange.isConnected(other.xRange)
           && yRange.isConnected(other.yRange)
           && zRange.isConnected(other.zRange);
     }
-    
+
     private Instruction intersection(Instruction other) {
       return new Instruction(
           !other.on,
@@ -75,7 +74,7 @@ public class Day22 extends Base2021 {
           zRange.intersection(other.zRange)
       );
     }
-    
+
     private long computeOnValue() {
       return ((on) ? 1 : -1)
            * (xRange.upperEndpoint() - xRange.lowerEndpoint() + 1)
