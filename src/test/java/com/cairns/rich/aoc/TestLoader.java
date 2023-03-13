@@ -23,7 +23,7 @@ public class TestLoader {
     Assert.assertEquals(strExp, loader.ml());
     Assert.assertEquals(intExp, loader.ml(Integer::parseInt));
   }
-  
+
   /**
    * This test ensures the parsing and transforming for single line loading.
    */

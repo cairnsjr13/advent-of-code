@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class EnumUtils {
   private static final Map<Class<?>, Object[]> enumValuesCache = new HashMap<>();
-  
+
   /**
    * Acts as a replacement for Enum.values().  The issue with this method is that it returns a new
    * array every time, which can be a memory concern.  Using this method will cache the values array
@@ -21,7 +21,7 @@ public class EnumUtils {
     T[] values = (T[]) enumValuesCache.computeIfAbsent(type, (t) -> t.getEnumConstants());
     return values;
   }
-  
+
   /**
    * Generates a lookup table for the given class based on its Id.
    */

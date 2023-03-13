@@ -13,46 +13,46 @@ import java.util.stream.Collectors;
  */
 public class Loader2 extends QuietCapable {
   public final String file;
-  
+
   public Loader2(String file) {
     this.file = file;
   }
-  
+
   /**
    * Multi-line parser that returns each line verbatim.
    */
   public List<String> ml() {
     return ml(Function.identity());
   }
-  
+
   /**
    * Multi-line parser that transforms each line using the given map fn.
    */
   public <T> List<T> ml(Function<String, T> map) {
     return load(map);
   }
-  
+
   /**
    * Single line parser that returns the first line verbatim.
    */
   public String sl() {
     return ml().get(0);
   }
-  
+
   /**
    * Single line parser that splits the first line using the given regex and returns them verbatim.
    */
   public List<String> sl(String sepRegex) {
     return sl(sepRegex, Function.identity());
   }
-  
+
   /**
    * Single line parser that splits the first line using the given regex and transforms each using the given map fn.
    */
   public <T> List<T> sl(String sepRegex, Function<String, T> map) {
     return Arrays.stream(ml().get(0).split(sepRegex)).map(map).collect(Collectors.toList());
   }
-  
+
   /**
    * Grouped parser that consumes all lines of input using the given function until exhausted.
    */
@@ -64,11 +64,11 @@ public class Loader2 extends QuietCapable {
     }
     return groups;
   }
-  
+
   public List<List<String>> gDelim(String delim) {
     return gDelim(delim, Function.identity());
   }
-  
+
   public <T> List<T> gDelim(String delim, Function<List<String>, T> map) {
     return g((gpd) -> {
       List<String> group = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Loader2 extends QuietCapable {
       return map.apply(group);
     });
   }
-  
+
   /**
    * Helper method that reads the entire file, transforms each line using the given map fn, and returns them in a list.
    */
@@ -100,19 +100,19 @@ public class Loader2 extends QuietCapable {
       }
     });
   }
-  
+
   public static class GroupParserData {
     private final List<String> lines;
     private int position = 0;
-    
+
     private GroupParserData(List<String> lines) {
       this.lines = lines;
     }
-    
+
     public String peek() {
       return (lines.size() == position) ? null : lines.get(position);
     }
-    
+
     public String next() {
       return (lines.size() == position) ? null : lines.get(position++);
     }

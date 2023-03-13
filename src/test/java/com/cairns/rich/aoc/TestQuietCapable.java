@@ -20,12 +20,12 @@ public class TestQuietCapable {
   @Test
   public void testQuietlySuccess() {
     QuietCapable.quietly(() -> { });                                  // LoudRunnable test
-    
+
     String expectedValue = "This is an expected value.";
     String actualValue = QuietCapable.quietly(() -> expectedValue);   // LoudSupplier test
     Assert.assertEquals(expectedValue, actualValue);
   }
-  
+
   /**
    * This test ensures that both quietly methods allow exceptions to be thrown quietly.
    * Also tests that unchecked throwables are not wrapped.
@@ -36,13 +36,13 @@ public class TestQuietCapable {
     runFailureTest(QuietCapable::quietly, toRunnableAction, Error.class, Function.identity());
     runFailureTest(QuietCapable::quietly, toRunnableAction, IOException.class, Throwable::getCause);
     runFailureTest(QuietCapable::quietly, toRunnableAction, IllegalStateException.class, Function.identity());
-    
+
     Function<Throwable, LoudSupplier<String>> toSupplierAction = (t) -> () -> { throw t; };
     runFailureTest(QuietCapable::quietly, toSupplierAction, Error.class, Function.identity());
     runFailureTest(QuietCapable::quietly, toSupplierAction, IOException.class, Throwable::getCause);
     runFailureTest(QuietCapable::quietly, toSupplierAction, IllegalStateException.class, Function.identity());
   }
-  
+
   /**
    * Runs a test verifying that the given quietly method behaves properly when throwing the given throwable type.
    * The given toInspect method is used to determine where the expected thrown type should sit in the cause stack.

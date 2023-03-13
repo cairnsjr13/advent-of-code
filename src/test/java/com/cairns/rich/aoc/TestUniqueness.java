@@ -10,7 +10,7 @@ import org.junit.Assert;
  */
 public final class TestUniqueness {
   private TestUniqueness() { }
-  
+
   /**
    * This test ensures that the given array of objects have no collisions in their attributes acquired through
    * the given function.  Users of this test should include it in their test class and annotate it accordingly.

@@ -37,7 +37,7 @@ public abstract class QuietCapable {
       throw new RuntimeException(t);
     }
   }
-  
+
   /**
    * Functional interface that allows a {@link Runnable} to throw any {@link Throwable}s.
    */
@@ -50,7 +50,7 @@ public abstract class QuietCapable {
 
   /**
    * Functional interface that allows a {@link Supplier} to throw any {@link Throwable}s.
-   * 
+   *
    * Note: This will require primitives to be auto boxed/unboxed.
    *       It might be worth creating specialized versions, but doing that preemptively is a ton of code.
    */

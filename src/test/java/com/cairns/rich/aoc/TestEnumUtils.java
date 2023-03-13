@@ -7,7 +7,7 @@ import org.junit.Test;
 
 /**
  * Test class for {@link EnumUtils}.
- * 
+ *
  * @implNote There is no test for {@link EnumUtils#getLookup(Class)} because it
  *           is a pass-through to {@link Base#getLookup(java.util.Collection)}.
  */
@@ -22,7 +22,7 @@ public class TestEnumUtils {
     ReadDir[] readDirs0 = EnumUtils.enumValues(ReadDir.class);
     CardDir[] cardDirs2 = EnumUtils.enumValues(CardDir.class);
     ReadDir[] readDirs1 = EnumUtils.enumValues(ReadDir.class);
-    
+
     Assert.assertSame(cardDirs0, cardDirs1);
     Assert.assertSame(cardDirs0, cardDirs2);
     Assert.assertSame(readDirs0, readDirs1);

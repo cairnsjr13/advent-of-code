@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class Loader extends QuietCapable {
   private final String file;
-  
+
   Loader(String file) {
     this.file = file;
   }
@@ -24,35 +24,35 @@ public class Loader extends QuietCapable {
   public List<String> ml() {
     return ml(Function.identity());
   }
-  
+
   /**
    * Multi-line parser that transforms each line using the given map fn.
    */
   public <T> List<T> ml(Function<String, T> map) {
     return load(map);
   }
-  
+
   /**
    * Single line parser that returns the first line verbatim.
    */
   public String sl() {
     return ml().get(0);
   }
-  
+
   /**
    * Single line parser that splits the first line using the given regex and returns them verbatim.
    */
   public List<String> sl(String sepRegex) {
     return sl(sepRegex, Function.identity());
   }
-  
+
   /**
    * Single line parser that splits the first line using the given regex and transforms each using the given map fn.
    */
   public <T> List<T> sl(String sepRegex, Function<String, T> map) {
     return Arrays.stream(ml().get(0).split(sepRegex)).map(map).collect(Collectors.toList());
   }
-  
+
   /**
    * Helper method that reads the entire file, transforms each line using the given map fn, and returns them in a list.
    */
