@@ -58,7 +58,7 @@ class Day07 extends Base2019 {
     private long getThrust(List<Long> program, List<Long> order) {
       List<IO> ios = IntStream.range(0, numIos).mapToObj((i) -> new IO()).collect(Collectors.toList());
       List<State> states = IntStream.range(0, 5)
-          .mapToObj((i) -> IntCode.run(program, ios.get(i), ios.get((i + 1) % ios.size())))
+          .mapToObj((i) -> IntCode.run(program, ios.get(i), safeGet(ios, i + 1)))
           .collect(Collectors.toList());
       IntStream.range(0, order.size()).forEach((i) -> ios.get(i).put(order.get(i)));
       ios.get(0).put(0);

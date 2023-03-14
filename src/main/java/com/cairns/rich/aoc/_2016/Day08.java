@@ -52,7 +52,7 @@ class Day08 extends Base2016 {
       protected void apply(boolean[][] grid, int rowNum, int numCols) {
         boolean[] newLights = new boolean[grid[rowNum].length];
         for (int i = 0; i < newLights.length; ++i) {
-          newLights[i] = grid[rowNum][(i - numCols + newLights.length) % newLights.length];
+          newLights[i] = safeGet(grid[rowNum], i - numCols);
         }
         for (int i = 0; i < newLights.length; ++i) {
           grid[rowNum][i] = newLights[i];
@@ -64,7 +64,7 @@ class Day08 extends Base2016 {
       protected void apply(boolean[][] grid, int colNum, int numRows) {
         boolean[] newLights = new boolean[grid.length];
         for (int i = 0; i < newLights.length; ++i) {
-          newLights[i] = grid[(i - numRows + newLights.length) % newLights.length][colNum];
+          newLights[i] = safeGet(grid, i - numRows)[colNum];
         }
         for (int i = 0; i < newLights.length; ++i) {
           grid[i][colNum] = newLights[i];

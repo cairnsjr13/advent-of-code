@@ -49,8 +49,8 @@ class Day13 extends Base2015 {
   private Candidate computeScore(Table<String, String, Integer> impacts, List<String> order) {
     int score = 0;
     for (int i = 0; i < order.size(); ++i) {
-      score += impacts.get(order.get(i), order.get((i + 1) % order.size()));
-      score += impacts.get(order.get(i), order.get((i - 1 + order.size()) % order.size()));
+      score += impacts.get(order.get(i), safeGet(order, i + 1));
+      score += impacts.get(order.get(i), safeGet(order, i - 1));
     }
     return new Candidate(score, order);
   }
@@ -77,7 +77,7 @@ class Day13 extends Base2015 {
       Matcher matcher = matcher(pattern, spec);
       this.impacted = matcher.group(1);
       this.neighbor = matcher.group(4);
-      this.value = (("gain".equals(matcher.group(2))) ? 1 : -1) * Integer.parseInt(matcher.group(3));
+      this.value = (("gain".equals(matcher.group(2))) ? 1 : -1) * num(matcher, 3);
     }
   }
 }

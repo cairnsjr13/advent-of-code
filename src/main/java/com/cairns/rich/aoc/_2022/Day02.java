@@ -35,7 +35,7 @@ class Day02 extends Base2022 {
         'Z', 1
     );
     private static final BiFunction<Weapon, Character, Weapon> myselfAsOutcomeLookup =
-        (opponent, symbol) -> weapons[(opponent.ordinal() + myselfAsOutcomeShift.get(symbol)) % weapons.length];
+        (opponent, symbol) -> safeGet(weapons, opponent.ordinal() + myselfAsOutcomeShift.get(symbol));
     static {
       lookup.put('A', Weapon.Rock);
       lookup.put('B', Weapon.Paper);
