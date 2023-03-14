@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class Day20 extends Base2022 {  
+class Day20 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<Integer> input = fullLoader.ml(Integer::parseInt);
     System.out.println(solve(input, 1, 1));
     System.out.println(solve(input, 811_589_153, 10));
   }
-  
+
   private long solve(List<Integer> input, long factor, int loops) {
     List<Node> nodes = buildNodes(input.stream().map((n) -> n * factor).collect(Collectors.toList()));
     for (int loop = 0; loop < loops; ++loop) {
@@ -45,7 +45,7 @@ public class Day20 extends Base2022 {
     }
     return total;
   }
-  
+
   private List<Node> buildNodes(List<Long> nums) {
     List<Node> nodes = nums.stream().map(Node::new).collect(Collectors.toList());
     for (int i = 1; i < nodes.size(); ++i) {
@@ -58,12 +58,12 @@ public class Day20 extends Base2022 {
     first.prev.next = first;
     return nodes;
   }
-  
+
   private static class Node {
     private final long value;
     private Node prev;
     private Node next;
-    
+
     private Node(long value) {
       this.value = value;
     }

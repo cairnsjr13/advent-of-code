@@ -10,11 +10,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 // TODO: multi part group?
-public class Day05 extends Base2022 {
+class Day05 extends Base2022 {
   private static final Pattern movePattern = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<String> lines = fullLoader.ml();
     int emptyLine = lines.indexOf("");
     List<String> init = lines.subList(0, emptyLine);
@@ -22,7 +22,7 @@ public class Day05 extends Base2022 {
     System.out.println(calculateHeadOfStacksAfterMoves(ArrayDeque::pollFirst, init, moves));
     System.out.println(calculateHeadOfStacksAfterMoves(ArrayDeque::pollLast, init, moves));
   }
-  
+
   private String calculateHeadOfStacksAfterMoves(
       Function<ArrayDeque<Character>, Character> fromTemp,
       List<String> init,
@@ -35,7 +35,7 @@ public class Day05 extends Base2022 {
       int count = num(matcher, 1);
       Stack<Character> from = stacks.get(num(matcher, 2) - 1);
       Stack<Character> to = stacks.get(num(matcher, 3) - 1);
-      
+
       while (temp.size() < count) {
         temp.offerLast(from.pop());
       }
@@ -45,7 +45,7 @@ public class Day05 extends Base2022 {
     }
     return stacks.stream().map(Stack::peek).map(Object::toString).collect(Collectors.joining());
   }
-  
+
   private List<Stack<Character>> initStacks(List<String> init) {
     int numStacks = (init.get(0).length() + 1) / 4;
     List<Stack<Character>> stacks = new ArrayList<>();

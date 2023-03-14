@@ -8,24 +8,24 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Day02 extends Base2022 {
+class Day02 extends Base2022 {
   private static final Weapon[] weapons = Weapon.values();
   private static final int[] outcomeValues = { 3, 0, 6 };
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<Game> games = fullLoader.ml(Game::new);
     System.out.println(getTotalScore(games, (g) -> g.myselfAsWeapon));
     System.out.println(getTotalScore(games, (g) -> g.myselfAsOutcome));
   }
-  
+
   private int getTotalScore(List<Game> games, Function<Game, Weapon> toMyself) {
     return games.stream().mapToInt((g) -> {
       Weapon myself = toMyself.apply(g);
       return myself.score + myself.outcome(g.opponent);
     }).sum();
   }
-  
+
   private static class Game {
     private static final Pattern pattern = Pattern.compile("^([ABC]) ([XYZ])$");
     private static final Map<Character, Weapon> lookup = new HashMap<>();
@@ -44,11 +44,11 @@ public class Day02 extends Base2022 {
       lookup.put('Y', Weapon.Paper);
       lookup.put('Z', Weapon.Scissors);
     }
-    
+
     private final Weapon opponent;
     private final Weapon myselfAsWeapon;
     private final Weapon myselfAsOutcome;
-    
+
     private Game(String line) {
       Matcher matcher = matcher(pattern, line);
       this.opponent = lookup.get(matcher.group(1).charAt(0));
@@ -57,21 +57,20 @@ public class Day02 extends Base2022 {
       this.myselfAsOutcome = myselfAsOutcomeLookup.apply(opponent, myselfSymbol);
     }
   }
-  
+
   private enum Weapon {
     Rock(1),
     Paper(2),
     Scissors(3);
-    
+
     private final int score;
-    
+
     private Weapon(int score) {
       this.score = score;
     }
-    
+
     private int outcome(Weapon against) {
-      int index = ((against.ordinal() - ordinal()) + weapons.length) % weapons.length;
-      return outcomeValues[index];
+      return safeGet(outcomeValues, (against.ordinal() - ordinal()) + weapons.length);
     }
   }
 }

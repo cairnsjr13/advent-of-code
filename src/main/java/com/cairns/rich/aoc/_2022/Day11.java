@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.function.LongToIntFunction;
 import java.util.function.LongUnaryOperator;
 
-public class Day11 extends Base2022 {
+class Day11 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     System.out.println(getMonkeyBusiness(20, 3));
     System.out.println(getMonkeyBusiness(10_000, 1));
   }
-  
+
   private long getMonkeyBusiness(int numRounds, int relief) {
     List<Monkey> monkeys = fullLoader.gDelim("", Monkey::new);
-    long reduceMod = monkeys.stream().mapToLong((m) -> m.testFactor).reduce((l, r) -> l * r).getAsLong();
+    long reduceMod = monkeys.stream().mapToLong((m) -> m.testFactor).reduce(Math::multiplyExact).getAsLong();
     for (int round = 0; round < numRounds; ++round) {
       for (Monkey monkey : monkeys) {
         monkey.numInspects += monkey.held.size();
@@ -30,14 +30,14 @@ public class Day11 extends Base2022 {
     Collections.sort(monkeys, Comparator.comparingLong((m) -> -m.numInspects));
     return monkeys.get(0).numInspects * monkeys.get(1).numInspects;
   }
-  
+
   private static class Monkey {
     private final ArrayDeque<Long> held = new ArrayDeque<>();
     private final LongUnaryOperator inspectOp;
     private final long testFactor;
     private final LongToIntFunction throwFn;
     private long numInspects = 0;
-    
+
     private Monkey(List<String> lines) {
       Arrays.stream(lines.get(1).substring("  Starting items: ".length()).split(", +"))
           .mapToLong(Long::parseLong)

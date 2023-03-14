@@ -1,5 +1,9 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.MutablePoint;
+import com.cairns.rich.aoc.grid.Point;
+import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,21 +12,16 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.MutablePoint;
-import com.cairns.rich.aoc.grid.Point;
-import com.cairns.rich.aoc.grid.ReadDir;
-
-public class Day14 extends Base2022 {
+class Day14 extends Base2022 {
   private static final Supplier<MutablePoint> newSandCreator = () -> new MutablePoint(500, 0);
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<List<ImmutablePoint>> rockDescs = fullLoader.ml(this::parseRockDesc);
     System.out.println(countSand(rockDescs, 0, 2));
     System.out.println(countSand(rockDescs, 4, 2));
   }
-  
+
   private int countSand(List<List<ImmutablePoint>> rockDescs, int voidOffset, int floorOffset) {
     Set<Point<?>> scan = buildScan(rockDescs);
     int maxY = scan.stream().mapToInt(Point::y).max().getAsInt();
@@ -34,7 +33,7 @@ public class Day14 extends Base2022 {
     }
     return numSand;
   }
-  
+
   private boolean placeSand(Set<Point<?>> scan, int voidY, int floorY) {
     MutablePoint newSand = newSandCreator.get();
     if (scan.contains(newSand)) {
@@ -56,7 +55,7 @@ public class Day14 extends Base2022 {
     }
     return false;
   }
-  
+
   private Set<Point<?>> buildScan(List<List<ImmutablePoint>> rockDescs) {
     Set<Point<?>> scan = new HashSet<>();
     for (List<ImmutablePoint> rockDesc : rockDescs) {
@@ -66,7 +65,7 @@ public class Day14 extends Base2022 {
     }
     return scan;
   }
-  
+
   private void addAllRocks(Set<Point<?>> scan, ImmutablePoint start, ImmutablePoint end) {
     if ((start.x() > end.x()) || (start.y() > end.y())) {
       addAllRocks(scan, end, start);
@@ -79,7 +78,7 @@ public class Day14 extends Base2022 {
       scan.add(end);
     }
   }
-  
+
   private List<ImmutablePoint> parseRockDesc(String line) {
     return Arrays.stream(line.split(" -> ")).map((point) -> {
       int comma = point.indexOf(',');

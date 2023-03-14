@@ -2,19 +2,18 @@ package com.cairns.rich.aoc._2022;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.lang3.mutable.MutableInt;
 
-public class Day10 extends Base2022 {
+class Day10 extends Base2022 {
   private static final int interestOffset = 20;
   private static final int screenWidth = 40;
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<String[]> insts = fullLoader.ml((line) -> line.split(" +"));
     MutableInt interestingSum = new MutableInt();
     StringBuilder screen = new StringBuilder();
-    
+
     int x = 1;
     int cycle = 0;
     for (String[] inst : insts) {
@@ -29,11 +28,11 @@ public class Day10 extends Base2022 {
         throw fail(Arrays.toString(inst));
       }
     }
-    
+
     System.out.println(interestingSum);
     System.out.println(screen);
   }
-  
+
   private void handleCycle(MutableInt interestingSum, StringBuilder screen, int x, int cycle) {
     if ((cycle - interestOffset) % screenWidth == 0) {
       interestingSum.add(x * cycle);

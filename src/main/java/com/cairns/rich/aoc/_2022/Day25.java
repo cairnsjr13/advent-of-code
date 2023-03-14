@@ -1,14 +1,13 @@
 package com.cairns.rich.aoc._2022;
 
-import java.util.List;
-
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.List;
 
-public class Day25 extends Base2022 {
+class Day25 extends Base2022 {
   private static final List<Character> digits = List.of('=', '-', '0', '1', '2');
   private static final Table<Character, Character, AddResult> lookup = HashBasedTable.create();
-  
+
   static {
     digits.forEach((left) -> registerAddResult(left, '0', new AddResult('0', left)));
     registerAddResult('=', '=', new AddResult('-', '1'));
@@ -22,14 +21,14 @@ public class Day25 extends Base2022 {
     registerAddResult('1', '2', new AddResult('1', '='));
     registerAddResult('2', '2', new AddResult('1', '-'));
   }
-  
+
   private static void registerAddResult(char left, char right, AddResult result) {
     lookup.put(left, right, result);
     lookup.put(right, left, result);
   }
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<String> inputs = fullLoader.ml();
     String total = "";
     for (String input : inputs) {
@@ -37,7 +36,7 @@ public class Day25 extends Base2022 {
     }
     System.out.println(total);
   }
-  
+
   private String add(String left, String right) {
     StringBuilder str = new StringBuilder();
     int maxLength = Math.max(left.length(), right.length());
@@ -54,17 +53,17 @@ public class Day25 extends Base2022 {
     }
     return str.reverse().toString();
   }
-  
+
   private char at(String var, int index) {
     return (index < var.length())
         ? var.charAt(var.length() - index - 1)
         : '0';
   }
-  
+
   private static final class AddResult {
     private final char carry;
     private final char primary;
-    
+
     private AddResult(char carry, char primary) {
       this.carry = carry;
       this.primary = primary;

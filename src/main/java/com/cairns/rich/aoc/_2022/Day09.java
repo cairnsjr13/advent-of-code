@@ -1,5 +1,8 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.grid.ImmutablePoint;
+import com.cairns.rich.aoc.grid.RelDir;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -7,18 +10,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.grid.ImmutablePoint;
-import com.cairns.rich.aoc.grid.RelDir;
-
-public class Day09 extends Base2022 {
+class Day09 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<Inst> insts = fullLoader.ml(Inst::new);
     System.out.println(numTailVists(insts, 2));
     System.out.println(numTailVists(insts, 10));
   }
-  
+
   private int numTailVists(List<Inst> insts, int numKnots) {
     Set<ImmutablePoint> tailVisited = new HashSet<>();
     List<ImmutablePoint> knots =
@@ -35,33 +34,27 @@ public class Day09 extends Base2022 {
     }
     return tailVisited.size();
   }
-  
+
   private ImmutablePoint drag(ImmutablePoint leader, ImmutablePoint follower) {
     int dx = follower.x() - leader.x();
     int dy = follower.y() - leader.y();
     if (1 < Math.max(Math.abs(dx), Math.abs(dy))) {
-      if (dx < 0) {
-        follower = follower.move(RelDir.Right);
+      if (dx != 0) {
+        follower = follower.move((dx < 0) ? RelDir.Right : RelDir.Left);
       }
-      else if (dx > 0) {
-        follower = follower.move(RelDir.Left);
-      }
-      if (dy < 0) {
-        follower = follower.move(RelDir.Up);
-      }
-      else if (dy > 0) {
-        follower = follower.move(RelDir.Down);
+      if (dy != 0) {
+        follower = follower.move((dy < 0) ? RelDir.Up : RelDir.Down);
       }
     }
     return follower;
   }
-  
+
   private static class Inst {
     private static final Map<Character, RelDir> dirLookup = EnumUtils.getLookup(RelDir.class);
-    
+
     private final RelDir dir;
     private final int magnitude;
-    
+
     private Inst(String line) {
       this.dir = dirLookup.get(line.charAt(0));
       this.magnitude = Integer.parseInt(line.substring(2));

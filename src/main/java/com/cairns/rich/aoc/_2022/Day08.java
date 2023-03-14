@@ -1,23 +1,22 @@
 package com.cairns.rich.aoc._2022;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-public class Day08 extends Base2022 {
+class Day08 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<String> lines = fullLoader.ml();
     System.out.println(findVisibleTrees(lines));
     System.out.println(findMaxScenicScore(lines));
   }
-  
+
   private int findVisibleTrees(List<String> lines) {
     Table<ImmutablePoint, ReadDir, ReadDir> walks = buildWalks(lines);
     Set<ImmutablePoint> visible = new HashSet<>();
@@ -28,7 +27,7 @@ public class Day08 extends Base2022 {
     }));
     return visible.size();
   }
-  
+
   private Table<ImmutablePoint, ReadDir, ReadDir> buildWalks(List<String> lines) {
     ImmutablePoint topLeft = new ImmutablePoint(0, 0);
     ImmutablePoint bottomRight = new ImmutablePoint(lines.get(0).length() - 1, lines.size() - 1);
@@ -39,7 +38,7 @@ public class Day08 extends Base2022 {
     walks.put(bottomRight, ReadDir.Left, ReadDir.Up);
     return walks;
   }
-  
+
   private void viewAllTreesFrom(Set<ImmutablePoint> visible, List<String> lines, ImmutablePoint start, ReadDir look) {
     int maxHeight = -1;
     for (ImmutablePoint current = start; inBounds(lines, current) && (maxHeight < 9); current = current.move(look)) {
@@ -50,7 +49,7 @@ public class Day08 extends Base2022 {
       }
     }
   }
-  
+
   private int findMaxScenicScore(List<String> lines) {
     int maxScenicScore = 0;
     for (ImmutablePoint start = new ImmutablePoint(0, 0); inBounds(lines, start); start = start.move(ReadDir.Down)) {
@@ -60,7 +59,7 @@ public class Day08 extends Base2022 {
     }
     return maxScenicScore;
   }
-  
+
   private int findScenicScore(List<String> lines, ImmutablePoint from) {
     int target = height(lines, from);
     int scenicScore = 1;
@@ -79,12 +78,12 @@ public class Day08 extends Base2022 {
     }
     return scenicScore;
   }
-  
+
   private boolean inBounds(List<String> lines, ImmutablePoint point) {
     return (0 <= point.x()) && (point.x() < lines.get(0).length())
         && (0 <= point.y()) && (point.y() < lines.size());
   }
-  
+
   private int height(List<String> lines, ImmutablePoint from) {
     return lines.get(from.y()).charAt(from.x()) - '0';
   }

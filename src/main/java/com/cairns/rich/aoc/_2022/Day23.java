@@ -1,43 +1,41 @@
 package com.cairns.rich.aoc._2022;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class Day23 extends Base2022 {
+class Day23 extends Base2022 {
   private static final CardDir[] dirs = { CardDir.North, CardDir.South, CardDir.West, CardDir.East };
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<Elf> elves = parse(fullLoader.ml());
-    long mark = System.currentTimeMillis();
     Set<Point<?>> map = elves.stream().map((e) -> e.location).collect(Collectors.toSet());
     for (int round = 0; true; ++round) {
       if (round == 10) {
-        System.out.println(numEmptyTiles(map) + " - " + ((System.currentTimeMillis() - mark) + "ms"));
+        System.out.println(numEmptyTiles(map));
       }
       computeProposals(elves, map, round);
       if (!tryMovesHadAnyMoves(elves, map)) {
-        System.out.println((round + 1) + " - " + ((System.currentTimeMillis() - mark) + "ms"));
+        System.out.println((round + 1));
         break;
       }
     }
   }
-  
+
   private void computeProposals(List<Elf> elves, Set<Point<?>> map, int round) {
     for (Elf elf : elves) {
       elf.proposal = elf.location;
       if (needsToMove(elf, map)) {
         for (int d = 0; d < dirs.length; ++d) {
-          CardDir dir = dirs[(round + d) % dirs.length];
+          CardDir dir = safeGet(dirs, round + d);
           if (isDirClear(elf, map, dir)) {
             elf.proposal = elf.location.move(dir);
             break;
@@ -46,7 +44,7 @@ public class Day23 extends Base2022 {
       }
     }
   }
-  
+
   private boolean tryMovesHadAnyMoves(List<Elf> elves, Set<Point<?>> map) {
     boolean hadMoves = false;
     Multiset<ImmutablePoint> proposals = HashMultiset.create();
@@ -63,7 +61,7 @@ public class Day23 extends Base2022 {
     }
     return hadMoves;
   }
-  
+
   private boolean needsToMove(Elf elf, Set<Point<?>> map) {
     MutablePoint test = new MutablePoint(0, 0);
     for (int dx = -1; dx <= 1; ++dx) {
@@ -79,7 +77,7 @@ public class Day23 extends Base2022 {
     }
     return false;
   }
-  
+
   private boolean isDirClear(Elf elf, Set<Point<?>> map, CardDir dir) {
     MutablePoint test = new MutablePoint(elf.location.move(dir));
     if (map.contains(test)) {
@@ -95,7 +93,7 @@ public class Day23 extends Base2022 {
     }
     return true;
   }
-  
+
   private int numEmptyTiles(Set<Point<?>> map) {
     int minX = getMin(map, Point::x).x();
     int maxX = getMax(map, Point::x).x();
@@ -103,7 +101,7 @@ public class Day23 extends Base2022 {
     int maxY = getMax(map, Point::y).y();
     return ((maxX - minX + 1) * (maxY - minY + 1)) - map.size();
   }
-  
+
   private List<Elf> parse(List<String> lines) {
     List<Elf> elves = new ArrayList<>();
     for (int y = 0; y < lines.size(); ++y) {
@@ -116,11 +114,11 @@ public class Day23 extends Base2022 {
     }
     return elves;
   }
-  
+
   private static class Elf {
     private ImmutablePoint location;
     private ImmutablePoint proposal;
-    
+
     private Elf(int x, int y) {
       this.location = new ImmutablePoint(x, y);
     }

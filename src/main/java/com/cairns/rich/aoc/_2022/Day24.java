@@ -1,17 +1,16 @@
 package com.cairns.rich.aoc._2022;
 
-import java.util.List;
-import java.util.Map;
-
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.List;
+import java.util.Map;
 
-public class Day24 extends Base2022 {
+class Day24 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     Init init = new Init(fullLoader.ml());
     long mark = System.currentTimeMillis();
     int there = minTimeNeeded(init, init.start, init.end, 0);
@@ -21,9 +20,9 @@ public class Day24 extends Base2022 {
     System.out.println(finish);
     System.out.println((System.currentTimeMillis() - mark) + "ms");
   }
-  
+
   private int minTimeNeeded(Init init, ImmutablePoint from, ImmutablePoint to, int startingTime) {
-    return (int) bfs(
+    return bfs(
         new State(startingTime, from),
         (s) -> to.equals(s.location),
         (ss) -> ss.getNumSteps() + manDist(ss.state.location, to),
@@ -44,7 +43,7 @@ public class Day24 extends Base2022 {
   private int manDist(ImmutablePoint from, ImmutablePoint to) {
     return Math.abs(from.x() - to.x()) + Math.abs(from.y() - to.y());
   }
-  
+
   private boolean canMove(Init init, ImmutablePoint proposed, int steps) {
     if (init.end.equals(proposed) || init.start.equals(proposed)) {
       return true;
@@ -61,38 +60,38 @@ public class Day24 extends Base2022 {
     }
     return true;
   }
-  
+
   private static class State {
     private final int numSteps;
     private final ImmutablePoint location;
-    
+
     private State(int numSteps, ImmutablePoint location) {
       this.numSteps = numSteps;
       this.location = location;
     }
-    
+
     @Override
     public boolean equals(Object other) {
       return (numSteps == ((State) other).numSteps)
           && location.equals(((State) other).location);
     }
-    
+
     @Override
     public int hashCode() {
       return (location.hashCode() * 0b11_1111_1111) + numSteps;
     }
   }
-  
+
   private static class Init {
     private static final Map<Character, ReadDir> dirLookup =
         Map.of('>', ReadDir.Right, '<', ReadDir.Left, 'v', ReadDir.Down, '^', ReadDir.Up);
-    
+
     private final int maxX;
     private final int maxY;
     private final ImmutablePoint start;
     private final ImmutablePoint end;
     private final Table<Integer, Integer, ReadDir> blizzardStarts = HashBasedTable.create();
-    
+
     private Init(List<String> lines) {
       this.maxX = lines.get(0).length() - 2;
       this.maxY = lines.size() - 2;

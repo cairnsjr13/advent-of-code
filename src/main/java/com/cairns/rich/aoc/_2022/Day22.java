@@ -1,12 +1,5 @@
 package com.cairns.rich.aoc._2022;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
@@ -14,37 +7,42 @@ import com.cairns.rich.aoc.grid.Point;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import org.apache.commons.lang3.tuple.Pair;
 
-public class Day22 extends Base2022 {
+class Day22 extends Base2022 {
   private static final Map<ReadDir, Integer> facingValue = Map.of(
       ReadDir.Right, 0,
       ReadDir.Down, 1,
       ReadDir.Left, 2,
       ReadDir.Up, 3
   );
-  
+
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     System.out.println("Test");
     solve(testLoader, this::wirePart2Test);
     System.out.println("\nFull");
     solve(fullLoader, this::wirePart2Full);
   }
-  
+
   private void solve(Loader2 loader, Consumer<Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>>> wirePart2) {
     List<String> input = loader.ml();
     char[][] map = buildMap(input.subList(0, input.size() - 2));
     String movements = input.get(input.size() - 1);
-    
+
     Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> part1Graph = buildGraph(map);
     wirePart1(part1Graph, map);
     System.out.println(getPassword(map, part1Graph, movements));
-    
+
     Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> part2Graph = buildGraph(map);
     wirePart2.accept(part2Graph);
     System.out.println(getPassword(map, part2Graph, movements));
   }
-  
+
   private int getPassword(char[][] map, Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph, String movements) {
     int x = 0;
     while (map[0][x] == ' ') {
@@ -83,7 +81,7 @@ public class Day22 extends Base2022 {
          +    4 * (current.x() + 1)
          +    1 * facingValue.get(facing);
   }
-  
+
   private int nextTurnIndex(String movements, int i) {
     int ofL = movements.indexOf('L', i);
     int ofR = movements.indexOf('R', i);
@@ -91,14 +89,14 @@ public class Day22 extends Base2022 {
     ofR = (ofR == -1) ? movements.length() : ofR;
     return Math.min(ofL, ofR);
   }
-  
+
   private static char spot(char[][] map, Point<?> location) {
     return (   (location.y() < 0) || (map.length - 1 < location.y())
             || (location.x() < 0) || (map[0].length - 1 < location.x()))
         ? ' '
         : map[location.y()][location.x()];
   }
-  
+
   private char[][] buildMap(List<String> mapInput) {
     char[][] map = new char[mapInput.size()][getMax(mapInput, String::length).length()];
     Arrays.stream(map).forEach((r) -> Arrays.fill(r, ' '));
@@ -110,7 +108,7 @@ public class Day22 extends Base2022 {
     }
     return map;
   }
-  
+
   private Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> buildGraph(char[][] map) {
     Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph = HashBasedTable.create();
     for (int y = 0; y < map.length; ++y) {
@@ -128,7 +126,7 @@ public class Day22 extends Base2022 {
     }
     return graph;
   }
-  
+
   private void wirePart1(Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph, char[][] map) {
     for (int y = 0; y < map.length; ++y) {
       int minX = 0;
@@ -153,7 +151,16 @@ public class Day22 extends Base2022 {
       part1Wire(graph, x, minY, ReadDir.Up, x, maxY);
     }
   }
-  
+
+  private void part1Wire(
+      Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph,
+      int fromX, int fromY,
+      ReadDir dir,
+      int toX, int toY
+  ) {
+    wire(graph, fromX, fromY, dir, toX, toY, dir);
+  }
+
   private void wirePart2Test(Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph) {
     for (int i = 0; i < 4; ++i) {
       wire(graph,  0 + i,     7, ReadDir.Down, 11 - i,     11, ReadDir.Up);
@@ -165,7 +172,7 @@ public class Day22 extends Base2022 {
       wire(graph,     11, i + 0, ReadDir.Right,    15, 11 - i, ReadDir.Left);
     }
   }
-  
+
   private void wirePart2Full(Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph) {
     for (int i = 0; i < 50; ++i) {
       wire(graph,     0, 149 - i, ReadDir.Left,       50, 0 + i, ReadDir.Right);
@@ -177,16 +184,7 @@ public class Day22 extends Base2022 {
       wire(graph, 0 + i,     199, ReadDir.Down,  100 + i,     0, ReadDir.Down);
     }
   }
-  
-  private void part1Wire(
-      Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph,
-      int fromX, int fromY,
-      ReadDir dir,
-      int toX, int toY
-  ) {
-    wire(graph, fromX, fromY, dir, toX, toY, dir);
-  }
-  
+
   private void wire(
       Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph,
       int fromX, int fromY,

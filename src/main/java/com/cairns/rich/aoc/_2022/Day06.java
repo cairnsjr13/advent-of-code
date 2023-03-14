@@ -3,14 +3,14 @@ package com.cairns.rich.aoc._2022;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-public class Day06 extends Base2022 {
+class Day06 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     String input = fullLoader.sl();
     System.out.println(lastIndexOfUniqueWindow(input, 4));
     System.out.println(lastIndexOfUniqueWindow(input, 14));
   }
-  
+
   private int lastIndexOfUniqueWindow(String input, int windowSize) {
     Multiset<Character> window = HashMultiset.create();
     input.substring(0, windowSize).chars().forEach((ch) -> window.add((char) ch));

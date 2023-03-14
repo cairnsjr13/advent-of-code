@@ -4,18 +4,15 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class Day21 extends Base2022 {
+class Day21 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
-    Map<String, Monkey> lookup =
-        fullLoader.ml(Monkey::parse).stream().collect(Collectors.toMap((m) -> m.id, Function.identity()));
+  protected void run() {
+    Map<String, Monkey> lookup = getLookup(fullLoader.ml(Monkey::parse));
     System.out.println(lookup.get("root").simplify(lookup).getValue(lookup));
     System.out.println(solveEquality(lookup));
   }
-  
+
   private BigInteger solveEquality(Map<String, Monkey> lookup) {
     OpMonkey root = (OpMonkey) lookup.get("root");
     BigInteger value;
@@ -28,7 +25,7 @@ public class Day21 extends Base2022 {
       value = lookup.get(root.right).getValue(lookup);
       current = lookup.get(root.left);
     }
-    
+
     while (current instanceof OpMonkey) {
       OpMonkey opMonkey = (OpMonkey) current;
       Monkey left = lookup.get(opMonkey.left);
@@ -56,18 +53,23 @@ public class Day21 extends Base2022 {
     }
     return value;
   }
-  
-  private abstract static class Monkey {
+
+  private abstract static class Monkey implements HasId<String> {
     protected final String id;
-    
+
     private Monkey(String idWithColon) {
       this.id = idWithColon.substring(0, 4);
     }
-    
+
+    @Override
+    public String getId() {
+      return id;
+    }
+
     protected abstract BigInteger getValue(Map<String, Monkey> lookup);
-    
+
     protected abstract Monkey simplify(Map<String, Monkey> lookup);
-    
+
     private static Monkey parse(String line) {
       String[] parts = line.split(" ");
       return (parts.length == 2)
@@ -75,47 +77,47 @@ public class Day21 extends Base2022 {
           : new OpMonkey(parts);
     }
   }
-  
+
   private static class NumberMonkey extends Monkey {
     private final BigInteger number;
-    
+
     private NumberMonkey(String[] parts) {
       super(parts[0]);
       this.number = new BigInteger(parts[1]);
     }
-    
+
     private NumberMonkey(String id, BigInteger number) {
       super(id + ":");
       this.number = number;
     }
-    
+
     @Override
     protected BigInteger getValue(Map<String, Monkey> lookup) {
       return number;
     }
-    
+
     @Override
     protected Monkey simplify(Map<String, Monkey> lookup) {
       return this;
     }
   }
-  
+
   private static class OpMonkey extends Monkey {
     private static final List<Character> opChs = List.of('+', '*', '-', '/' );
     private static final List<BinaryOperator<BigInteger>> ops =
         List.of(BigInteger::add, BigInteger::multiply, BigInteger::subtract, BigInteger::divide);
-    
+
     private final int opIndex;
     private final String left;
     private final String right;
-    
+
     private OpMonkey(String[] parts) {
       super(parts[0]);
       this.opIndex = opChs.indexOf(parts[2].charAt(0));
       this.left = parts[1];
       this.right = parts[3];
     }
-    
+
     @Override
     protected BigInteger getValue(Map<String, Monkey> lookup) {
       return op().apply(
@@ -123,7 +125,7 @@ public class Day21 extends Base2022 {
           lookup.get(right).getValue(lookup)
       );
     }
-    
+
     @Override
     protected Monkey simplify(Map<String, Monkey> lookup) {
       Monkey leftSimplified = lookup.get(left).simplify(lookup);
@@ -135,19 +137,19 @@ public class Day21 extends Base2022 {
       }
       return this;
     }
-    
+
     private boolean isCommutative() {
       return (opIndex == 0) || (opIndex == 1);    // + or *
     }
-    
+
     private BinaryOperator<BigInteger> op() {
       return ops.get(opIndex);
     }
-    
+
     private BinaryOperator<BigInteger> inverseOp() {
-      return ops.get((opIndex + ops.size() / 2) % ops.size());
+      return safeGet(ops, opIndex + ops.size() / 2);
     }
-    
+
     private static boolean isNonHumanNum(Monkey monkey) {
       return (monkey instanceof NumberMonkey) && !"humn".equals(monkey.id);
     }

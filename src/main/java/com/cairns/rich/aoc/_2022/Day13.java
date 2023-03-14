@@ -6,51 +6,46 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
-public class Day13 extends Base2022 {
+class Day13 extends Base2022 {
   @Override
-  protected void run() throws Throwable {
+  protected void run() {
     List<List<ListPacket>> packetPairs =
         fullLoader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()));
     System.out.println(computeCorrectIndexSum(packetPairs));
     System.out.println(computeDistressSignal(packetPairs));
   }
-  
+
   private int computeCorrectIndexSum(List<List<ListPacket>> packetPairs) {
-    int correctIndexSum = 0;
-    for (int i = 0; i < packetPairs.size(); ++i) {
-      List<ListPacket> packetPair = packetPairs.get(i);
-      if (packetPair.get(0).compareTo(packetPair.get(1)) <= 0) {
-        correctIndexSum += (i + 1);
-      }
-    }
-    return correctIndexSum;
+    return IntStream.range(0, packetPairs.size())
+        .filter((i) -> {
+          List<ListPacket> packetPair = packetPairs.get(i);
+          return packetPair.get(0).compareTo(packetPair.get(1)) <= 0;
+        }).map((i) -> i + 1)
+        .sum();
   }
-  
+
   private int computeDistressSignal(List<List<ListPacket>> packetPairs) {
     List<ListPacket> packets = packetPairs.stream().flatMap(List::stream).collect(Collectors.toList());
     Set<ListPacket> dividers = Set.of(ListPacket.parse("[[2]]"), ListPacket.parse("[[6]]"));
     packets.addAll(dividers);
     Collections.sort(packets);
-    
-    int distressSignal = 1;
-    for (int i = 0; i < packets.size(); ++i) {
-      if (dividers.contains(packets.get(i))) {
-        distressSignal *= (i + 1);
-      }
-    }
-    return distressSignal;
+    return IntStream.range(0, packets.size())
+        .filter((i) -> dividers.contains(packets.get(i)))
+        .map((i) -> i + 1)
+        .reduce(1, Math::multiplyExact);
   }
-  
+
   private static interface Packet extends Comparable<Packet> { }
-  
+
   private static final class NumPacket implements Packet {
     private final int num;
-    
+
     private NumPacket(String str) {
       this.num = Integer.parseInt(str);
     }
-    
+
     @Override
     public int compareTo(Packet other) {
       return (other instanceof ListPacket)
@@ -58,10 +53,10 @@ public class Day13 extends Base2022 {
           : Integer.compare(num, ((NumPacket) other).num);
     }
   }
-  
+
   private static final class ListPacket implements Packet {
     private final List<Packet> subPackets = new ArrayList<>();
-    
+
     @Override
     public int compareTo(Packet other) {
       if (other instanceof NumPacket) {
@@ -77,13 +72,13 @@ public class Day13 extends Base2022 {
       }
       return Integer.compare(subPackets.size(), otherList.subPackets.size());
     }
-    
+
     private static ListPacket wrap(NumPacket numPacket) {
       ListPacket wrapped = new ListPacket();
       wrapped.subPackets.add(numPacket);
       return wrapped;
     }
-    
+
     private static ListPacket parse(String line) {
       Stack<ListPacket> stack = new Stack<>();
       stack.add(new ListPacket());
