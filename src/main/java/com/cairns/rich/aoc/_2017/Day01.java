@@ -33,7 +33,7 @@ class Day01 extends Base2017 {
     for (int i = 0; i < input.length(); ++i) {
       char ch = input.charAt(i);
       int nextI = nextIFn.apply(i);
-      if (ch == input.charAt(nextI % input.length())) { // TODO: Add safe charAt
+      if (ch == safeCharAt(input, nextI)) {
         sum += (ch - '0');
       }
     }

@@ -8,6 +8,13 @@ import java.util.List;
  */
 public abstract class SafeAccessor extends QuietCapable {
   /**
+   * Returns the character of the given {@link CharSequence} at the appropriate circular indexed position.
+   */
+  public static char safeCharAt(CharSequence str, long unmodedIndex) {
+    return str.charAt(safeIndex(str.length(), unmodedIndex));
+  }
+
+  /**
    * Returns the element of the given int array at the appropriate circular indexed position.
    */
   public static int safeGet(int[] arr, long unmodedIndex) {
@@ -43,7 +50,7 @@ public abstract class SafeAccessor extends QuietCapable {
   }
 
   /**
-   * Returns the element of the given list at the appropriate circular indexed position.
+   * Returns the element of the given {@link List} at the appropriate circular indexed position.
    */
   public static <T> T safeGet(List<T> list, long unmodedIndex) {
     return list.get(safeIndex(list.size(), unmodedIndex));
@@ -85,7 +92,7 @@ public abstract class SafeAccessor extends QuietCapable {
   }
 
   /**
-   * Sets the given element at the appropriate circular index of the given list.
+   * Sets the given element at the appropriate circular index of the given {@link List}.
    */
   public static <T> void safeSet(List<T> list, long unmodedIndex, T elem) {
     list.set(safeIndex(list.size(), unmodedIndex), elem);

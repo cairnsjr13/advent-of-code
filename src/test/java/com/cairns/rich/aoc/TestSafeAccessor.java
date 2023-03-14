@@ -11,12 +11,24 @@ import org.junit.Test;
  * Test class for {@link SafeAccessor}.
  */
 public class TestSafeAccessor {
+  private final String strVal = "This is a String";
+  private final CharSequence charSeqVal = new StringBuilder("This is NOT a string");
   private final int[] intVals = { 1, 2, 3, 4, 5, 6, 7 };
   private final long[] longVals = { 1, 2, 3, 4, 5, 6 };
   private final boolean[] booleanVals = { false, true, false, false, true };
   private final char[] charVals = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
   private final String[] stringArrVals = { "a", "b", "c", "d" };
   private final List<String> stringLstVals = Arrays.asList("e", "f", "g", "h");
+
+  /**
+   * This test ensures that {@link SafeAccessor#safeCharAt(CharSequence, long)} works correctly
+   * and accepts a general {@link CharSequence}s as well as specific {@link String}s.
+   */
+  @Test
+  public void testSafeCharAt() {
+    runSafeGetTest(strVal, strVal.length(), String::charAt, SafeAccessor::safeCharAt);
+    runSafeGetTest(charSeqVal, charSeqVal.length(), CharSequence::charAt, SafeAccessor::safeCharAt);
+  }
 
   /**
    * This test ensures that all safeGet methods work correctly.
@@ -63,8 +75,10 @@ public class TestSafeAccessor {
     T firstElem = get.apply(arrList, 0);
     Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length));
     Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 2));
+    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 1322));
     Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length));
     Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 2));
+    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 1322));
   }
 
   /**
