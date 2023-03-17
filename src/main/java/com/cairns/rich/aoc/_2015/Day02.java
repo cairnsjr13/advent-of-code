@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.ToIntFunction;
@@ -8,10 +9,10 @@ import java.util.regex.Pattern;
 
 class Day02 extends Base2015 {
   @Override
-  protected void run() {
-    List<Pkg> pkgs = fullLoader.ml(Pkg::new);
-    System.out.println(getAnswer(pkgs, Pkg::getPaperRequired));
-    System.out.println(getAnswer(pkgs, Pkg::getRibbonRequired));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Pkg> pkgs = loader.ml(Pkg::new);
+    result.part1(getAnswer(pkgs, Pkg::getPaperRequired));
+    result.part2(getAnswer(pkgs, Pkg::getRibbonRequired));
   }
 
   private int getAnswer(List<Pkg> pkgs, ToIntFunction<Pkg> toAnswer) {

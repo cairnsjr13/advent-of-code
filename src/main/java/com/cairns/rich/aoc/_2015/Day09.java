@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ import java.util.regex.Pattern;
 
 class Day09 extends Base2015 {
   @Override
-  protected void run() {
-    List<Leg> legs = fullLoader.ml(Leg::new);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Leg> legs = loader.ml(Leg::new);
     Table<String, String, Integer> routes = HashBasedTable.create();
     for (Leg leg : legs) {
       routes.put(leg.start, leg.end, leg.distance);
@@ -22,8 +23,8 @@ class Day09 extends Base2015 {
       routes.put("", dst, 0);
       routes.put(dst, "", 0);
     }
-    System.out.println(extremeRoute(Integer.MAX_VALUE, Math::min, routes, dsts, ""));
-    System.out.println(extremeRoute(Integer.MIN_VALUE, Math::max, routes, dsts, ""));
+    result.part1(extremeRoute(Integer.MAX_VALUE, Math::min, routes, dsts, ""));
+    result.part2(extremeRoute(Integer.MIN_VALUE, Math::max, routes, dsts, ""));
   }
 
   private int extremeRoute(

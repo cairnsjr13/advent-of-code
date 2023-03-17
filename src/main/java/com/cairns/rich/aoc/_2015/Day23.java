@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -9,10 +10,10 @@ class Day23 extends Base2015 {
   private static final Map<String, InstructionType> instsByName = EnumUtils.getLookup(InstructionType.class);
 
   @Override
-  protected void run() {
-    List<Consumer<State>> instructions = fullLoader.ml(this::parseInstruction);
-    System.out.println(runAndGetRegisterB(instructions, 0, 0));
-    System.out.println(runAndGetRegisterB(instructions, 1, 0));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Consumer<State>> instructions = loader.ml(this::parseInstruction);
+    result.part1(runAndGetRegisterB(instructions, 0, 0));
+    result.part2(runAndGetRegisterB(instructions, 1, 0));
   }
 
   private int runAndGetRegisterB(List<Consumer<State>> instructions, int initA, int initB) {

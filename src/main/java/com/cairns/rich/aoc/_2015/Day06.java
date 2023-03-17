@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
@@ -23,10 +24,10 @@ class Day06 extends Base2015 {
   );
 
   @Override
-  protected void run() {
-    List<Instruction> instructions = fullLoader.ml(Instruction::new);
-    System.out.println(countLightsOn(instructions, simple));
-    System.out.println(countLightsOn(instructions, complex));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Instruction> instructions = loader.ml(Instruction::new);
+    result.part1(countLightsOn(instructions, simple));
+    result.part2(countLightsOn(instructions, complex));
   }
 
   private final int countLightsOn(List<Instruction> instructions, Map<Type, IntUnaryOperator> rules) {

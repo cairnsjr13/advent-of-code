@@ -1,21 +1,28 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class Day22 extends Base2015 {
   private static final Spell[] spells = Spell.values();
 
   @Override
-  protected void run() {
-    System.out.println(runSimulation(false));
-    System.out.println(runSimulation(true));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> bossLines = loader.ml();
+    result.part1(runSimulation(bossLines, false));
+    result.part2(runSimulation(bossLines, true));
   }
 
-  private int runSimulation(boolean hardMode) {
-    State state = new State(hardMode);
+  private int runSimulation(List<String> bossLines, boolean hardMode) {
+    Stats player = new Stats(50, 0, 500);
+    Stats boss = new Stats(bossLines);
+    State state = new State(player, boss, hardMode);
     playerTurn(state);
     return state.bestManaSoFar;
   }
@@ -82,15 +89,17 @@ class Day22 extends Base2015 {
   }
 
   private static class State {
-    private final Stats player = new Stats(50, 0, 500);
-    private final Stats boss = new Stats(51, 9, 0);
+    private final Stats player;
+    private final Stats boss;
     private final Multiset<Spell> activeEffects = HashMultiset.create();
     private final int playerPenalty;
 
     private int bestManaSoFar = Integer.MAX_VALUE;
     private int used = 0;
 
-    private State(boolean hardMode) {
+    private State(Stats player, Stats boss, boolean hardMode) {
+      this.player = player;
+      this.boss = boss;
       this.playerPenalty = (hardMode) ? 1 : 0;
     }
 
@@ -103,6 +112,14 @@ class Day22 extends Base2015 {
     private int hp;
     private final int damage;
     private int mana;
+
+    private Stats(List<String> lines) {
+      Map<String, Integer> stats =
+          lines.stream().map((s) -> s.split(": ")).collect(Collectors.toMap((p) -> p[0], (p) -> Integer.parseInt(p[1])));
+      this.hp = stats.get("Hit Points");
+      this.damage = stats.get("Damage");
+      this.mana = 0;
+    }
 
     private Stats(int hp, int damage, int mana) {
       this.hp = hp;

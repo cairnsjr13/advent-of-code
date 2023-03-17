@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -13,10 +14,10 @@ class Day05 extends Base2015 {
   private static final Pattern oneCharRepeat = Pattern.compile("^.*(.).\\1.*$");
 
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
-    System.out.println(numNice(inputs, this::isOriginallyNice));
-    System.out.println(numNice(inputs, this::isNewNice));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> inputs = loader.ml();
+    result.part1(numNice(inputs, this::isOriginallyNice));
+    result.part2(numNice(inputs, this::isNewNice));
   }
 
   private long numNice(List<String> inputs, Predicate<String> filter) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -13,20 +14,20 @@ import java.util.stream.Collectors;
 
 class Day19 extends Base2015 {
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> inputs = loader.ml();
     String molecule = inputs.get(inputs.size() - 1);
     Multimap<String, String> replacements = HashMultimap.create();
     for (String input : inputs.subList(0, inputs.size() - 2)) {
       String[] replacement = input.split(" => ");
       replacements.put(replacement[0], replacement[1]);
     }
-    System.out.println(getUniqueSingleReplacementMolecules(molecule, replacements));
+    result.part1(getUniqueSingleReplacementMolecules(molecule, replacements));
     while (true) {
       Integer greedy = greedyDistance(molecule, replacements);
       if (greedy != null) {
-        System.out.println(greedy);
-        break;
+        result.part2(greedy);
+        return;
       }
     }
   }

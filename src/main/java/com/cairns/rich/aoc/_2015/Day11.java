@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,12 +9,11 @@ class Day11 extends Base2015 {
   private static final Pattern twoPairsPattern = Pattern.compile("^.*(.)\\1.*(.)\\2.*$");
 
   @Override
-  protected void run() {
-    String input = "hepxcrrq";
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
     String next = findNextPassword(input);
-    String last = findNextPassword(next);
-    System.out.println(next);
-    System.out.println(last);
+    result.part1(next);
+    result.part2(findNextPassword(next));
   }
 
   private String findNextPassword(String input) {

@@ -1,14 +1,12 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 class Day07 extends Base2015 {
   private static final Map<String, IntBinaryOperator> binaryOps = Map.of(
@@ -19,21 +17,18 @@ class Day07 extends Base2015 {
   );
 
   @Override
-  protected void run() {
-    List<Instruction> instructions = fullLoader.ml(Instruction::new);
-
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    Map<String, Instruction> instructionsByOutput = getLookup(loader.ml(Instruction::new));
     Map<String, Integer> circuit = new HashMap<>();
-    Map<String, Instruction> instructionsByOutput = instructions.stream().collect(Collectors.toMap(
-        (instruction) -> instruction.output,
-        Function.identity()
-    ));
+
     int originalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
-    System.out.println("originalA = " + originalValue);
+    result.part1(originalValue);
 
     circuit.clear();
     circuit.put("b", originalValue);
+
     int finalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
-    System.out.println("FinalA = " + finalValue);
+    result.part2(finalValue);
   }
 
   private int compute(
@@ -72,7 +67,7 @@ class Day07 extends Base2015 {
     return value;
   }
 
-  private static class Instruction {
+  private static class Instruction implements HasId<String> {
     private static final Pattern pattern = Pattern.compile("^(.+) -> (.+)$");
     private final String[] leftSide;
     private final String output;
@@ -81,6 +76,11 @@ class Day07 extends Base2015 {
       Matcher matcher = matcher(pattern, spec);
       this.leftSide = matcher.group(1).split(" ");
       this.output = matcher.group(2);
+    }
+
+    @Override
+    public String getId() {
+      return output;
     }
   }
 }

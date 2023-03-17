@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.function.ToLongFunction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -7,12 +8,12 @@ import org.json.simple.parser.JSONParser;
 
 class Day12 extends Base2015 {
   @Override
-  protected void run() {
-    String input = fullLoader.ml().get(0);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
     JSONParser parser = new JSONParser();
     Object root = quietly(() -> parser.parse(input));
-    System.out.println(sumAll(root, this::allIncluded));
-    System.out.println(sumAll(root, this::skipRed));
+    result.part1(sumAll(root, this::allIncluded));
+    result.part2(sumAll(root, this::skipRed));
   }
 
   private long sumAll(Object obj, ToLongFunction<JSONObject> objHandler) {

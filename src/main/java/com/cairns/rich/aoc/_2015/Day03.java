@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
@@ -19,10 +20,10 @@ class Day03 extends Base2015 {
   );
 
   @Override
-  protected void run() {
-    String input = fullLoader.ml().get(0);
-    System.out.println(numUniqueHouses(input, 1));
-    System.out.println(numUniqueHouses(input, 2));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(numUniqueHouses(input, 1));
+    result.part2(numUniqueHouses(input, 2));
   }
 
   private int numUniqueHouses(String input, int numSantas) {

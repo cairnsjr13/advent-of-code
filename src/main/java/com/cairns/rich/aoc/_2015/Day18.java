@@ -1,15 +1,16 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
 class Day18 extends Base2015 {
   @Override
-  protected void run() {
-    boolean[][] lights = parseLights(fullLoader::ml);
-    System.out.println(countOn(runSteps(copy(lights), 100, false)));
-    System.out.println(countOn(runSteps(copy(lights), 100, true)));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    boolean[][] lights = parseLights(loader::ml);
+    result.part1(countOn(runSteps(copy(lights), 100, false)));
+    result.part2(countOn(runSteps(copy(lights), 100, true)));
   }
 
   private int countOn(boolean[][] lights) {

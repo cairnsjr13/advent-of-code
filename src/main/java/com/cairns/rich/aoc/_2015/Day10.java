@@ -1,15 +1,16 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 class Day10 extends Base2015 {
   @Override
-  protected void run() {
-    String input = "1113122113";
-    System.out.println(getLengthOfAnswer(input, 40));
-    System.out.println(getLengthOfAnswer(input, 50));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(getLengthOfAnswer(input, 40));
+    result.part2(getLengthOfAnswer(input, 50));
   }
 
   private int getLengthOfAnswer(String input, int numItrs) {

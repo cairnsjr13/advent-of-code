@@ -1,44 +1,38 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day13 extends Base2015 {
   @Override
-  protected void run() {
+  protected void run(Loader2 loader, ResultRegistrar result) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
-    for (Line line : fullLoader.ml(Line::new)) {
-      impacts.put(line.impacted, line.neighbor, line.value);
-    }
+    loader.ml(Line::new).forEach((line) -> impacts.put(line.impacted, line.neighbor, line.value));
     List<String> people = new ArrayList<>(impacts.rowKeySet());
-    Candidate best = computeBest(impacts, people, new ArrayList<>());
-    System.out.println(best.order);
-    System.out.println(best.score);
 
+    result.part1(computeBest(impacts, people, new ArrayList<>()));
     people.forEach((person) -> {
       impacts.put("", person, 0);
       impacts.put(person, "", 0);
     });
     people.add("");
-    Candidate newBest = computeBest(impacts, people, new ArrayList<>());
-    System.out.println(newBest.order);
-    System.out.println(newBest.score);
+    result.part2(computeBest(impacts, people, new ArrayList<>()));
   }
 
-  private Candidate computeBest(Table<String, String, Integer> impacts, List<String> peopleLeft, List<String> order) {
+  private int computeBest(Table<String, String, Integer> impacts, List<String> peopleLeft, List<String> order) {
     if (peopleLeft.isEmpty()) {
       return computeScore(impacts, order);
     }
-    Candidate best = new Candidate(0, Arrays.asList());
+    int best = 0;
     for (int i = 0; i < peopleLeft.size(); ++i) {
       order.add(peopleLeft.remove(i));
-      Candidate option = computeBest(impacts, peopleLeft, order);
-      if (best.score < option.score) {
+      int option = computeBest(impacts, peopleLeft, order);
+      if (best < option) {
         best = option;
       }
       peopleLeft.add(i, order.remove(order.size() - 1));
@@ -46,23 +40,13 @@ class Day13 extends Base2015 {
     return best;
   }
 
-  private Candidate computeScore(Table<String, String, Integer> impacts, List<String> order) {
+  private int computeScore(Table<String, String, Integer> impacts, List<String> order) {
     int score = 0;
     for (int i = 0; i < order.size(); ++i) {
       score += impacts.get(order.get(i), safeGet(order, i + 1));
       score += impacts.get(order.get(i), safeGet(order, i - 1));
     }
-    return new Candidate(score, order);
-  }
-
-  private static class Candidate {
-    private final int score;
-    private final List<String> order;
-
-    private Candidate(int score, List<String> order) {
-      this.score = score;
-      this.order = new ArrayList<>(order);
-    }
+    return score;
   }
 
   private static class Line {

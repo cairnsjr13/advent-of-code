@@ -1,13 +1,16 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
+import java.util.List;
+
 class Day25 extends Base2015 {
   @Override
-  protected void run() {
-    int targetRow = 2978;
-    int targetCol = 3083;
-
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Integer> input = loader.sl(" ", Integer::parseInt);
+    int targetRow = input.get(0);
+    int targetCol = input.get(1);
     int sequenceNumber = computeSequenceNumber(targetRow, targetCol);
-    System.out.println(computeCode(sequenceNumber));
+    result.part1(computeCode(sequenceNumber));
   }
 
   private int computeSequenceNumber(int targetRow, int targetCol) {

@@ -1,13 +1,14 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 
 class Day08 extends Base2015 {
   @Override
-  protected void run() {
-    List<Entry> entries = fullLoader.ml(Entry::new);
-    System.out.println(entries.stream().mapToInt(Entry::computePart1Value).sum());
-    System.out.println(entries.stream().mapToInt(Entry::computePart2Value).sum());
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Entry> entries = loader.ml(Entry::new);
+    result.part1(entries.stream().mapToInt(Entry::computePart1Value).sum());
+    result.part2(entries.stream().mapToInt(Entry::computePart2Value).sum());
   }
 
   private static class Entry {

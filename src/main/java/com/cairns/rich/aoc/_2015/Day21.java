@@ -1,8 +1,11 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 class Day21 extends Base2015 {
   private static final List<Item> weapons = Arrays.asList(
@@ -32,10 +35,10 @@ class Day21 extends Base2015 {
   );
 
   @Override
-  protected void run() {
-    Stats boss = new Stats(8, 2);
-    System.out.println(computeCost(boss, Integer.MAX_VALUE, true, (l, r) -> l < r));
-    System.out.println(computeCost(boss, 0, false, (l, r) -> l > r));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    Stats boss = new Stats(loader.ml());
+    result.part1(computeCost(boss, Integer.MAX_VALUE, true, (l, r) -> l < r));
+    result.part2(computeCost(boss, 0, false, (l, r) -> l > r));
   }
 
   private int computeCost(
@@ -51,7 +54,7 @@ class Day21 extends Base2015 {
           Item leftRing = rings.get(leftRingI);
           for (int rightRingI = leftRingI + 1; rightRingI < rings.size(); ++rightRingI) {
             Item rightRing = rings.get(rightRingI);
-            Stats player = new Stats(100, weapon, armor, leftRing, rightRing);
+            Stats player = new Stats(weapon, armor, leftRing, rightRing);
             if (!cmp.test(bestCost, player.cost) && (desiredResult == doesPlayerWins(player, boss))) {
               bestCost = player.cost;
             }
@@ -83,14 +86,16 @@ class Day21 extends Base2015 {
     private final int cost;
     private final Item[] items;
 
-    private Stats(int damage, int armor) {
-      this.damage = damage;
-      this.armor = armor;
+    private Stats(List<String> lines) {
+      Map<String, Integer> stats =
+          lines.stream().map((s) -> s.split(": ")).collect(Collectors.toMap((p) -> p[0], (p) -> Integer.parseInt(p[1])));
+      this.damage = stats.get("Damage");
+      this.armor = stats.get("Armor");
       this.cost = 0;
-      items = null;
+      this.items = null;
     }
 
-    private Stats(int hp, Item... items) {
+    private Stats(Item... items) {
       this.damage = Arrays.asList(items).stream().mapToInt((item) -> item.damage).sum();
       this.armor = Arrays.asList(items).stream().mapToInt((item) -> item.armor).sum();
       this.cost = Arrays.asList(items).stream().mapToInt((item) -> item.cost).sum();

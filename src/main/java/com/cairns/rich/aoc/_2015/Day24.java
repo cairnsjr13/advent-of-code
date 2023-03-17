@@ -1,17 +1,17 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntPredicate;
 
 class Day24 extends Base2015 {
   @Override
-  protected void run() {
-    List<Integer> pkgs = fullLoader.ml(Integer::parseInt);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Integer> pkgs = loader.ml(Integer::parseInt);
     int totalSum = pkgs.stream().mapToInt(Integer::intValue).sum();
-
-    System.out.println(getBestQe3(pkgs, totalSum / 3));
-    System.out.println(getBestQe4(pkgs, totalSum / 4));
+    result.part1(getBestQe3(pkgs, totalSum / 3));
+    result.part2(getBestQe4(pkgs, totalSum / 4));
   }
 
   private long getBestQe3(List<Integer> pkgs, int correctSize) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -7,14 +8,14 @@ import java.util.Set;
 
 class Day17 extends Base2015 {
   @Override
-  protected void run() {
-    List<Integer> buckets = fullLoader.ml(Integer::parseInt);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Integer> buckets = loader.ml(Integer::parseInt);
     Set<Integer> correctCapacities = computeCorrectCapacity(buckets, 150);
-    System.out.println(correctCapacities.size());
+    result.part1(correctCapacities.size());
 
     int[] numBucketsCount = new int[buckets.size()];
     correctCapacities.forEach((corr) -> ++numBucketsCount[Integer.bitCount(corr)]);
-    System.out.println(Arrays.stream(numBucketsCount).filter((i) -> i > 0).findFirst().getAsInt());
+    result.part2(Arrays.stream(numBucketsCount).filter((i) -> i > 0).findFirst().getAsInt());
   }
 
   private Set<Integer> computeCorrectCapacity(List<Integer> buckets, int target) {
