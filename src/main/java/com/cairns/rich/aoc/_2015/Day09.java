@@ -10,8 +10,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day09 extends Base2015 {
+
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return extremeRoute(loader, Integer.MAX_VALUE, Math::min);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return extremeRoute(loader, Integer.MIN_VALUE, Math::max);
+  }
+
+  private int extremeRoute(Loader2 loader, int seed, IntBinaryOperator getExtreme) {
     List<Leg> legs = loader.ml(Leg::new);
     Table<String, String, Integer> routes = HashBasedTable.create();
     for (Leg leg : legs) {
@@ -23,8 +33,7 @@ class Day09 extends Base2015 {
       routes.put("", dst, 0);
       routes.put(dst, "", 0);
     }
-    result.part1(extremeRoute(Integer.MAX_VALUE, Math::min, routes, dsts, ""));
-    result.part2(extremeRoute(Integer.MIN_VALUE, Math::max, routes, dsts, ""));
+    return extremeRoute(seed, getExtreme, routes, dsts, "");
   }
 
   private int extremeRoute(

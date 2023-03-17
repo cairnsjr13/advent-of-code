@@ -4,10 +4,13 @@ import com.cairns.rich.aoc.Loader2;
 
 class Day04 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(findLowestFiveZeros(input, 5));
-    result.part2(findLowestFiveZeros(input, 6));
+  protected Object part1(Loader2 loader) {
+    return findLowestFiveZeros(loader.sl(), 5);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findLowestFiveZeros(loader.sl(), 6);
   }
 
   private int findLowestFiveZeros(String input, int numLeadingZeroes) {

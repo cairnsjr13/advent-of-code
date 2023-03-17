@@ -10,10 +10,15 @@ import java.util.stream.Collectors;
 
 class Day14 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<Reindeer> reindeers = loader.ml(Reindeer::new);
-    result.part1(getDistanceTravelledByWinner(reindeers, 2503));
-    result.part2(getMaxPoints(reindeers, 2503));
+    return getDistanceTravelledByWinner(reindeers, 2503);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Reindeer> reindeers = loader.ml(Reindeer::new);
+    return getMaxPoints(reindeers, 2503);
   }
 
   private int getDistanceTravelledByWinner(List<Reindeer> reindeers, int totalSeconds) {

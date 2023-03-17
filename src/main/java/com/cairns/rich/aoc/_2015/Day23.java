@@ -10,13 +10,17 @@ class Day23 extends Base2015 {
   private static final Map<String, InstructionType> instsByName = EnumUtils.getLookup(InstructionType.class);
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Consumer<State>> instructions = loader.ml(this::parseInstruction);
-    result.part1(runAndGetRegisterB(instructions, 0, 0));
-    result.part2(runAndGetRegisterB(instructions, 1, 0));
+  protected Object part1(Loader2 loader) {
+    return runAndGetRegisterB(loader, 0, 0);
   }
 
-  private int runAndGetRegisterB(List<Consumer<State>> instructions, int initA, int initB) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runAndGetRegisterB(loader, 1, 0);
+  }
+
+  private int runAndGetRegisterB(Loader2 loader, int initA, int initB) {
+    List<Consumer<State>> instructions = loader.ml(this::parseInstruction);
     State state = new State(initA, initB);
     while (state.currentInstruction < instructions.size()) {
       instructions.get(state.currentInstruction).accept(state);

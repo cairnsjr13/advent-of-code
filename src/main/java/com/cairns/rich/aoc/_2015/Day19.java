@@ -11,10 +11,31 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.tuple.Pair;
 
 class Day19 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    Pair<String, Multimap<String, String>> moleculeAndReplacements = computeMoleculeAndReplacements(loader);
+    String molecule = moleculeAndReplacements.getLeft();
+    Multimap<String, String> replacements = moleculeAndReplacements.getRight();
+    return getUniqueSingleReplacementMolecules(molecule, replacements);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Pair<String, Multimap<String, String>> moleculeAndReplacements = computeMoleculeAndReplacements(loader);
+    String molecule = moleculeAndReplacements.getLeft();
+    Multimap<String, String> replacements = moleculeAndReplacements.getRight();
+    while (true) {
+      Integer greedy = greedyDistance(molecule, replacements);
+      if (greedy != null) {
+        return greedy;
+      }
+    }
+  }
+
+  private Pair<String, Multimap<String, String>> computeMoleculeAndReplacements(Loader2 loader) {
     List<String> inputs = loader.ml();
     String molecule = inputs.get(inputs.size() - 1);
     Multimap<String, String> replacements = HashMultimap.create();
@@ -22,14 +43,7 @@ class Day19 extends Base2015 {
       String[] replacement = input.split(" => ");
       replacements.put(replacement[0], replacement[1]);
     }
-    result.part1(getUniqueSingleReplacementMolecules(molecule, replacements));
-    while (true) {
-      Integer greedy = greedyDistance(molecule, replacements);
-      if (greedy != null) {
-        result.part2(greedy);
-        return;
-      }
-    }
+    return Pair.of(molecule, replacements);
   }
 
   private Integer greedyDistance(String end, Multimap<String, String> replacements) {

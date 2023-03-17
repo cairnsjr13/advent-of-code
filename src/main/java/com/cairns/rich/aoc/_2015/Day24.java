@@ -3,27 +3,32 @@ package com.cairns.rich.aoc._2015;
 import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.IntPredicate;
 
 class Day24 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return getBestQe(loader, 3, this::getBestQe3);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getBestQe(loader, 4, (pkgs, correctSize) -> getBestQe(
+        pkgs,
+        correctSize,
+        (mask) -> -1 != getBestQe3(buildGroupFromMask(pkgs, ~mask), correctSize)
+    ));
+  }
+
+  private Object getBestQe(Loader2 loader, int numGroups, BiFunction<List<Integer>, Integer, Long> compute) {
     List<Integer> pkgs = loader.ml(Integer::parseInt);
     int totalSum = pkgs.stream().mapToInt(Integer::intValue).sum();
-    result.part1(getBestQe3(pkgs, totalSum / 3));
-    result.part2(getBestQe4(pkgs, totalSum / 4));
+    return compute.apply(pkgs, totalSum / numGroups);
   }
 
   private long getBestQe3(List<Integer> pkgs, int correctSize) {
     return getBestQe(pkgs, correctSize, (mask) -> canEvenlyPartition(pkgs, correctSize, 2, ~mask));
-  }
-
-  private long getBestQe4(List<Integer> pkgs, int correctSize) {
-    return getBestQe(
-        pkgs,
-        correctSize,
-        (mask) -> -1 != getBestQe3(buildGroupFromMask(pkgs, ~mask), correctSize)
-    );
   }
 
   private long getBestQe(List<Integer> pkgs, int correctSize, IntPredicate isPartitionableCorrect) {

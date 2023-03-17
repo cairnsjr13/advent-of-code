@@ -8,12 +8,15 @@ import org.json.simple.parser.JSONParser;
 
 class Day12 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    JSONParser parser = new JSONParser();
-    Object root = quietly(() -> parser.parse(input));
-    result.part1(sumAll(root, this::allIncluded));
-    result.part2(sumAll(root, this::skipRed));
+  protected Object part1(Loader2 loader) throws Throwable {
+    Object root = (new JSONParser()).parse(loader.sl());
+    return sumAll(root, this::allIncluded);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) throws Throwable {
+    Object root = (new JSONParser()).parse(loader.sl());
+    return sumAll(root, this::skipRed);
   }
 
   private long sumAll(Object obj, ToLongFunction<JSONObject> objHandler) {

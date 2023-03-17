@@ -4,17 +4,13 @@ import com.cairns.rich.aoc.Loader2;
 
 class Day01 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return loader.sl().chars().map((ch) -> (ch == '(') ? 1 : -1).sum();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
     String input = loader.sl();
-    result.part1(getFinalFloor(input));
-    result.part2(getFirstBasementInstruction(input));
-  }
-
-  private int getFinalFloor(String input) {
-    return input.chars().map((ch) -> (ch == '(') ? 1 : -1).sum();
-  }
-
-  private int getFirstBasementInstruction(String input) {
     int floor = 0;
     for (int i = 0; i < input.length(); ++i) {
       floor += (input.charAt(i) == '(') ? 1 : -1;

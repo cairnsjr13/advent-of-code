@@ -35,18 +35,22 @@ class Day21 extends Base2015 {
   );
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    Stats boss = new Stats(loader.ml());
-    result.part1(computeCost(boss, Integer.MAX_VALUE, true, (l, r) -> l < r));
-    result.part2(computeCost(boss, 0, false, (l, r) -> l > r));
+  protected Object part1(Loader2 loader) {
+    return computeCost(loader, Integer.MAX_VALUE, true, (l, r) -> l < r);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return computeCost(loader, 0, false, (l, r) -> l > r);
   }
 
   private int computeCost(
-      Stats boss,
+      Loader2 loader,
       int seed,
       boolean desiredResult,
       BiPredicate<Integer, Integer> cmp
   ) {
+    Stats boss = new Stats(loader.ml());
     int bestCost = seed;
     for (Item weapon : weapons) {
       for (Item armor : armors) {

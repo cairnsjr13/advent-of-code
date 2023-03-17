@@ -5,12 +5,12 @@ import java.util.List;
 
 class Day25 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<Integer> input = loader.sl(" ", Integer::parseInt);
     int targetRow = input.get(0);
     int targetCol = input.get(1);
     int sequenceNumber = computeSequenceNumber(targetRow, targetCol);
-    result.part1(computeCode(sequenceNumber));
+    return computeCode(sequenceNumber);
   }
 
   private int computeSequenceNumber(int targetRow, int targetCol) {

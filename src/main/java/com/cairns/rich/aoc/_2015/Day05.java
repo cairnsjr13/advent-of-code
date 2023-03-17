@@ -14,10 +14,13 @@ class Day05 extends Base2015 {
   private static final Pattern oneCharRepeat = Pattern.compile("^.*(.).\\1.*$");
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<String> inputs = loader.ml();
-    result.part1(numNice(inputs, this::isOriginallyNice));
-    result.part2(numNice(inputs, this::isNewNice));
+  protected Object part1(Loader2 loader) {
+    return numNice(loader.ml(), this::isOriginallyNice);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return numNice(loader.ml(), this::isNewNice);
   }
 
   private long numNice(List<String> inputs, Predicate<String> filter) {

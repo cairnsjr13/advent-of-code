@@ -9,17 +9,21 @@ class Day11 extends Base2015 {
   private static final Pattern twoPairsPattern = Pattern.compile("^.*(.)\\1.*(.)\\2.*$");
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    String next = findNextPassword(input);
-    result.part1(next);
-    result.part2(findNextPassword(next));
+  protected Object part1(Loader2 loader) {
+    return findNextPassword(loader.sl());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    String next = findNextPassword(loader.sl());
+    return findNextPassword(next);
   }
 
   private String findNextPassword(String input) {
     do {
       input = nextOption(input);
-    } while (!isValid(input));
+    }
+    while (!isValid(input));
     return input;
   }
 

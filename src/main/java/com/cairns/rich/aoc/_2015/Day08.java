@@ -1,14 +1,16 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.Loader2;
-import java.util.List;
 
 class Day08 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Entry> entries = loader.ml(Entry::new);
-    result.part1(entries.stream().mapToInt(Entry::computePart1Value).sum());
-    result.part2(entries.stream().mapToInt(Entry::computePart2Value).sum());
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Entry::new).stream().mapToInt((e) -> e.code.length() - e.memoryBytes()).sum();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.ml(Entry::new).stream().mapToInt((e) -> e.encodedCodeBytes() - e.code.length()).sum();
   }
 
   private static class Entry {
@@ -16,14 +18,6 @@ class Day08 extends Base2015 {
 
     private Entry(String code) {
       this.code = code;
-    }
-
-    private int computePart1Value() {
-      return code.length() - memoryBytes();
-    }
-
-    private int computePart2Value() {
-      return encodedCodeBytes() - code.length();
     }
 
     private int memoryBytes() {

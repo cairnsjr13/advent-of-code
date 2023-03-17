@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 class Day16 extends Base2015 {
@@ -17,9 +17,24 @@ class Day16 extends Base2015 {
   ));
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<EnumMap<Att, Integer>> sues = loader.ml(this::parseLine);
-    Map<Att, Predicate<Integer>> filters = new HashMap<>();
+    return filter(sues, buildFilters());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<EnumMap<Att, Integer>> sues = loader.ml(this::parseLine);
+    Map<Att, IntPredicate> filters = buildFilters();
+    filters.put(Att.Cats, (v) -> v > 7);
+    filters.put(Att.Trees, (v) -> v > 3);
+    filters.put(Att.Pomeranians, (v) -> v < 3);
+    filters.put(Att.Goldfish, (v) -> v < 5);
+    return filter(sues, filters);
+  }
+
+  private Map<Att, IntPredicate> buildFilters() {
+    Map<Att, IntPredicate> filters = new HashMap<>();
     filters.put(Att.Children, (v) -> v == 3);
     filters.put(Att.Cats, (v) -> v == 7);
     filters.put(Att.Samoyeds, (v) -> v == 2);
@@ -30,32 +45,17 @@ class Day16 extends Base2015 {
     filters.put(Att.Trees, (v) -> v == 3);
     filters.put(Att.Cars, (v) -> v == 2);
     filters.put(Att.Perfumes, (v) -> v == 1);
-    result.part1(filter(sues, filters));
-
-    filters.put(Att.Cats, (v) -> v > 7);
-    filters.put(Att.Trees, (v) -> v > 3);
-    filters.put(Att.Pomeranians, (v) -> v < 3);
-    filters.put(Att.Goldfish, (v) -> v < 5);
-    result.part2(filter(sues, filters));
+    return filters;
   }
 
-  private int filter(List<EnumMap<Att, Integer>> sues, Map<Att, Predicate<Integer>> tests) {
+  private int filter(List<EnumMap<Att, Integer>> sues, Map<Att, IntPredicate> tests) {
     for (int i = 0; i < sues.size(); ++i) {
       EnumMap<Att, Integer> sue = sues.get(i);
-      if (passes(sue, tests)) {
+      if (tests.keySet().stream().allMatch((att) -> !sue.containsKey(att) || tests.get(att).test(sue.get(att)))) {
         return i + 1;
       }
     }
     throw fail();
-  }
-
-  private boolean passes(EnumMap<Att, Integer> sue, Map<Att, Predicate<Integer>> tests) {
-    for (Att att : tests.keySet()) {
-      if (sue.containsKey(att) && !tests.get(att).test(sue.get(att))) {
-        return false;
-      }
-    }
-    return true;
   }
 
   private enum Att {

@@ -20,10 +20,13 @@ class Day03 extends Base2015 {
   );
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(numUniqueHouses(input, 1));
-    result.part2(numUniqueHouses(input, 2));
+  protected Object part1(Loader2 loader) {
+    return numUniqueHouses(loader.sl(), 1);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return numUniqueHouses(loader.sl(), 2);
   }
 
   private int numUniqueHouses(String input, int numSantas) {

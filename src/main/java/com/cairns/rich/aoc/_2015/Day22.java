@@ -13,13 +13,17 @@ class Day22 extends Base2015 {
   private static final Spell[] spells = Spell.values();
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<String> bossLines = loader.ml();
-    result.part1(runSimulation(bossLines, false));
-    result.part2(runSimulation(bossLines, true));
+  protected Object part1(Loader2 loader) {
+    return runSimulation(loader, false);
   }
 
-  private int runSimulation(List<String> bossLines, boolean hardMode) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runSimulation(loader, true);
+  }
+
+  private int runSimulation(Loader2 loader, boolean hardMode) {
+    List<String> bossLines = loader.ml();
     Stats player = new Stats(50, 0, 500);
     Stats boss = new Stats(bossLines);
     State state = new State(player, boss, hardMode);

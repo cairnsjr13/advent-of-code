@@ -2,21 +2,18 @@ package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.ToIntFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day02 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Pkg> pkgs = loader.ml(Pkg::new);
-    result.part1(getAnswer(pkgs, Pkg::getPaperRequired));
-    result.part2(getAnswer(pkgs, Pkg::getRibbonRequired));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Pkg::new).stream().mapToInt(Pkg::getPaperRequired).sum();
   }
 
-  private int getAnswer(List<Pkg> pkgs, ToIntFunction<Pkg> toAnswer) {
-    return pkgs.stream().mapToInt(toAnswer).sum();
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.ml(Pkg::new).stream().mapToInt(Pkg::getRibbonRequired).sum();
   }
 
   private static class Pkg {

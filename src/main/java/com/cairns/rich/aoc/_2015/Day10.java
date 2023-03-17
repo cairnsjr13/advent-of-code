@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 
 class Day10 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(getLengthOfAnswer(input, 40));
-    result.part2(getLengthOfAnswer(input, 50));
+  protected Object part1(Loader2 loader) {
+    return getLengthOfAnswer(loader.sl(), 40);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getLengthOfAnswer(loader.sl(), 50);
   }
 
   private int getLengthOfAnswer(String input, int numItrs) {

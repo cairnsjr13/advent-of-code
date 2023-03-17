@@ -10,18 +10,24 @@ import java.util.regex.Pattern;
 
 class Day13 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
     loader.ml(Line::new).forEach((line) -> impacts.put(line.impacted, line.neighbor, line.value));
     List<String> people = new ArrayList<>(impacts.rowKeySet());
+    return computeBest(impacts, people, new ArrayList<>());
+  }
 
-    result.part1(computeBest(impacts, people, new ArrayList<>()));
+  @Override
+  protected Object part2(Loader2 loader) {
+    Table<String, String, Integer> impacts = HashBasedTable.create();
+    loader.ml(Line::new).forEach((line) -> impacts.put(line.impacted, line.neighbor, line.value));
+    List<String> people = new ArrayList<>(impacts.rowKeySet());
     people.forEach((person) -> {
       impacts.put("", person, 0);
       impacts.put(person, "", 0);
     });
     people.add("");
-    result.part2(computeBest(impacts, people, new ArrayList<>()));
+    return computeBest(impacts, people, new ArrayList<>());
   }
 
   private int computeBest(Table<String, String, Integer> impacts, List<String> peopleLeft, List<String> order) {

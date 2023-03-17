@@ -12,10 +12,15 @@ import java.util.regex.Pattern;
 
 class Day15 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<Ingredient> ingredients = loader.ml(Ingredient::new);
-    result.part1(findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> 1));
-    result.part2(findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> (c == 500) ? 1 : 0));
+    return findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> 1);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Ingredient> ingredients = loader.ml(Ingredient::new);
+    return findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> (c == 500) ? 1 : 0);
   }
 
   private int findBestDistribution(

@@ -17,18 +17,20 @@ class Day07 extends Base2015 {
   );
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     Map<String, Instruction> instructionsByOutput = getLookup(loader.ml(Instruction::new));
     Map<String, Integer> circuit = new HashMap<>();
+    return 0xffff & compute(circuit, instructionsByOutput, "a");
+  }
 
+  @Override
+  protected Object part2(Loader2 loader) {
+    Map<String, Instruction> instructionsByOutput = getLookup(loader.ml(Instruction::new));
+    Map<String, Integer> circuit = new HashMap<>();
     int originalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
-    result.part1(originalValue);
-
     circuit.clear();
     circuit.put("b", originalValue);
-
-    int finalValue = 0xffff & compute(circuit, instructionsByOutput, "a");
-    result.part2(finalValue);
+    return 0xffff & compute(circuit, instructionsByOutput, "a");
   }
 
   private int compute(

@@ -24,10 +24,13 @@ class Day06 extends Base2015 {
   );
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Instruction> instructions = loader.ml(Instruction::new);
-    result.part1(countLightsOn(instructions, simple));
-    result.part2(countLightsOn(instructions, complex));
+  protected Object part1(Loader2 loader) {
+    return countLightsOn(loader.ml(Instruction::new), simple);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return countLightsOn(loader.ml(Instruction::new), complex);
   }
 
   private final int countLightsOn(List<Instruction> instructions, Map<Type, IntUnaryOperator> rules) {

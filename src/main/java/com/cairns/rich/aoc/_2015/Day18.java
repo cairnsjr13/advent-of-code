@@ -7,10 +7,15 @@ import java.util.function.Supplier;
 
 class Day18 extends Base2015 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     boolean[][] lights = parseLights(loader::ml);
-    result.part1(countOn(runSteps(copy(lights), 100, false)));
-    result.part2(countOn(runSteps(copy(lights), 100, true)));
+    return countOn(runSteps(copy(lights), 100, false));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    boolean[][] lights = parseLights(loader::ml);
+    return countOn(runSteps(copy(lights), 100, true));
   }
 
   private int countOn(boolean[][] lights) {
