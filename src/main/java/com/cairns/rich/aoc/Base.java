@@ -23,6 +23,7 @@ import java.util.function.ToLongFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.NotImplementedException;
 
 public abstract class Base extends SafeAccessor {
   private static final ExecutorService daemonExec = Executors.newCachedThreadPool((r) -> {
@@ -47,21 +48,32 @@ public abstract class Base extends SafeAccessor {
   }
 
   protected void run() throws Throwable {
-    run(testLoader, new ResultRegistrar() {
-      @Override
-      public void part1(Object answer) {
-        System.out.println("part1: '" + answer + "'");
-      }
+    Loader2 loader = testLoader;
 
-      @Override
-      public void part2(Object answer) {
-        System.out.println("part2: '" + answer + "'");
-      }
-    });
+    long mark = System.currentTimeMillis();
+    Object part1Answer = part1(loader);
+    System.out.println("part1: '" + part1Answer + "' - " + (System.currentTimeMillis() - mark) + "ms");
+
+    try {
+      mark = System.currentTimeMillis();
+      Object part2Answer = part2(loader);
+      System.out.println("part2: '" + part2Answer + "' - " + (System.currentTimeMillis() - mark) + "ms");
+    }
+    catch (NotImplementedException e) {
+      System.out.println("part2 NOT IMPLEMENTED");
+    }
   }
 
-  protected void run(Loader2 loader, ResultRegistrar result) throws Throwable {
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    throw fail("Leaving this here to make sure each commit compiles.  Will be removing once 2016 is fixed");
+  }
+
+  protected Object part1(Loader2 loader) throws Throwable {
     throw fail("Once this is ported through all existing years, i will change it to be abstract");
+  }
+
+  protected Object part2(Loader2 loader) throws Throwable {
+    throw new NotImplementedException();
   }
 
   protected static final RuntimeException fail() {
