@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,11 +9,11 @@ class Day22 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^/dev/grid/node-x(\\d+)-y(\\d+) +\\d+T +(\\d+)T +(\\d+)T +\\d+%$");
 
   @Override
-  protected void run() {
-    List<String> nodeSpecs = fullLoader.ml();
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> nodeSpecs = loader.ml();
     short[][] nodes = getGrid(nodeSpecs, 37, 25);
-    System.out.println(countViablePairs(nodes));
-    System.out.println(getFewestOperations(nodes));
+    result.part1(countViablePairs(nodes));
+    result.part2(getFewestOperations(nodes));
   }
 
   private int countViablePairs(short[][] grid) {

@@ -1,15 +1,16 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day05 extends Base2016 {
   @Override
-  protected void run() {
-    String input = "cxdnnyjw";
-    System.out.println(computeSimple(input));
-    System.out.println(computeComplex(input));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(computeSimple(input));
+    result.part2(computeComplex(input));
   }
 
   private String computeSimple(String seed) {

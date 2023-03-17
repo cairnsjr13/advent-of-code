@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,11 +9,11 @@ import java.util.List;
 
 class Day20 extends Base2016 {
   @Override
-  protected void run() {
-    List<Range<Long>> blacklist = fullLoader.ml(this::parse);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Range<Long>> blacklist = loader.ml(this::parse);
     List<Range<Long>> disjointBlacklist = getDisjointBlacklists(blacklist);
-    System.out.println(getLowestAllowable(disjointBlacklist));
-    System.out.println(getNumAllowable(disjointBlacklist));
+    result.part1(getLowestAllowable(disjointBlacklist));
+    result.part2(getNumAllowable(disjointBlacklist));
   }
 
   private long getLowestAllowable(List<Range<Long>> disjointBlacklist) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.TreeMultimap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ class Day10 extends Base2016 {
   private static final Pattern botPattern = Pattern.compile("^(bot \\d+) gives low to ((bot|output) \\d+) and high to ((bot|output) \\d+)$");
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> lines = loader.ml();
     TreeMultimap<String, Integer> holdings = TreeMultimap.create();
     List<Runnable> inits = new ArrayList<>();
     Map<String, Consumer<Integer>> receivers = new HashMap<>();
@@ -43,7 +44,7 @@ class Day10 extends Base2016 {
             int lo = holding.first();
             int hi = holding.last();
             if ((lo == 17) && (hi == 61)) {
-              System.out.println(bot + " compared the targets");
+              result.part1(bot.substring("bot ".length()));
             }
             holding.clear();
             receivers.get(loTo).accept(lo);
@@ -56,6 +57,6 @@ class Day10 extends Base2016 {
       }
     }
     inits.forEach(Runnable::run);
-    System.out.println(outputs.get(0) * outputs.get(1) * outputs.get(2));
+    result.part2(outputs.get(0) * outputs.get(1) * outputs.get(2));
   }
 }

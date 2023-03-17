@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.ToLongFunction;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 6666555555555544444444443333333333222222222211111111110000000000
@@ -42,32 +45,14 @@ class Day11 extends Base2016 {
   private static final int LOCATION_COUNT_MASK = 0b111;
 
   @Override
-  protected void run() {
-    List<Location> testLocations = List.of(
-        new Location(1, 0), // H
-        new Location(2, 0)  // L
-    );
-    List<Location> part1Locations = List.of(
-        new Location(0, 0), // S
-        new Location(0, 0), // P
-        new Location(1, 2), // T
-        new Location(1, 1), // R
-        new Location(1, 1)  // C
-    );
-    List<Location> part2Locations = List.of(
-        new Location(0, 0), // E
-        new Location(0, 0), // D
-        new Location(0, 0), // S
-        new Location(0, 0), // P
-        new Location(1, 2), // T
-        new Location(1, 1), // R
-        new Location(1, 1)  // C
-    );
-    long start = System.currentTimeMillis();
-    System.out.println(computeMinMoves(testLocations));
-    System.out.println(computeMinMoves(part1Locations));
-    System.out.println(computeMinMoves(part2Locations));
-    System.out.println("Time: " + (System.currentTimeMillis() - start));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Location> part1Locations = loader.ml(Location::new);
+    result.part1(computeMinMoves(part1Locations));
+
+    List<Location> part2Locations = loader.ml(Location::new);
+    part2Locations.add(new Location(0, 0));
+    part2Locations.add(new Location(0, 0));
+    result.part2(computeMinMoves(part2Locations));
   }
 
   private long computeMinMoves(List<Location> initLocations) {
@@ -194,8 +179,16 @@ class Day11 extends Base2016 {
   }
 
   private static class Location {
+    private static final Pattern pattern = Pattern.compile("^gen=(\\d+) chip=(\\d+)$");
+
     private long genFloor;
     private long chipFloor;
+
+    private Location(String line) {
+      Matcher matcher = matcher(pattern, line);
+      this.genFloor = num(matcher, 1);
+      this.chipFloor = num(matcher, 2);
+    }
 
     private Location(long genFloor, long chipFloor) {
       this.genFloor = genFloor;

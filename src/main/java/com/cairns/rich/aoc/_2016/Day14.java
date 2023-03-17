@@ -1,12 +1,14 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.LinkedList;
 
 class Day14 extends Base2016 {
   @Override
-  protected void run() {
-    System.out.println(getIndexOf64th("zpqevtbw", 0));
-    System.out.println(getIndexOf64th("zpqevtbw", 2016));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(getIndexOf64th(input, 0));
+    result.part2(getIndexOf64th(input, 2016));
   }
 
   private int getIndexOf64th(String salt, int numExtraHashings) {
@@ -20,7 +22,6 @@ class Day14 extends Base2016 {
         if (state.hashes.size() != 1000) throw new RuntimeException("" + state.hashes.size());
         Character firstTriple = findFirstTriple(hash);
         if ((firstTriple != null) && (windowHasRepeat5(state, firstTriple))) {
-          System.out.println("\t" + i + "\t" + hashIndex + "\t" + hash);
           break;
         }
       }

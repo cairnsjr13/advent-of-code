@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -52,19 +53,20 @@ class Day02 extends Base2016 {
   }
 
   @Override
-  protected void run() {
-    List<String> specs = fullLoader.ml();
-    printCode(imagineButts, specs, '5');
-    printCode(actualButts, specs, '5');
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> specs = loader.ml();
+    result.part1(getCode(imagineButts, specs, '5'));
+    result.part2(getCode(actualButts, specs, '5'));
   }
 
-  private void printCode(Map<Character, char[]> buttons, List<String> specs, char current) {
+  private String getCode(Map<Character, char[]> buttons, List<String> specs, char current) {
+    StringBuilder code = new StringBuilder();
     for (String spec : specs) {
       for (char move : spec.toCharArray()) {
         current = buttons.get(current)[moves.indexOf(move)];
       }
-      System.out.print(current);
+      code.append(current);
     }
-    System.out.println();
+    return code.toString();
   }
 }

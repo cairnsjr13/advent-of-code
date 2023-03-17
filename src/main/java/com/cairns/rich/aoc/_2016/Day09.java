@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,10 +8,10 @@ class Day09 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^(\\((\\d+)x(\\d+)\\)).*$");
 
   @Override
-  protected void run() {
-    String input = fullLoader.sl();
-    System.out.println(getDecompressedLength(input, false));
-    System.out.println(getDecompressedLength(input, true));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(getDecompressedLength(input, false));
+    result.part2(getDecompressedLength(input, true));
   }
 
   private long getDecompressedLength(String input, boolean recursive) {

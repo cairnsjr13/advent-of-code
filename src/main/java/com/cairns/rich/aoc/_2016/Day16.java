@@ -1,11 +1,13 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
+
 class Day16 extends Base2016 {
   @Override
-  protected void run() {
-    System.out.println(getChecksum("10000", 20));
-    System.out.println(getChecksum("11100010111110100", 272));
-    System.out.println(getChecksum("11100010111110100", 35651584));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(getChecksum(input, 272));
+    result.part2(getChecksum(input, 35651584));
   }
 
   private String getChecksum(String initialState, int toFill) {

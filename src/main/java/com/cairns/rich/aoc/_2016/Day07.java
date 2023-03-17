@@ -1,15 +1,16 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 class Day07 extends Base2016 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    System.out.println(lines.stream().filter(this::supportsTls).count());
-    System.out.println(lines.stream().filter(this::supportsSsl).count());
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<String> lines = loader.ml();
+    result.part1(lines.stream().filter(this::supportsTls).count());
+    result.part2(lines.stream().filter(this::supportsSsl).count());
   }
 
   private boolean supportsTls(String line) {

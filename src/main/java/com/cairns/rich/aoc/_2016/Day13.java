@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.function.Consumer;
@@ -8,10 +9,10 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day13 extends Base2016 {
   @Override
-  protected void run() {
-    System.out.println(findMinSteps(new Spec(10, 7, 4)));
-    System.out.println(findMinSteps(new Spec(1350, 31, 39)));
-    System.out.println(numIn50(new Spec(1350, -1, -1)));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    int seed = Integer.parseInt(loader.sl());
+    result.part1(findMinSteps(new Spec(seed, 31, 39)));
+    result.part2(numIn50(new Spec(seed, -1, -1)));
   }
 
   private int numIn50(Spec spec) {

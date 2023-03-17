@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.ArrayList;
@@ -23,19 +24,10 @@ class Day17 extends Base2016 {
   ));
 
   @Override
-  protected void run() {
-    System.out.println("PART 1");
-    System.out.println(getShortestPath("ihgpwlah"));
-    System.out.println(getShortestPath("kglvqrro"));
-    System.out.println(getShortestPath("ulqzkmiv"));
-    System.out.println(getShortestPath("vkjiggvb"));
-
-    System.out.println();
-    System.out.println("PART 2");
-    System.out.println(getLengthOfLongestPath("ihgpwlah"));
-    System.out.println(getLengthOfLongestPath("kglvqrro"));
-    System.out.println(getLengthOfLongestPath("ulqzkmiv"));
-    System.out.println(getLengthOfLongestPath("vkjiggvb"));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String prefix = loader.sl();
+    result.part1(getShortestPath(prefix));
+    result.part2(getLengthOfLongestPath(prefix));
   }
 
   private String getShortestPath(String prefix) {

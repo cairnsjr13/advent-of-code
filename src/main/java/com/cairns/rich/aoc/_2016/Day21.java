@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -17,14 +18,13 @@ class Day21 extends Base2016 {
   );
 
   @Override
-  protected void run() {
-    System.out.println(part1("abcdefgh"));
-    System.out.println(part2("gfdhebac"));
-    System.out.println(part2("fbgdceah"));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    result.part1(part1(loader, "abcdefgh"));
+    result.part2(part2(loader, "fbgdceah"));
   }
 
-  private String part1(String input) {
-    List<Consumer<StringBuilder>> insts = fullLoader.ml(this::parsePart1);
+  private String part1(Loader2 loader, String input) {
+    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart1);
     StringBuilder state = new StringBuilder(input);
     insts.forEach((inst) -> inst.accept(state));
     return state.toString();
@@ -55,8 +55,8 @@ class Day21 extends Base2016 {
     throw fail(spec);
   }
 
-  private String part2(String input) {
-    List<Consumer<StringBuilder>> insts = fullLoader.ml(this::parsePart2);
+  private String part2(Loader2 loader, String input) {
+    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart2);
     StringBuilder state = new StringBuilder(input);
     for (int i = insts.size() - 1; i >= 0; --i) {
       insts.get(i).accept(state);

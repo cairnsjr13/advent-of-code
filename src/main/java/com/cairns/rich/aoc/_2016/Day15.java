@@ -1,17 +1,18 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day15 extends Base2016 {
   @Override
-  protected void run() {
-    List<DiscDesc> discDescs = fullLoader.ml(DiscDesc::new);
-    System.out.println(getTWhenFalls(discDescs));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<DiscDesc> discDescs = loader.ml(DiscDesc::new);
+    result.part1(getTWhenFalls(discDescs));
 
     discDescs.add(new DiscDesc(11, 0));
-    System.out.println(getTWhenFalls(discDescs));
+    result.part2(getTWhenFalls(discDescs));
   }
 
   private int getTWhenFalls(List<DiscDesc> discDescs) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2016.AssemBunny.Inst;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +13,8 @@ class Day25 extends Base2016 {
   private static final List<Integer> expectedSeed = List.of(0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
   @Override
-  protected void run() {
-    List<Inst> insts = fullLoader.ml(Inst::new);
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<Inst> insts = loader.ml(Inst::new);
     for (int init = 0; true; ++init) {
       AtomicBoolean killer = new AtomicBoolean();
       Queue<Integer> expected = new LinkedList<>(expectedSeed);
@@ -34,7 +35,7 @@ class Day25 extends Base2016 {
           })
       );
       if (success.get()) {
-        System.out.println(init);
+        result.part1(init);
         break;
       }
     }

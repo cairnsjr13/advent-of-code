@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
@@ -10,11 +11,10 @@ class Day18 extends Base2016 {
       (previousRow, col) -> (0 <= col) && (col < previousRow.size()) && previousRow.get(col);
 
   @Override
-  protected void run() {
-    System.out.println(getSafeCount(3, "..^^."));
-    System.out.println(getSafeCount(10, ".^^.^.^^^^"));
-    System.out.println(getSafeCount(40, "......^.^^.....^^^^^^^^^...^.^..^^.^^^..^.^..^.^^^.^^^^..^^.^.^.....^^^^^..^..^^^..^^.^.^..^^..^^^.."));
-    System.out.println(getSafeCount(400_000, "......^.^^.....^^^^^^^^^...^.^..^^.^^^..^.^..^.^^^.^^^^..^^.^.^.....^^^^^..^..^^^..^^.^.^..^^..^^^.."));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    String input = loader.sl();
+    result.part1(getSafeCount(40, input));
+    result.part2(getSafeCount(400_000, input));
   }
 
   private long getSafeCount(int numRows, String init) {

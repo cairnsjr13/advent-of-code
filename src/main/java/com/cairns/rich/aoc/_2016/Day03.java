@@ -1,14 +1,15 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
 
 class Day03 extends Base2016 {
   @Override
-  protected void run() {
-    List<int[]> rows = fullLoader.ml(this::parseRow);
-    System.out.println(getNumValidTrianglesRowBased(rows));
-    System.out.println(getNumValidTrianglesColBased(rows));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    List<int[]> rows = loader.ml(this::parseRow);
+    result.part1(getNumValidTrianglesRowBased(rows));
+    result.part2(getNumValidTrianglesColBased(rows));
   }
 
   private long getNumValidTrianglesRowBased(List<int[]> rows) {

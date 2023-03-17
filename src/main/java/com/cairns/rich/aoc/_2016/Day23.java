@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2016.AssemBunny.Inst;
 import java.util.List;
 import java.util.Map;
@@ -7,10 +8,9 @@ import java.util.function.Function;
 
 class Day23 extends Base2016 {
   @Override
-  protected void run() {
-    System.out.println(execute(testLoader::ml, 0));
-    System.out.println(execute(fullLoader::ml, 7));
-    System.out.println(execute(fullLoader::ml, 12));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    result.part1(execute(loader::ml, 7));
+    result.part2(execute(loader::ml, 12));
   }
 
   private int execute(Function<Function<String, Inst>, List<Inst>> load, int initA) {

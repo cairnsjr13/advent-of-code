@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2016;
 
+import com.cairns.rich.aoc.Loader2;
+
 class Day19 extends Base2016 {
   @Override
-  protected void run() {
-    System.out.println(getIndexOfLastElfStealLeft(5));
-    System.out.println(getIndexOfLastElfStealLeft(3001330));
-    System.out.println(getIndexOfLastElfStealAcross(5));
-    System.out.println(getIndexOfLastElfStealAcross(6));
-    System.out.println(getIndexOfLastElfStealAcross(3001330));
+  protected void run(Loader2 loader, ResultRegistrar result) {
+    int input = Integer.parseInt(loader.sl());
+    result.part1(getIndexOfLastElfStealLeft(input));
+    result.part2(getIndexOfLastElfStealAcross(input));
   }
 
   private int getIndexOfLastElfStealLeft(int numElfs) {

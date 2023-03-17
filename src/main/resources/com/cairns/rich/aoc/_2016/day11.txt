@@ -1,0 +1,5 @@
+gen=0 chip=0
+gen=0 chip=0
+gen=1 chip=2
+gen=1 chip=1
+gen=1 chip=1
