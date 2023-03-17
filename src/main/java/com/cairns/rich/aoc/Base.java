@@ -46,7 +46,23 @@ public abstract class Base extends SafeAccessor {
     this.fullLoader = new Loader2(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt");
   }
 
-  protected abstract void run() throws Throwable;
+  protected void run() throws Throwable {
+    run(testLoader, new ResultRegistrar() {
+      @Override
+      public void part1(Object answer) {
+        System.out.println("part1: '" + answer + "'");
+      }
+
+      @Override
+      public void part2(Object answer) {
+        System.out.println("part2: '" + answer + "'");
+      }
+    });
+  }
+
+  protected void run(Loader2 loader, ResultRegistrar result) throws Throwable {
+    throw fail("Once this is ported through all existing years, i will change it to be abstract");
+  }
 
   protected static final RuntimeException fail() {
     return fail("Unexpected");
@@ -177,5 +193,11 @@ public abstract class Base extends SafeAccessor {
     public final long getNumSteps() {
       return numSteps;
     }
+  }
+
+  protected interface ResultRegistrar {
+    void part1(Object answer);
+
+    void part2(Object answer);
   }
 }
