@@ -45,14 +45,16 @@ class Day11 extends Base2016 {
   private static final int LOCATION_COUNT_MASK = 0b111;
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Location> part1Locations = loader.ml(Location::new);
-    result.part1(computeMinMoves(part1Locations));
+  protected Object part1(Loader2 loader) {
+    return computeMinMoves(loader.ml(Location::new));
+  }
 
-    List<Location> part2Locations = loader.ml(Location::new);
-    part2Locations.add(new Location(0, 0));
-    part2Locations.add(new Location(0, 0));
-    result.part2(computeMinMoves(part2Locations));
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Location> locations = loader.ml(Location::new);
+    locations.add(new Location(0, 0));
+    locations.add(new Location(0, 0));
+    return computeMinMoves(locations);
   }
 
   private long computeMinMoves(List<Location> initLocations) {

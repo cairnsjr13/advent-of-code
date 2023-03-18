@@ -24,13 +24,8 @@ class Day17 extends Base2016 {
   ));
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     String prefix = loader.sl();
-    result.part1(getShortestPath(prefix));
-    result.part2(getLengthOfLongestPath(prefix));
-  }
-
-  private String getShortestPath(String prefix) {
     return bfs(
         new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
         (s) -> s.location.equals(target),
@@ -39,7 +34,9 @@ class Day17 extends Base2016 {
     ).get().state.path.stream().map(Object::toString).collect(Collectors.joining());
   }
 
-  private int getLengthOfLongestPath(String prefix) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    String prefix = loader.sl();
     MutableInt maxLength = new MutableInt(0);
     bfs(
         new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),

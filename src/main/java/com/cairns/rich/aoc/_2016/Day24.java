@@ -14,15 +14,22 @@ import java.util.Map;
 
 class Day24 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return findMinSteps(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findMinSteps(loader, true);
+  }
+
+  private long findMinSteps(Loader2 loader, boolean withReturn) {
     State state = new State(loader.ml());
     Table<Integer, Integer, Long> minStepsFromTo = calculateMinStepsFromTo(state);
-
     List<Integer> marksToBePlaced = new ArrayList<>(minStepsFromTo.columnKeySet());
     marksToBePlaced.remove(0);
     List<Integer> placedMarks = new ArrayList<>(Arrays.asList(0));
-    result.part1(findMinSteps(minStepsFromTo, marksToBePlaced, placedMarks, 0, false));
-    result.part2(findMinSteps(minStepsFromTo, marksToBePlaced, placedMarks, 0, true));
+    return findMinSteps(minStepsFromTo, marksToBePlaced, placedMarks, 0, withReturn);
   }
 
   private long findMinSteps(

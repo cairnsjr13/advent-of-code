@@ -15,7 +15,16 @@ class Day01 extends Base2016 {
   private static final ToIntFunction<ImmutablePoint> distance = (location) -> Math.abs(location.x()) + Math.abs(location.y());
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return getPart(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getPart(loader, true);
+  }
+
+  private int getPart(Loader2 loader, boolean part2) {
     List<String> instructions = loader.sl(", ");
     Set<ImmutablePoint> seen = new HashSet<>();
 
@@ -26,12 +35,11 @@ class Day01 extends Base2016 {
       int steps = Integer.parseInt(instruction.substring(1));
       for (int i = 0; i < steps; ++i) {
         location = location.move(dir);
-        if ((seen != null) && !seen.add(location)) {
-          seen = null;
-          result.part2(distance.applyAsInt(location));
+        if (part2 && !seen.add(location)) {
+          return distance.applyAsInt(location);
         }
       }
     }
-    result.part1(distance.applyAsInt(location));
+    return distance.applyAsInt(location);
   }
 }

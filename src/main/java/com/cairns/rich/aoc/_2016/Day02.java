@@ -53,10 +53,13 @@ class Day02 extends Base2016 {
   }
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<String> specs = loader.ml();
-    result.part1(getCode(imagineButts, specs, '5'));
-    result.part2(getCode(actualButts, specs, '5'));
+  protected Object part1(Loader2 loader) {
+    return getCode(imagineButts, loader.ml(), '5');
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getCode(actualButts, loader.ml(), '5');
   }
 
   private String getCode(Map<Character, char[]> buttons, List<String> specs, char current) {

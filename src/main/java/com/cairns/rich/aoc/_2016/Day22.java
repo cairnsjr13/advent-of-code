@@ -9,14 +9,8 @@ class Day22 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^/dev/grid/node-x(\\d+)-y(\\d+) +\\d+T +(\\d+)T +(\\d+)T +\\d+%$");
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<String> nodeSpecs = loader.ml();
-    short[][] nodes = getGrid(nodeSpecs, 37, 25);
-    result.part1(countViablePairs(nodes));
-    result.part2(getFewestOperations(nodes));
-  }
-
-  private int countViablePairs(short[][] grid) {
+  protected Object part1(Loader2 loader) {
+    short[][] grid = getGrid(loader.ml(), 37, 25);
     int numPairs = 0;
     for (int x1 = 0; x1 < grid.length; ++x1) {
       for (int y1 = 0; y1 < grid[0].length; ++y1) {
@@ -36,6 +30,16 @@ class Day22 extends Base2016 {
     return numPairs;
   }
 
+  @Override
+  protected Object part2(Loader2 loader) {
+    short[][] grid = getGrid(loader.ml(), 37, 25);
+    int encodedLocationOfEmptyNode = getEncodedLocationOfEmptyNode(grid);
+    int xOfEmpty = (encodedLocationOfEmptyNode >> 0) & 0xff;
+    int yOfEmpty = (encodedLocationOfEmptyNode >> 8) & 0xff;
+    int distanceEmptyMustMove = grid.length - 2;
+    return xOfEmpty + yOfEmpty + distanceEmptyMustMove + 5 * distanceEmptyMustMove + 1;
+  }
+
   private int getEncodedLocationOfEmptyNode(short[][] grid) {
     for (int x = 0; x < grid.length; ++x) {
       for (int y = 0; y < grid[0].length; ++y) {
@@ -45,14 +49,6 @@ class Day22 extends Base2016 {
       }
     }
     throw fail();
-  }
-
-  private int getFewestOperations(short[][] grid) {
-    int encodedLocationOfEmptyNode = getEncodedLocationOfEmptyNode(grid);
-    int xOfEmpty = (encodedLocationOfEmptyNode >> 0) & 0xff;
-    int yOfEmpty = (encodedLocationOfEmptyNode >> 8) & 0xff;
-    int distanceEmptyMustMove = grid.length - 2;
-    return xOfEmpty + yOfEmpty + distanceEmptyMustMove + 5 * distanceEmptyMustMove + 1;
   }
 
   private short[][] getGrid(List<String> nodeSpecs, int cols, int rows) {

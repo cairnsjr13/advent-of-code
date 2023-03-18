@@ -13,7 +13,7 @@ class Day25 extends Base2016 {
   private static final List<Integer> expectedSeed = List.of(0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<Inst> insts = loader.ml(Inst::new);
     for (int init = 0; true; ++init) {
       AtomicBoolean killer = new AtomicBoolean();
@@ -35,8 +35,7 @@ class Day25 extends Base2016 {
           })
       );
       if (success.get()) {
-        result.part1(init);
-        break;
+        return init;
       }
     }
   }

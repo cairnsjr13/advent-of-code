@@ -12,10 +12,13 @@ import java.util.stream.Collectors;
 
 class Day04 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<Room> rooms = loader.ml(Room::new);
-    result.part1(rooms.stream().filter(Room::isReal).mapToInt((r) -> r.sectorId).sum());
-    result.part2(findNorthpoleRoomSectorId(rooms, "north"));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Room::new).stream().filter(Room::isReal).mapToInt((r) -> r.sectorId).sum();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findNorthpoleRoomSectorId(loader.ml(Room::new), "north");
   }
 
   private int findNorthpoleRoomSectorId(List<Room> rooms, String search) {

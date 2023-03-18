@@ -4,13 +4,8 @@ import com.cairns.rich.aoc.Loader2;
 
 class Day19 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    int input = Integer.parseInt(loader.sl());
-    result.part1(getIndexOfLastElfStealLeft(input));
-    result.part2(getIndexOfLastElfStealAcross(input));
-  }
-
-  private int getIndexOfLastElfStealLeft(int numElfs) {
+  protected Object part1(Loader2 loader) {
+    int numElfs = Integer.parseInt(loader.sl());
     Elf current = createElfChain(numElfs);
     while (current.next != current) {
       current = current.next = current.next.next;
@@ -18,7 +13,9 @@ class Day19 extends Base2016 {
     return current.index;
   }
 
-  private int getIndexOfLastElfStealAcross(int numElfs) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    int numElfs = Integer.parseInt(loader.sl());
     Elf current = createElfChain(numElfs);
     Elf remove = current.next;
     Elf removePrevious = current;

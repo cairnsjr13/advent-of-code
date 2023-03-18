@@ -8,9 +8,13 @@ import java.util.function.Function;
 
 class Day23 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    result.part1(execute(loader::ml, 7));
-    result.part2(execute(loader::ml, 12));
+  protected Object part1(Loader2 loader) {
+    return execute(loader::ml, 7);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return execute(loader::ml, 12);
   }
 
   private int execute(Function<Function<String, Inst>, List<Inst>> load, int initA) {

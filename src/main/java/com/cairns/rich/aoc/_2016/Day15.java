@@ -7,12 +7,15 @@ import java.util.regex.Pattern;
 
 class Day15 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<DiscDesc> discDescs = loader.ml(DiscDesc::new);
-    result.part1(getTWhenFalls(discDescs));
+  protected Object part1(Loader2 loader) {
+    return getTWhenFalls(loader.ml(DiscDesc::new));
+  }
 
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<DiscDesc> discDescs = loader.ml(DiscDesc::new);
     discDescs.add(new DiscDesc(11, 0));
-    result.part2(getTWhenFalls(discDescs));
+    return getTWhenFalls(discDescs);
   }
 
   private int getTWhenFalls(List<DiscDesc> discDescs) {

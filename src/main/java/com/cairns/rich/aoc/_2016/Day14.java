@@ -5,10 +5,13 @@ import java.util.LinkedList;
 
 class Day14 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(getIndexOf64th(input, 0));
-    result.part2(getIndexOf64th(input, 2016));
+  protected Object part1(Loader2 loader) {
+    return getIndexOf64th(loader.sl(), 0);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getIndexOf64th(loader.sl(), 2016);
   }
 
   private int getIndexOf64th(String salt, int numExtraHashings) {

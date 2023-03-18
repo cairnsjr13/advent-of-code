@@ -9,13 +9,21 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day13 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     int seed = Integer.parseInt(loader.sl());
-    result.part1(findMinSteps(new Spec(seed, 31, 39)));
-    result.part2(numIn50(new Spec(seed, -1, -1)));
+    Spec spec = new Spec(seed, 31, 39);
+    return bfs(
+        new ImmutablePoint(1, 1),
+        spec.target::equals,
+        SearchState::getNumSteps,
+        (candidate, registrar) -> explore(spec, candidate, registrar)
+    ).get().getNumSteps();
   }
 
-  private int numIn50(Spec spec) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    int seed = Integer.parseInt(loader.sl());
+    Spec spec = new Spec(seed, -1, -1);
     MutableInt numLocations = new MutableInt(0);
     bfs(
         new ImmutablePoint(1, 1),
@@ -29,15 +37,6 @@ class Day13 extends Base2016 {
         }
     );
     return numLocations.getValue();
-  }
-
-  private long findMinSteps(Spec spec) {
-    return bfs(
-        new ImmutablePoint(1, 1),
-        spec.target::equals,
-        SearchState::getNumSteps,
-        (candidate, registrar) -> explore(spec, candidate, registrar)
-    ).get().getNumSteps();
   }
 
   private void explore(Spec spec, ImmutablePoint candidate, Consumer<ImmutablePoint> registrar) {

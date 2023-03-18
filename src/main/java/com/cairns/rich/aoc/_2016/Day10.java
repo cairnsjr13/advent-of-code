@@ -12,19 +12,30 @@ import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 class Day10 extends Base2016 {
   private static final Pattern valPattern = Pattern.compile("^value (\\d+) goes to (bot \\d+)$");
   private static final Pattern botPattern = Pattern.compile("^(bot \\d+) gives low to ((bot|output) \\d+) and high to ((bot|output) \\d+)$");
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return simulate(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return simulate(loader, true);
+  }
+
+  private Object simulate(Loader2 loader, boolean fullSimulation) {
     List<String> lines = loader.ml();
     TreeMultimap<String, Integer> holdings = TreeMultimap.create();
     List<Runnable> inits = new ArrayList<>();
     Map<String, Consumer<Integer>> receivers = new HashMap<>();
     TreeMap<Integer, Integer> outputs = new TreeMap<>();
     IntStream.range(0, 100).forEach((i) -> receivers.put("output " + i, (receive) -> outputs.put(i, receive)));
+    MutableObject<String> botComparing17And61 = new MutableObject<>();
     for (String line : lines) {
       if (line.startsWith("value")) {
         Matcher matcher = matcher(valPattern, line);
@@ -44,7 +55,7 @@ class Day10 extends Base2016 {
             int lo = holding.first();
             int hi = holding.last();
             if ((lo == 17) && (hi == 61)) {
-              result.part1(bot.substring("bot ".length()));
+              botComparing17And61.setValue(bot.substring("bot ".length()));
             }
             holding.clear();
             receivers.get(loTo).accept(lo);
@@ -57,6 +68,8 @@ class Day10 extends Base2016 {
       }
     }
     inits.forEach(Runnable::run);
-    result.part2(outputs.get(0) * outputs.get(1) * outputs.get(2));
+    return (fullSimulation)
+        ? outputs.get(0) * outputs.get(1) * outputs.get(2)
+        : botComparing17And61.getValue();
   }
 }

@@ -11,10 +11,13 @@ class Day18 extends Base2016 {
       (previousRow, col) -> (0 <= col) && (col < previousRow.size()) && previousRow.get(col);
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(getSafeCount(40, input));
-    result.part2(getSafeCount(400_000, input));
+  protected Object part1(Loader2 loader) {
+    return getSafeCount(40, loader.sl());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getSafeCount(400_000, loader.sl());
   }
 
   private long getSafeCount(int numRows, String init) {

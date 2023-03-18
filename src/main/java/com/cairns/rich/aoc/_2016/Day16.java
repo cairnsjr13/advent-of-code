@@ -4,10 +4,13 @@ import com.cairns.rich.aoc.Loader2;
 
 class Day16 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(getChecksum(input, 272));
-    result.part2(getChecksum(input, 35651584));
+  protected Object part1(Loader2 loader) {
+    return getChecksum(loader.sl(), 272);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getChecksum(loader.sl(), 35651584);
   }
 
   private String getChecksum(String initialState, int toFill) {

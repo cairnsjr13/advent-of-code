@@ -6,10 +6,13 @@ import java.util.List;
 
 class Day03 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<int[]> rows = loader.ml(this::parseRow);
-    result.part1(getNumValidTrianglesRowBased(rows));
-    result.part2(getNumValidTrianglesColBased(rows));
+  protected Object part1(Loader2 loader) {
+    return getNumValidTrianglesRowBased(loader.ml(this::parseRow));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getNumValidTrianglesColBased(loader.ml(this::parseRow));
   }
 
   private long getNumValidTrianglesRowBased(List<int[]> rows) {

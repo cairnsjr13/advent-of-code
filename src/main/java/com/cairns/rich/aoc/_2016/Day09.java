@@ -8,10 +8,13 @@ class Day09 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^(\\((\\d+)x(\\d+)\\)).*$");
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(getDecompressedLength(input, false));
-    result.part2(getDecompressedLength(input, true));
+  protected Object part1(Loader2 loader) {
+    return getDecompressedLength(loader.sl(), false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getDecompressedLength(loader.sl(), true);
   }
 
   private long getDecompressedLength(String input, boolean recursive) {

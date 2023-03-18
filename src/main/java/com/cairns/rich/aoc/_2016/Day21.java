@@ -18,16 +18,21 @@ class Day21 extends Base2016 {
   );
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    result.part1(part1(loader, "abcdefgh"));
-    result.part2(part2(loader, "fbgdceah"));
+  protected Object part1(Loader2 loader) {
+    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart1);
+    StringBuilder state = new StringBuilder("abcdefgh");
+    insts.forEach((inst) -> inst.accept(state));
+    return state;
   }
 
-  private String part1(Loader2 loader, String input) {
-    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart1);
-    StringBuilder state = new StringBuilder(input);
-    insts.forEach((inst) -> inst.accept(state));
-    return state.toString();
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart2);
+    StringBuilder state = new StringBuilder("fbgdceah");
+    for (int i = insts.size() - 1; i >= 0; --i) {
+      insts.get(i).accept(state);
+    }
+    return state;
   }
 
   private Consumer<StringBuilder> parsePart1(String spec) {
@@ -53,15 +58,6 @@ class Day21 extends Base2016 {
       return move(spec);
     }
     throw fail(spec);
-  }
-
-  private String part2(Loader2 loader, String input) {
-    List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart2);
-    StringBuilder state = new StringBuilder(input);
-    for (int i = insts.size() - 1; i >= 0; --i) {
-      insts.get(i).accept(state);
-    }
-    return state.toString();
   }
 
   private Consumer<StringBuilder> parsePart2(String spec) {

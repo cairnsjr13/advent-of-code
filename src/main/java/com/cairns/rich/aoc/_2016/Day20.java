@@ -9,18 +9,16 @@ import java.util.List;
 
 class Day20 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
     List<Range<Long>> blacklist = loader.ml(this::parse);
     List<Range<Long>> disjointBlacklist = getDisjointBlacklists(blacklist);
-    result.part1(getLowestAllowable(disjointBlacklist));
-    result.part2(getNumAllowable(disjointBlacklist));
-  }
-
-  private long getLowestAllowable(List<Range<Long>> disjointBlacklist) {
     return disjointBlacklist.get(0).upperEndpoint() + 1;
   }
 
-  private long getNumAllowable(List<Range<Long>> disjointBlacklist) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Range<Long>> blacklist = loader.ml(this::parse);
+    List<Range<Long>> disjointBlacklist = getDisjointBlacklists(blacklist);
     long numAllowed = 0;
     for (int i = 0; i < disjointBlacklist.size() - 1; ++i) {
       Range<Long> left = disjointBlacklist.get(i);

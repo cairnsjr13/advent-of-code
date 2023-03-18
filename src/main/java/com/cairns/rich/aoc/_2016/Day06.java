@@ -8,10 +8,13 @@ import java.util.function.BiPredicate;
 
 class Day06 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    List<String> lines = loader.ml();
-    result.part1(decode(lines, (l, r) -> l > r));
-    result.part2(decode(lines, (l, r) -> l < r));
+  protected Object part1(Loader2 loader) {
+    return decode(loader.ml(), (l, r) -> l > r);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return decode(loader.ml(), (l, r) -> l < r);
   }
 
   private String decode(List<String> lines, BiPredicate<Integer, Integer> better) {

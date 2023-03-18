@@ -7,22 +7,19 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day05 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    String input = loader.sl();
-    result.part1(computeSimple(input));
-    result.part2(computeComplex(input));
-  }
-
-  private String computeSimple(String seed) {
+  protected Object part1(Loader2 loader) {
+    String seed = loader.sl();
     StringBuilder str =  new StringBuilder();
     MutableInt state = new MutableInt();
     for (int i = 0; i < 8; ++i) {
       str.append(nextHash(seed, state).charAt(5));
     }
-    return str.toString();
+    return str;
   }
 
-  private String computeComplex(String seed) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    String seed = loader.sl();
     TreeMap<Integer, Character> positions = new TreeMap<>();
     MutableInt state = new MutableInt();
     while (positions.size() != 8) {
@@ -36,14 +33,12 @@ class Day05 extends Base2016 {
   }
 
   private String nextHash(String seed, MutableInt state) {
-    return quietly(() -> {
-      while (true) {
-        state.increment();
-        String hash = md5(seed + state.getValue());
-        if (hash.startsWith("00000")) {
-          return hash;
-        }
+    while (true) {
+      state.increment();
+      String hash = md5(seed + state.getValue());
+      if (hash.startsWith("00000")) {
+        return hash;
       }
-    });
+    }
   }
 }

@@ -6,8 +6,12 @@ import java.util.Map;
 
 class Day12 extends Base2016 {
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    result.part1(AssemBunny.execute(loader.ml(Inst::new), Map.of('c', 0)));
-    result.part2(AssemBunny.execute(loader.ml(Inst::new), Map.of('c', 1)));
+  protected Object part1(Loader2 loader) {
+    return AssemBunny.execute(loader.ml(Inst::new), Map.of('c', 0));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return AssemBunny.execute(loader.ml(Inst::new), Map.of('c', 1));
   }
 }

@@ -12,7 +12,16 @@ class Day08 extends Base2016 {
   private static final int NUM_COLS = 50;
 
   @Override
-  protected void run(Loader2 loader, ResultRegistrar result) {
+  protected Object part1(Loader2 loader) {
+    return screen(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return screen(loader, true);
+  }
+
+  private Object screen(Loader2 loader, boolean returnScreen) {
     List<Consumer<boolean[][]>> insts = loader.ml(InstType::generateInstruction);
     boolean[][] grid = new boolean[NUM_ROWS][NUM_COLS];
     insts.stream().forEach((inst) -> inst.accept(grid));
@@ -24,17 +33,19 @@ class Day08 extends Base2016 {
         }
       }
     }
-    result.part1(sum);
-    print(grid);
+    return (returnScreen) ? print(grid) : sum;
   }
 
-  private void print(boolean[][] grid) {
+  private StringBuilder print(boolean[][] grid) {
+    StringBuilder out = new StringBuilder();
+    out.append("\n");
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
-        System.out.print((grid[row][col]) ? '\u25A0' : ' ');  // TODO: use central color
+        out.append((grid[row][col]) ? '\u25A0' : ' ');  // TODO: use central color
       }
-      System.out.println();
+      out.append("\n");
     }
+    return out;
   }
 
   private enum InstType {
