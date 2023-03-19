@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2017.TabletCode.State;
 import java.util.List;
 import java.util.Map;
@@ -11,20 +12,17 @@ import java.util.function.ToIntFunction;
 
 class Day18 extends Base2017 {
   @Override
-  protected void run() throws Throwable {
-    List<ToIntFunction<State>> insts = fullLoader.ml(TabletCode::parse);
-    System.out.println(getSoundBased(insts));
-    System.out.println(getTwoProgramBased(insts));
-  }
-
-  private long getSoundBased(List<ToIntFunction<State>> insts) {
+  protected Object part1(Loader2 loader) {
+    List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
     State state = new State(true);
     state.otherState = state;
     TabletCode.executeState(insts, state);
     return state.recv.pollLast();
   }
 
-  private long getTwoProgramBased(List<ToIntFunction<State>> insts) throws InterruptedException, ExecutionException {
+  @Override
+  protected Object part2(Loader2 loader) throws InterruptedException, ExecutionException {
+    List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
     Lock rcvWaitingLock = new ReentrantLock();
     State state0 = new State(rcvWaitingLock, Map.of('p', 0));
     State state1 = new State(rcvWaitingLock, Map.of('p', 1));

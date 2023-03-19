@@ -1,15 +1,16 @@
 package com.cairns.rich.aoc._2017;
 
-import java.util.List;
+import com.cairns.rich.aoc.Loader2;
 
 class Day09 extends Base2017 {
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
-    for (String input : inputs) {
-      State state = runCleanup(input);
-      System.out.println(state.totalScore + ", " + state.removedNonCancelledGarbage);
-    }
+  protected Object part1(Loader2 loader) {
+    return runCleanup(loader.sl()).totalScore;
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runCleanup(loader.sl()).removedNonCancelledGarbage;
   }
 
   private State runCleanup(String input) {

@@ -1,23 +1,32 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.List;
 import java.util.Stack;
 
 class Day24 extends Base2017 {
   @Override
-  protected void run() {
-    List<Component> components = fullLoader.ml(Component::new);
+  protected Object part1(Loader2 loader) {
+    Multimap<Integer, Component> lookupByPin = getLookupByPin(loader);
+    return maxFrom(new BestBridge(), lookupByPin, new Stack<>(), 0, 0);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Multimap<Integer, Component> lookupByPin = getLookupByPin(loader);
+    BestBridge best = new BestBridge();
+    maxFrom(best, lookupByPin, new Stack<>(), 0, 0);
+    return best.strength;
+  }
+
+  private Multimap<Integer, Component> getLookupByPin(Loader2 loader) {
     Multimap<Integer, Component> lookupByPin = HashMultimap.create();
-    components.forEach((component) -> {
+    loader.ml(Component::new).forEach((component) -> {
       lookupByPin.put(component.first, component);
       lookupByPin.put(component.second, component);
     });
-    BestBridge best = new BestBridge();
-    int strongest = maxFrom(best, lookupByPin, new Stack<>(), 0, 0);
-    System.out.println(strongest);
-    System.out.println(best.strength);
+    return lookupByPin;
   }
 
   private int maxFrom(

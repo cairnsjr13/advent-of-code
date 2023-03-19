@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -8,31 +9,23 @@ import java.util.function.Function;
 
 class Day04 extends Base2017 {
   @Override
-  protected void run() {
-    List<String[]> passphrases = fullLoader.ml((line) -> line.split(" +"));
-    System.out.println(passphrases.stream().filter(this::isSimpleValid).count());
-    System.out.println(passphrases.stream().filter(this::isComplexValid).count());
+  protected Object part1(Loader2 loader) {
+    List<String[]> passphrases = loader.ml((line) -> line.split(" +"));
+    return passphrases.stream().filter((passphrase) -> isValid(passphrase, Function.identity())).count();
   }
 
-  private boolean isSimpleValid(String[] passphrase) {
-    return isValid(passphrase, Function.identity());
-  }
-
-  private boolean isComplexValid(String[] passphrase) {
-    return isValid(passphrase, (word) -> {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<String[]> passphrases = loader.ml((line) -> line.split(" +"));
+    return passphrases.stream().filter((passphrase) -> isValid(passphrase, (word) -> {
       char[] chs = word.toCharArray();
       Arrays.sort(chs);
       return new String(chs);
-    });
+    })).count();
   }
 
   private <T> boolean isValid(String[] passphrase, Function<String, T> transform) {
     Set<T> seen = new HashSet<>();
-    for (String word : passphrase) {
-      if (!seen.add(transform.apply(word))) {
-        return false;
-      }
-    }
-    return true;
+    return Arrays.stream(passphrase).map(transform).allMatch(seen::add);
   }
 }

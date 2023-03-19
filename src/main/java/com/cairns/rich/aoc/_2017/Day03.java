@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import java.util.HashMap;
@@ -8,16 +9,27 @@ import java.util.Map;
 
 class Day03 extends Base2017 {
   @Override
-  protected void run() {
-    int target = 347991;
-
-    System.out.println(computeManhattanDistanceFromCenter(target));
-    System.out.println(part2(target));
-  }
-
-  private int computeManhattanDistanceFromCenter(int target) {
+  protected Object part1(Loader2 loader) {
+    int target = Integer.parseInt(loader.sl());
     ImmutablePoint location = computeLocationOfIndex(target);
     return Math.abs(location.x()) + Math.abs(location.y());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    int target = Integer.parseInt(loader.sl());
+    Map<ImmutablePoint, Integer> cache = new HashMap<>();
+    ImmutablePoint location = new ImmutablePoint(0, 0);
+    computeSumOfNeighbors(cache, location);
+    cache.put(location, 1);
+    for (int i = 2; true; ++i) {
+      location = computeLocationOfIndex(i);
+      int sumOfNeighbors = computeSumOfNeighbors(cache, location);
+      if (sumOfNeighbors > target) {
+        return sumOfNeighbors;
+      }
+      cache.put(location, sumOfNeighbors);
+    }
   }
 
   private ImmutablePoint computeLocationOfIndex(int target) {
@@ -48,21 +60,6 @@ class Day03 extends Base2017 {
       if (sizeOfNextBox >= target) {
         return sizeOfEdge;
       }
-    }
-  }
-
-  private int part2(int target) {
-    Map<ImmutablePoint, Integer> cache = new HashMap<>();
-    ImmutablePoint location = new ImmutablePoint(0, 0);
-    computeSumOfNeighbors(cache, location);
-    cache.put(location, 1);
-    for (int i = 2; true; ++i) {
-      location = computeLocationOfIndex(i);
-      int sumOfNeighbors = computeSumOfNeighbors(cache, location);
-      if (sumOfNeighbors > target) {
-        return sumOfNeighbors;
-      }
-      cache.put(location, sumOfNeighbors);
     }
   }
 

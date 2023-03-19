@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.List;
@@ -14,20 +15,27 @@ class Day19 extends Base2017 {
   );
 
   @Override
-  protected void run() {
-    List<List<Integer>> grid = fullLoader.ml((line) -> line.chars().boxed().collect(Collectors.toList()));
+  protected Object part1(Loader2 loader) {
+    return doSteps(loader, (state) -> state.seen);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return doSteps(loader, (state) -> state.steps);
+  }
+
+  private <T> T doSteps(Loader2 loader, Function<State, T> toAnswer) {
+    List<List<Integer>> grid = loader.ml((line) -> line.chars().boxed().collect(Collectors.toList()));
     MutablePoint location = new MutablePoint(grid.get(0).indexOf((int) '|'), 0);
-    StringBuilder seen = new StringBuilder();
-    int steps = 0;
-    for (ReadDir dir = ReadDir.Down; dir != null; ++steps) {
+    State state = new State();
+    for (ReadDir dir = ReadDir.Down; dir != null; ++state.steps) {
       char ch = charAt(grid, location);
       if (Character.isAlphabetic(ch)) {
-        seen.append(ch);
+        state.seen.append(ch);
       }
       dir = getDirToContinue(grid, location, dir);
     }
-    System.out.println(seen);
-    System.out.println(steps);
+    return toAnswer.apply(state);
   }
 
   private ReadDir getDirToContinue(List<List<Integer>> grid, MutablePoint location, ReadDir curDir) {
@@ -47,5 +55,10 @@ class Day19 extends Base2017 {
 
   private char charAt(List<List<Integer>> grid, MutablePoint location) {
     return (char) grid.get(location.y()).get(location.x()).intValue();
+  }
+
+  private static class State {
+    private final StringBuilder seen = new StringBuilder();
+    private int steps;
   }
 }

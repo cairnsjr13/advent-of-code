@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -14,11 +15,15 @@ import java.util.stream.Collectors;
 
 class Day07 extends Base2017 {
   @Override
-  protected void run() {
-    Map<String, Program> programs = getLookup(fullLoader.ml(Program::new));
+  protected Object part1(Loader2 loader) {
+    return getBottomProgram(getLookup(loader.ml(Program::new)));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Map<String, Program> programs = getLookup(loader.ml(Program::new));
     String bottom = getBottomProgram(programs);
-    System.out.println(bottom);
-    System.out.println(getNeededWeightForIncorrectProgram(programs, bottom));
+    return getNeededWeightForIncorrectProgram(programs, bottom);
   }
 
   private String getBottomProgram(Map<String, Program> programs) {

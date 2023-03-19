@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.Iterator;
@@ -12,21 +13,17 @@ import java.util.stream.IntStream;
 
 class Day20 extends Base2017 {
   @Override
-  protected void run() {
-    List<Particle> particles = fullLoader.ml(Particle::new);
-    System.out.println(getSluggishParticle(particles));
-    System.out.println(getNumParticlesAfterCollision(particles));
-  }
-
-  private int getSluggishParticle(List<Particle> particles) {
+  protected Object part1(Loader2 loader) {
+    List<Particle> particles = loader.ml(Particle::new);
     return getMin(
         IntStream.range(0, particles.size()).boxed().collect(Collectors.toList()),
         (i) -> particles.get(i).acceleration.manhattan()
     );
   }
 
-  private int getNumParticlesAfterCollision(List<Particle> arrayParticles) {
-    LinkedList<Particle> particles = new LinkedList<>(arrayParticles);
+  @Override
+  protected Object part2(Loader2 loader) {
+    LinkedList<Particle> particles = new LinkedList<>(loader.ml(Particle::new));
     for (int i = 0; i < 100; ++i) {
       Multiset<Xyz> seenPositions = HashMultiset.create();
       for (Particle particle : particles) {

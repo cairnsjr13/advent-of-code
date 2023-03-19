@@ -1,17 +1,15 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
+
 class Day17 extends Base2017 {
   @Override
-  protected void run() {
-    System.out.println(getValueAfterFinalCurrentNode(380, 2017));
-    System.out.println(getSecondValue(380, 50_000_000));
-  }
-
-  private int getValueAfterFinalCurrentNode(int stepSize, int lastValue) {
+  protected Object part1(Loader2 loader) {
+    int stepSize = Integer.parseInt(loader.sl());
     Node head = new Node(0);
     head.next = head;
     Node current = head;
-    for (int nextValue = 1; nextValue <= lastValue; ++nextValue) {
+    for (int nextValue = 1; nextValue <= 2017; ++nextValue) {
       for (int i = 0; i < stepSize; ++i) {
         current = current.next;
       }
@@ -22,10 +20,12 @@ class Day17 extends Base2017 {
     return current.next.value;
   }
 
-  private int getSecondValue(int stepSize, int lastValue) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    int stepSize = Integer.parseInt(loader.sl());
     int current = 0;
     int second = 0;
-    for (int nextValueAndCurSize = 1; nextValueAndCurSize <= lastValue; ++nextValueAndCurSize) {
+    for (int nextValueAndCurSize = 1; nextValueAndCurSize <= 50_000_000; ++nextValueAndCurSize) {
       current = (current + stepSize + 1) % nextValueAndCurSize;
       if (current == 0) {
         second = nextValueAndCurSize;

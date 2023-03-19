@@ -1,19 +1,21 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 
-class Day25 extends Base2017 {
+class Day25 extends Base2017 {  // TODO: candidate for multi group parsing
   @Override
-  protected void run() {
-    System.out.println(checksum(simpleMachine(), 'A', 6));
-    System.out.println(checksum(complexMachine(), 'A', 12683008));
-  }
+  protected Object part1(Loader2 loader) {
+    List<String> lines = loader.ml();
+    int numSteps = Integer.parseInt(lines.get(1).split(" ")[5]);
+    Table<Character, Boolean, Action> machine = parseMachine(lines.subList(3, lines.size()));
 
-  private int checksum(Table<Character, Boolean, Action> machine, char state, int numSteps) {
+    char state = 'A';
     Set<Integer> setCells = new HashSet<>();
     Integer location = 0;
     for (int i = 0; i < numSteps; ++i) {
@@ -25,27 +27,20 @@ class Day25 extends Base2017 {
     return setCells.size();
   }
 
-  private Table<Character, Boolean, Action> simpleMachine() {
-    Table<Character, Boolean, Action> machine = HashBasedTable.create();
-    putActions(machine, 'A', new Action(true, 1, 'B'), new Action(false, -1, 'B'));
-    putActions(machine, 'B', new Action(true, -1, 'A'), new Action(true, 1, 'A'));
-    return machine;
-  }
-
-  private Table<Character, Boolean, Action> complexMachine() {
-    Table<Character, Boolean, Action> machine = HashBasedTable.create();
-    putActions(machine, 'A', new Action(true,  1, 'B'), new Action(false, -1, 'B'));
-    putActions(machine, 'B', new Action(true, -1, 'C'), new Action(false, 1, 'E'));
-    putActions(machine, 'C', new Action(true, 1, 'E'), new Action(false, -1, 'D'));
-    putActions(machine, 'D', new Action(true, -1, 'A'), new Action(true, -1, 'A'));
-    putActions(machine, 'E', new Action(false, 1, 'A'), new Action(false, 1, 'F'));
-    putActions(machine, 'F', new Action(true, 1, 'E'), new Action(true, 1, 'A'));
-    return machine;
-  }
-
-  private void putActions(Table<Character, Boolean, Action> machine, char state, Action ifFalse, Action ifTrue) {
-    machine.put(state, false, ifFalse);
-    machine.put(state, true, ifTrue);
+  private Table<Character, Boolean, Action> parseMachine(List<String> lines) {
+    Table<Character, Boolean, Action> states = HashBasedTable.create();
+    for (int i = 0; i < lines.size(); i += 10) {
+      char currentState = safeCharAt(lines.get(i), -2);
+      BiConsumer<Boolean, Integer> statesRegistrar = (isSet, offset) -> {
+        boolean shouldWrite = '1' == safeCharAt(lines.get(offset), -2);
+        int dir = (lines.get(offset + 1).contains("left")) ? -1 : 1;
+        char nextState = safeCharAt(lines.get(offset + 2), -2);
+        states.put(currentState, isSet, new Action(shouldWrite, dir, nextState));
+      };
+      statesRegistrar.accept(false, i + 2);
+      statesRegistrar.accept(true, i + 6);
+    }
+    return states;
   }
 
   private static class Action {

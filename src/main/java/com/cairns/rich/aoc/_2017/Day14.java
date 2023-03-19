@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.Range;
@@ -14,14 +15,13 @@ class Day14 extends Base2017 {
   private static final Range<Integer> valid = Range.closedOpen(0, width);
 
   @Override
-  protected void run() {
-    String input = "stpzcrnm";
-    BitSet grid = buildGrid(input);
-    System.out.println(grid.cardinality());
-    System.out.println(countRegions(grid));
+  protected Object part1(Loader2 loader) {
+    return buildGrid(loader.sl()).cardinality();
   }
 
-  private int countRegions(BitSet grid) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    BitSet grid = buildGrid(loader.sl());
     Set<ImmutablePoint> visited = new HashSet<>();
     int numRegions = 0;
     for (int index = grid.nextSetBit(0); index != -1; index = grid.nextSetBit(index + 1)) {

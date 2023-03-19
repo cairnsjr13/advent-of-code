@@ -1,10 +1,12 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.ToIntFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,15 +14,22 @@ class Day08 extends Base2017 {
   private static final Map<String, TestOp> testOps = EnumUtils.getLookup(TestOp.class);
 
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
+    return runInstructions(loader, (state) -> state.registers.values().stream().mapToInt(Integer::intValue).max().getAsInt());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runInstructions(loader, (state) -> state.highWaterMark);
+  }
+
+  private int runInstructions(Loader2 loader, ToIntFunction<State> toAnswer) {
     State state = new State();
-    int highWaterMark = Integer.MIN_VALUE;
-    for (Inst inst : fullLoader.ml(Inst::new)) {
+    for (Inst inst : loader.ml(Inst::new)) {
       String modifiedRegister = inst.executeAndGetModifiedRegister.apply(state);
-      highWaterMark = Math.max(highWaterMark, state.value(modifiedRegister));
+      state.highWaterMark = Math.max(state.highWaterMark, state.value(modifiedRegister));
     }
-    System.out.println(state.registers.values().stream().mapToInt(Integer::intValue).max().getAsInt());
-    System.out.println(highWaterMark);
+    return toAnswer.applyAsInt(state);
   }
 
   private static class Inst {
@@ -47,6 +56,7 @@ class Day08 extends Base2017 {
 
   private static class State {
     private final Map<String, Integer> registers = new TreeMap<>();
+    private int highWaterMark = Integer.MIN_VALUE;
 
     private int value(String register) {
       return registers.getOrDefault(register, 0);

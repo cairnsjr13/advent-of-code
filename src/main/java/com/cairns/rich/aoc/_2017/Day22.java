@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.HashMap;
@@ -24,19 +25,22 @@ class Day22 extends Base2017 {
       (jump) -> (before) -> safeGet(EnumUtils.enumValues(Status.class), before.ordinal() + jump);
 
   @Override
-  protected void run() {
-    Map<ImmutablePoint, Status> init = parseGrid(fullLoader.ml());
-    System.out.println(getNumInfectionsAfterBursts(10_000, init, simpleTurnLookup, statusLookupFactory.apply(2)));
-    System.out.println(getNumInfectionsAfterBursts(10_000_000, init, complexTurnLookup, statusLookupFactory.apply(1)));
+  protected Object part1(Loader2 loader) {
+    return getNumInfectionsAfterBursts(10_000, loader, simpleTurnLookup, statusLookupFactory.apply(2));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getNumInfectionsAfterBursts(10_000_000, loader, complexTurnLookup, statusLookupFactory.apply(1));
   }
 
   private int getNumInfectionsAfterBursts(
       int numBursts,
-      Map<ImmutablePoint, Status> init,
+      Loader2 loader,
       Map<Status, Function<ReadDir, ReadDir>> turnLookup,
       Function<Status, Status> statusLookup
   ) {
-    Map<ImmutablePoint, Status> grid = new HashMap<>(init);
+    Map<ImmutablePoint, Status> grid = parseGrid(loader.ml());
     ImmutablePoint location = new ImmutablePoint(0, 0);
     ReadDir facing = ReadDir.Up;
     int numInfections = 0;

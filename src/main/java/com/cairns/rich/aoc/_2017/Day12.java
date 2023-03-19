@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -10,11 +11,15 @@ import java.util.Set;
 
 class Day12 extends Base2017 {
   @Override
-  protected void run() {
-    Multimap<Integer, Integer> connections = parse(fullLoader.ml((line) -> line.split(" <-> ")));
-    List<Set<Integer>> groups = computeGroups(connections);
-    System.out.println("Part 1: " + groups.stream().filter((g) -> g.contains(0)).findFirst().get().size());
-    System.out.println("Part 2: " + groups.size());
+  protected Object part1(Loader2 loader) {
+    Multimap<Integer, Integer> connections = parse(loader.ml((line) -> line.split(" <-> ")));
+    return computeGroups(connections).stream().filter((g) -> g.contains(0)).findFirst().get().size();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Multimap<Integer, Integer> connections = parse(loader.ml((line) -> line.split(" <-> ")));
+    return computeGroups(connections).size();
   }
 
   private List<Set<Integer>> computeGroups(Multimap<Integer, Integer> connections) {

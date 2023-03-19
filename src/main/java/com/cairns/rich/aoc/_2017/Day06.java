@@ -1,20 +1,26 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Day06 extends Base2017 {
   @Override
-  protected void run() {
-    doParts(fullLoader.ml(State::new));
+  protected Object part1(Loader2 loader) {
+    return runCycles(loader, (seenStates, state) -> seenStates.size());
   }
 
-  private void doParts(List<State> input) {
-    State state = input.get(0);
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runCycles(loader, (seenStates, state) -> seenStates.size() - seenStates.get(state));
+  }
+
+  private int runCycles(Loader2 loader, BiFunction<Map<State, Integer>, State, Integer> toAnswer) {
+    State state = new State(loader.sl());
     Map<State, Integer> seenStates = new HashMap<>();
     while (!seenStates.containsKey(state)) {
       seenStates.put(state, seenStates.size());
@@ -27,8 +33,7 @@ class Day06 extends Base2017 {
         ++state.banks[index];
       }
     }
-    System.out.println(seenStates.size());
-    System.out.println(seenStates.size() - seenStates.get(state));
+    return toAnswer.apply(seenStates, state);
   }
 
   private int getIndexOfMax(State state) {

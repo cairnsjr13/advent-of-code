@@ -6,9 +6,13 @@ import java.util.function.IntUnaryOperator;
 
 class Day05 extends Base2017 {
   @Override
-  protected void run() {
-    System.out.println(getStepsToEscape(fullLoader, (i) -> 1));
-    System.out.println(getStepsToEscape(fullLoader, (i) -> (i >= 3) ? -1 : 1));
+  protected Object part1(Loader2 loader) {
+    return getStepsToEscape(loader, (i) -> 1);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getStepsToEscape(loader, (i) -> (i >= 3) ? -1 : 1);
   }
 
   private int getStepsToEscape(Loader2 loader, IntUnaryOperator modify) {

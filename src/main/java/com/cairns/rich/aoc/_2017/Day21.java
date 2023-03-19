@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,13 +11,17 @@ import java.util.function.Function;
 
 public class Day21 extends Base2017 {
   @Override
-  protected void run() {
-    Map<State, State> rules = rulesLookup(fullLoader.ml(Rule::new));
-    System.out.println(getNumSetAfter(rules, 5));
-    System.out.println(getNumSetAfter(rules, 18));
+  protected Object part1(Loader2 loader) {
+    return getNumSetAfter(loader, 5);
   }
 
-  private int getNumSetAfter(Map<State, State> rules, int iterations) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getNumSetAfter(loader, 18);
+  }
+
+  private int getNumSetAfter(Loader2 loader, int iterations) {
+    Map<State, State> rules = rulesLookup(loader.ml(Rule::new));
     State state = new State(".#./..#/###");
     for (int i = 0; i < iterations; ++i) {
       state = iterate(rules, state);

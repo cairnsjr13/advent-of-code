@@ -1,20 +1,17 @@
 package com.cairns.rich.aoc._2017;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 
 class Day13 extends Base2017 {
   @Override
-  protected void run() {
-    List<Scanner> scanners = fullLoader.ml(Scanner::new);
-    System.out.println(getSeverityScore(scanners));
-    System.out.println(getDelayToPass(scanners));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Scanner::new).stream().filter((s) -> s.atTopAtTime(s.layer)).mapToInt((s) -> s.depth * s.layer).sum();
   }
 
-  private int getSeverityScore(List<Scanner> scanners) {
-    return scanners.stream().filter((s) -> s.atTopAtTime(s.layer)).mapToInt((s) -> s.depth * s.layer).sum();
-  }
-
-  private int getDelayToPass(List<Scanner> scanners) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Scanner> scanners = loader.ml(Scanner::new);
     for (int d = 0; true; ++d) {
       int delay = d;
       if (!scanners.stream().anyMatch((s) -> s.atTopAtTime(delay + s.layer))) {
