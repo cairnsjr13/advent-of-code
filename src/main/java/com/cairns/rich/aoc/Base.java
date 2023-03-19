@@ -145,7 +145,7 @@ public abstract class Base extends SafeAccessor {
     I getId();
   }
 
-  protected <S> Optional<SearchState<S>> bfs(
+  protected static <S> Optional<SearchState<S>> bfs(
       S initial,
       Predicate<S> search,
       ToLongFunction<SearchState<S>> priorityComputer,
@@ -154,7 +154,7 @@ public abstract class Base extends SafeAccessor {
     return bfs(initial, search, priorityComputer, (state, numSteps, registrar) -> step.accept(state, registrar));
   }
 
-  protected <S> Optional<SearchState<S>> bfs(
+  protected static <S> Optional<SearchState<S>> bfs(
       S initial,
       Predicate<S> search,
       ToLongFunction<SearchState<S>> priorityComputer,
@@ -163,7 +163,7 @@ public abstract class Base extends SafeAccessor {
     return bfs(initial, (state, steps) -> search.test(state), priorityComputer, step);
   }
 
-  protected <S> Optional<SearchState<S>> bfs(
+  protected static <S> Optional<SearchState<S>> bfs(
       S initial,
       BiPredicate<S, Long> searchWithSteps,
       ToLongFunction<SearchState<S>> priorityComputer,
