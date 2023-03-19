@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,16 +11,33 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day14 extends Base2019 {
+  private static final long TRILLION = 1_000_000_000_000L;
+
   @Override
-  protected void run() {
-    Map<String, Reaction> reactions = fullLoader.ml(Reaction::new).stream().collect(Collectors.toMap(
-        (reaction) -> reaction.output.elem,
-        Function.identity()
-    ));
+  protected Object part1(Loader2 loader) {
+    return getOreRequiredForNFuel(Reaction.parse(loader), new MutableLong(0), new HashMap<>(), 1);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Map<String, Reaction> reactions = Reaction.parse(loader);
     MutableLong numOre = new MutableLong(0);
     Map<String, MutableLong> avail = new HashMap<>();
-    System.out.println(getOreRequiredForNFuel(reactions, numOre, avail, 1));
-    System.out.println(getFuelPossibleWithTrillionOre(reactions, numOre, avail, numOre.longValue()));
+    long oreFor1Fuel = getOreRequiredForNFuel(reactions, numOre, avail, 1);
+
+    long minFuel = TRILLION / oreFor1Fuel;
+    long maxFuel = 2 * minFuel;
+    while (minFuel != maxFuel - 1) {
+      long midFuel = (maxFuel + minFuel) / 2;
+      long oreRequired = getOreRequiredForNFuel(reactions, numOre, avail, midFuel);
+      if (oreRequired <= TRILLION) {
+        minFuel = midFuel;
+      }
+      else {
+        maxFuel = midFuel;
+      }
+    }
+    return minFuel;
   }
 
   private long getOreRequiredForNFuel(
@@ -31,28 +49,6 @@ class Day14 extends Base2019 {
     initAvail(numOre, reactions, avail);
     ensureEnough(reactions, numOre, avail, "FUEL", nFuel);
     return numOre.longValue();
-  }
-
-  private long getFuelPossibleWithTrillionOre(
-      Map<String, Reaction> reactions,
-      MutableLong numOre,
-      Map<String, MutableLong> avail,
-      long oreFor1Fuel
-  ) {
-    long trill = 1_000_000_000_000L;
-    long minFuel = trill / oreFor1Fuel;
-    long maxFuel = 2 * minFuel;
-    while (minFuel != maxFuel - 1) {
-      long midFuel = (maxFuel + minFuel) / 2;
-      long oreRequired = getOreRequiredForNFuel(reactions, numOre, avail, midFuel);
-      if (oreRequired <= trill) {
-        minFuel = midFuel;
-      }
-      else {
-        maxFuel = midFuel;
-      }
-    }
-    return minFuel;
   }
 
   private void ensureEnough(
@@ -96,6 +92,13 @@ class Day14 extends Base2019 {
       String[] ioParts = spec.split(" => ");
       this.output = new Component(ioParts[1]);
       this.inputs = Arrays.stream(ioParts[0].split(", ")).map(Component::new).collect(Collectors.toSet());
+    }
+
+    private static Map<String, Reaction> parse(Loader2 loader) {
+      return loader.ml(Reaction::new).stream().collect(Collectors.toMap(
+          (reaction) -> reaction.output.elem,
+          Function.identity()
+      ));
     }
   }
 

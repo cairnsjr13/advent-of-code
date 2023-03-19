@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
@@ -10,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 class Day17 extends Base2019 {
@@ -17,61 +19,64 @@ class Day17 extends Base2019 {
       Map.of('^', ReadDir.Up, '>', ReadDir.Right, 'v', ReadDir.Down, '<', ReadDir.Left);
 
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
+  protected Object part1(Loader2 loader) {
+    return runAndGetAnswer(loader, (state, mapState) -> {
+      StringBuilder path = new StringBuilder();
+      int sumAlignmentParams = 0;
+      Set<ImmutablePoint> visited = new HashSet<>();
+      int numMoveForwards = 0;
+      while (true) {
+        if (mapState.droneCanMove(mapState.droneFacing)) {
+          if (!visited.add(mapState.drone)) {
+            sumAlignmentParams += Math.abs(mapState.drone.x() * mapState.drone.y());
+          }
+          mapState.drone = mapState.drone.move(mapState.droneFacing);
+          ++numMoveForwards;
+        }
+        else {
+          path.append(numMoveForwards);
+          numMoveForwards = 0;
+          ReadDir turn = mapState.droneFacing.turnLeft();
+          char turnCh = 'L';
+          if (!mapState.droneCanMove(turn)) {
+            turn = mapState.droneFacing.turnRight();
+            turnCh = 'R';
+            if (!mapState.droneCanMove(turn)) {
+              //System.out.println(path);   // Uncomment this out and use a text editor find feature to find ABC below
+              return sumAlignmentParams;
+            }
+          }
+          path.append(turnCh);
+          mapState.droneFacing = turn;
+        }
+      }
+    });
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runAndGetAnswer(loader, (state, mapState) -> {
+      Consumer<String> giveInstructions = (inst) -> inst.chars().forEach(state.programInput::put);
+      giveInstructions.accept("A,B,A,B,C,B,C,A,B,C\n"); // Main
+      giveInstructions.accept("R,4,R,10,R,8,R,4\n");    // A
+      giveInstructions.accept("R,10,R,6,R,4\n");        // B
+      giveInstructions.accept("R,4,L,12,R,6,L,12\n");   // C
+      giveInstructions.accept("n\n");                   // no live updating
+      state.blockUntilHalt();
+      while (true) {
+        long val = state.programOutput.take();
+        if (!state.programOutput.hasMoreToTake()) {
+          return val;
+        }
+      }
+    });
+  }
+
+  private <T> T runAndGetAnswer(Loader2 loader, BiFunction<State, MapState, T> toAnswer) {
+    List<Long> program = IntCode.parseProgram(loader);
     program.set(0, 2L);
     State state = IntCode.run(program);
-
-    MapState mapState = parseScaffolding(state.programOutput);
-    System.out.println(getSumAlignmentParams(mapState));
-    System.out.println(getDustCollected(state));
-  }
-
-  private int getSumAlignmentParams(MapState mapState) {
-    int sumAlignmentParams = 0;
-    Set<ImmutablePoint> visited = new HashSet<>();
-    int numMoveForwards = 0;
-    while (true) {
-      if (mapState.droneCanMove(mapState.droneFacing)) {
-        if (!visited.add(mapState.drone)) {
-          sumAlignmentParams += Math.abs(mapState.drone.x() * mapState.drone.y());
-        }
-        mapState.drone = mapState.drone.move(mapState.droneFacing);
-        ++numMoveForwards;
-      }
-      else {
-        System.out.print(numMoveForwards);
-        numMoveForwards = 0;
-        ReadDir turn = mapState.droneFacing.turnLeft();
-        char turnCh = 'L';
-        if (!mapState.droneCanMove(turn)) {
-          turn = mapState.droneFacing.turnRight();
-          turnCh = 'R';
-          if (!mapState.droneCanMove(turn)) {
-            System.out.println();
-            return sumAlignmentParams;
-          }
-        }
-        System.out.print(turnCh);
-        mapState.droneFacing = turn;
-      }
-    }
-  }
-
-  private long getDustCollected(State state) {
-    Consumer<String> giveInstructions = (inst) -> inst.chars().forEach(state.programInput::put);
-    giveInstructions.accept("A,B,A,B,C,B,C,A,B,C\n"); // Main
-    giveInstructions.accept("R,4,R,10,R,8,R,4\n");    // A
-    giveInstructions.accept("R,10,R,6,R,4\n");        // B
-    giveInstructions.accept("R,4,L,12,R,6,L,12\n");   // C
-    giveInstructions.accept("n\n");                   // no live updating
-    state.blockUntilHalt();
-    while (true) {
-      long val = state.programOutput.take();
-      if (!state.programOutput.hasMoreToTake()) {
-        return val;
-      }
-    }
+    return toAnswer.apply(state, parseScaffolding(state.programOutput));
   }
 
   private MapState parseScaffolding(IO programOutput) {

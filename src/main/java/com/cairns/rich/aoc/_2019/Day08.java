@@ -1,14 +1,22 @@
 package com.cairns.rich.aoc._2019;
 
-import org.apache.commons.lang3.StringUtils;
+import com.cairns.rich.aoc.Loader2;
+import java.util.function.Function;
 
 class Day08 extends Base2019 {
   @Override
-  protected void run() {
-    String input = fullLoader.sl();
-    int[][][] image = parseLayerRowCol(input, 25, 6);
-    System.out.println(computeChecksum(image));
-    printImage(image);
+  protected Object part1(Loader2 loader) {
+    return parseAndFind(loader, this::computeChecksum);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return parseAndFind(loader, this::printImage);
+  }
+
+  private <T> T parseAndFind(Loader2 loader, Function<int[][][], T> toAnswer) {
+    int[][][] image = parseLayerRowCol(loader.sl(), 25, 6);
+    return toAnswer.apply(image);
   }
 
   private int computeChecksum(int[][][] image) {
@@ -27,23 +35,22 @@ class Day08 extends Base2019 {
     return fewestZeroLayerCount[1] * fewestZeroLayerCount[2];
   }
 
-  private void printImage(int[][][] image) {
+  private StringBuilder printImage(int[][][] image) {
     char setPixel = 0x2588; // TODO: centralize dark pixel
-    System.out.println(StringUtils.repeat(setPixel, image[0][0].length + 1));
+    StringBuilder out = new StringBuilder("\n");
     for (int row = 0; row < image[0].length; ++row) {
-      System.out.print(setPixel);
       for (int col = 0; col < image[0][0].length; ++col) {
-        System.out.print((isPixelSet(image, row, col)) ? setPixel : ' ');
+        out.append((isPixelSet(image, row, col)) ? setPixel : ' ');
       }
-      System.out.println();
+      out.append("\n");
     }
-    System.out.println(StringUtils.repeat(setPixel, image[0][0].length + 1));
+    return out;
   }
 
   private boolean isPixelSet(int[][][] image, int row, int col) {
     for (int layer = 0; layer < image.length; ++layer) {
       if (image[layer][row][col] != 2) {
-        return image[layer][row][col] == 0;
+        return image[layer][row][col] == 1;
       }
     }
     throw fail(row + ", " + col);

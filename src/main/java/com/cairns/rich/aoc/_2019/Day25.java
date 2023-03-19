@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.google.common.base.Preconditions;
@@ -16,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 class Day25 extends Base2019 {
@@ -26,12 +28,14 @@ class Day25 extends Base2019 {
       Set.of("molten lava", "infinite loop", "giant electromagnet", "escape pod", "photons");
 
   @Override
-  protected void run() throws IOException {
-    List<Long> program = IntCode.parseProgram(fullLoader);
+  protected Object part1(Loader2 loader) {
+    List<Long> program = IntCode.parseProgram(loader);
     State state = IntCode.run(program);
     List<CardDir> pathToSecurityCheckpoint = takeAllSafe(state);
     List<String> items = goToCheckpointAndDropAll(state, pathToSecurityCheckpoint);
-    System.out.println(findPassword(state, items, 0));
+
+    Pattern answerPattern = Pattern.compile("^\\D*(\\d+)\\D*$");
+    return matcher(answerPattern, findPassword(state, items, 0)).group(1);
   }
 
   protected final void interactive(State state) throws IOException {

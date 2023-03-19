@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.HashBasedTable;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -17,13 +18,27 @@ class Day03 extends Base2019 {
   private static final Map<Character, RelDir> dirLookup = EnumUtils.getLookup(RelDir.class);
 
   @Override
-  protected void run() {
-    List<List<Pair<RelDir, Integer>>> routes = fullLoader.ml(this::parse);
+  protected Object part1(Loader2 loader) {
+    return getAnswer(
+        loader,
+        (stepsToForRoute, location) -> Math.abs(location.x()) + Math.abs(location.y())
+    );
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getAnswer(
+        loader,
+        (stepsToForRoute, location) -> stepsToForRoute.column(location).values().stream().mapToInt(Integer::intValue).sum()
+    );
+  }
+
+  private int getAnswer(Loader2 loader, BiFunction<Table<Integer, ImmutablePoint, Integer>, ImmutablePoint, Integer> toScore) {
+    List<List<Pair<RelDir, Integer>>> routes = loader.ml(this::parse);
     List<ImmutablePoint> intersections = new ArrayList<>();
     Table<Integer, ImmutablePoint, Integer> stepsToForRoute = HashBasedTable.create();
     runRoutes(routes, intersections, stepsToForRoute);
-    System.out.println(getAnswer(intersections, this::manhattan));
-    System.out.println(getAnswer(intersections, (i) -> totalStepsTo(stepsToForRoute, i)));
+    return toScore.apply(stepsToForRoute, getMin(intersections, (location) -> toScore.apply(stepsToForRoute, location)));
   }
 
   private void runRoutes(
@@ -50,18 +65,6 @@ class Day03 extends Base2019 {
         }
       }
     }
-  }
-
-  private int getAnswer(List<ImmutablePoint> intersections, Function<ImmutablePoint, Integer> toScore) {
-    return toScore.apply(getMin(intersections, toScore));
-  }
-
-  private int manhattan(ImmutablePoint location) {
-    return Math.abs(location.x()) + Math.abs(location.y());
-  }
-
-  private int totalStepsTo(Table<Integer, ImmutablePoint, Integer> stepsToForRoute, ImmutablePoint location) {
-    return stepsToForRoute.column(location).values().stream().mapToInt(Integer::intValue).sum();
   }
 
   private List<Pair<RelDir, Integer>> parse(String spec) {

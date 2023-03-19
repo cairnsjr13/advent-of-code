@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,34 +10,26 @@ class Day16 extends Base2019 {
   private int[] multiplierGroups = { 0, 1, 0, -1 };
 
   @Override
-  protected void run() {
-    List<Integer> input = fullLoader.sl("", Integer::parseInt);
-    System.out.println(fullImpl(input));
-    System.out.println(offsetImpl(input));
-  }
-
-  private String fullImpl(List<Integer> input) {
+  protected Object part1(Loader2 loader) {
     return exec(
-        new ArrayList<>(input),
+        loader.sl("", Integer::parseInt),
         (in, next, outPos) -> IntStream.range(0, in.size()).map((inPos) -> in.get(inPos) * getMultiplier(outPos, inPos)).sum()
     );
   }
 
-  private String offsetImpl(List<Integer> input) {
-    return exec(
-        buildLargeInput(input),
-        (in, next, outPos) -> in.get(outPos) + ((outPos < next.size() - 1) ? next.get(outPos + 1) : 0)
-    );
-  }
-
-  private List<Integer> buildLargeInput(List<Integer> input) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Integer> input = loader.sl("", Integer::parseInt);
     int offset = getOffset(input);
     List<Integer> largeInput = new ArrayList<>();
     largeInput.addAll(input.subList(offset % input.size(), input.size()));
     for (int i = offset / input.size() + 1; i < 10_000; ++i) {
       largeInput.addAll(input);
     }
-    return largeInput;
+    return exec(
+        largeInput,
+        (in, next, outPos) -> in.get(outPos) + ((outPos < next.size() - 1) ? next.get(outPos + 1) : 0)
+    );
   }
 
   private int getOffset(List<Integer> input) {

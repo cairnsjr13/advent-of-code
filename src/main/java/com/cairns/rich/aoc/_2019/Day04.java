@@ -1,20 +1,25 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.IntPredicate;
 import java.util.stream.IntStream;
 
 class Day04 extends Base2019 {
   @Override
-  protected void run() {
-    int minPassword = 353096;
-    int maxPassword = 843212;
-    System.out.println(numValidPasswords(minPassword, maxPassword, (c) -> c >= 2));
-    System.out.println(numValidPasswords(minPassword, maxPassword, (c) -> c == 2));
+  protected Object part1(Loader2 loader) {
+    return numValidPasswords(loader, (c) -> c >= 2);
   }
 
-  private long numValidPasswords(int min, int max, IntPredicate anyCountTest) {
-    return IntStream.rangeClosed(min, max).filter((password) -> isValid(password, anyCountTest)).count();
+  @Override
+  protected Object part2(Loader2 loader) {
+    return numValidPasswords(loader, (c) -> c == 2);
+  }
+
+  private long numValidPasswords(Loader2 loader, IntPredicate anyCountTest) {
+    List<Integer> minMax = loader.sl("-", Integer::parseInt);
+    return IntStream.rangeClosed(minMax.get(0), minMax.get(1)).filter((password) -> isValid(password, anyCountTest)).count();
   }
 
   private boolean isValid(int password, IntPredicate anyCountTest) {

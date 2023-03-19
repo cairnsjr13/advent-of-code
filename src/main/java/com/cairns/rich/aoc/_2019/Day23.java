@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,14 +8,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 // TODO: The threading synchronization could be better...
 class Day23 extends Base2019 {
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
+  protected Object part1(Loader2 loader) {
+    return runAndGetNatPacketY(loader, (nat) -> nat.firstRecv);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runAndGetNatPacketY(loader, (nat) -> nat.lastRecv);
+  }
+
+  private long runAndGetNatPacketY(Loader2 loader, Function<Nat, Packet> toNatPacket) {
+    List<Long> program = IntCode.parseProgram(loader);
     ConcurrentLinkedDeque<Packet> packetsToSend = new ConcurrentLinkedDeque<>();
     Map<Long, Machine> machines = new HashMap<>();
     List<Computer> computers = IntStream.range(0, 50)
@@ -33,6 +44,7 @@ class Day23 extends Base2019 {
         machines.get(packet.dst).receive(packet);
       }
     }
+    return toNatPacket.apply(nat).y;
   }
 
   private static abstract class Machine {
@@ -47,8 +59,8 @@ class Day23 extends Base2019 {
   }
 
   private static class Nat extends Machine {
-    private boolean hasRecv = false;
-    private Packet lastRecv;
+    private volatile Packet firstRecv;
+    private volatile Packet lastRecv;
     private volatile boolean shouldTerminate = false;
 
     public Nat(List<Computer> computers, ConcurrentLinkedDeque<Packet> packetsToSend) {
@@ -65,7 +77,7 @@ class Day23 extends Base2019 {
           packetsToSend.offer(new Packet(0L, lastRecv.x, lastRecv.y));
           if (!ysSentToAddrZero.add(lastRecv.y)) {
             shouldTerminate = true;
-            System.out.println(lastRecv.y);
+            return;
           }
           lastRecv = null;
         }
@@ -75,9 +87,8 @@ class Day23 extends Base2019 {
 
     @Override
     protected void receive(Packet packet) {
-      if (!hasRecv) {
-        System.out.println(packet.y);
-        hasRecv = true;
+      if (firstRecv == null) {
+        firstRecv = packet;
       }
       lastRecv = packet;
     }

@@ -1,11 +1,13 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.google.common.collect.Table;
 import com.google.common.collect.TreeBasedTable;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 class Day13 extends Base2019 {
   private static final int width = 35;
@@ -19,17 +21,27 @@ class Day13 extends Base2019 {
   );
 
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
+  protected Object part1(Loader2 loader) {
+    return setupGameStateAndGetAnswer(loader, (state, gameState) -> gameState.getNumBlocks());
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return setupGameStateAndGetAnswer(loader, (state, gameState) -> {
+      playGame(state, gameState, false);
+      return gameState.getScore();
+    });
+  }
+
+  private long setupGameStateAndGetAnswer(Loader2 loader, BiFunction<State, GameState, Long> toAnswer) {
+    List<Long> program = IntCode.parseProgram(loader);
     program.set(0, 2L);
     State state = IntCode.run(program);
     state.blockUntilHaltOrWaitForInput();
 
     GameState gameState = new GameState();
     updateGrid(gameState, state.programOutput);
-    System.out.println(gameState.getNumBlocks());
-    playGame(state, gameState, false);
-    print(gameState);
+    return toAnswer.apply(state, gameState);
   }
 
   private void playGame(State state, GameState gameState, boolean print) {
@@ -45,7 +57,7 @@ class Day13 extends Base2019 {
   }
 
   private long computeJoystick(GameState gameState) {
-    return (int) Math.signum(Long.compare(gameState.currentBallX, gameState.currentPaddleX));
+    return (long) Math.signum(Long.compare(gameState.currentBallX, gameState.currentPaddleX));
   }
 
   private void updateGrid(GameState gameState, IO programOutput) {

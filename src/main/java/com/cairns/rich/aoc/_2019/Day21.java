@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.Arrays;
 import java.util.List;
@@ -11,15 +12,9 @@ import java.util.List;
  */
 class Day21 extends Base2019 {
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
-    System.out.println(walkDroid(program));
-    System.out.println(runDroid(program));
-  }
-
-  private long walkDroid(List<Long> program) {
+  protected Object part1(Loader2 loader) {
     return execDroid(
-        program,
+        IntCode.parseProgram(loader),
         "OR A J",
         "AND C J",
         "NOT J J",
@@ -28,9 +23,10 @@ class Day21 extends Base2019 {
     );
   }
 
-  private long runDroid(List<Long> program) {
+  @Override
+  protected Object part2(Loader2 loader) {
     return execDroid(
-        program,
+        IntCode.parseProgram(loader),
         "NOT H J",
         "OR C J",
         "AND B J",
@@ -45,11 +41,9 @@ class Day21 extends Base2019 {
     State state = IntCode.run(program);
     Arrays.stream(cmds).forEach((cmd) -> (cmd + "\n").chars().forEach(state.programInput::put));
     state.blockUntilHalt();
-
-    long val = 0;
-    while (state.programOutput.hasMoreToTake()) {
-      val = state.programOutput.take();
+    while (state.programOutput.queue.size() > 1) {
+      state.programOutput.take();
     }
-    return val;
+    return state.programOutput.take();
   }
 }

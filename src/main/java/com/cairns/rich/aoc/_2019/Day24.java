@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
@@ -22,13 +23,8 @@ class Day24 extends Base2019 {
   );
 
   @Override
-  protected void run() {
-    State state = new State(fullLoader.ml());
-    System.out.println(singleLayerBioDiv(state));
-    System.out.println(numBugsAfter(state, 200));
-  }
-
-  private int singleLayerBioDiv(State state) {
+  protected Object part1(Loader2 loader) {
+    State state = new State(loader.ml());
     Set<State> seenStates = new HashSet<>();
     seenStates.add(state);
     while (true) {
@@ -39,7 +35,10 @@ class Day24 extends Base2019 {
     }
   }
 
-  private int numBugsAfter(State state, int numMinutes) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    int numMinutes = 200;
+    State state = new State(loader.ml());
     for (int i = 0; i < numMinutes; ++i) {
       state = state.next(state.grid.firstKey() - 1, state.grid.lastKey() + 1, this::complexCountNeighbors);
     }

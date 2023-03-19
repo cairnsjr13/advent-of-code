@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import org.apache.commons.lang3.mutable.MutableObject;
 
 class Day15 extends Base2019 {
@@ -20,15 +22,28 @@ class Day15 extends Base2019 {
   );
 
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
-    State state = IntCode.run(program);
+  protected Object part1(Loader2 loader) {
+    return getAnswer(
+        loader,
+        (state, oxygenSystem) -> getMinStepsToOxygenSystem(state, oxygenSystem, new HashMap<>(), new ImmutablePoint(0, 0), 0)
+    );
+  }
 
-    MutableObject<ImmutablePoint> oxygenSystem = new MutableObject<>();
-    HashMap<ImmutablePoint, Character> grid = new HashMap<>();
-    int minStepsToOxygenSystem = getMinStepsToOxygenSystem(state, oxygenSystem, grid, new ImmutablePoint(0, 0), 0);
-    System.out.println(minStepsToOxygenSystem);
-    System.out.println(getTimeToFillSpace(oxygenSystem, grid));
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getAnswer(
+        loader,
+        (state, oxygenSystem) -> {
+          HashMap<ImmutablePoint, Character> grid = new HashMap<>();
+          getMinStepsToOxygenSystem(state, oxygenSystem, grid, new ImmutablePoint(0, 0), 0);
+          return getTimeToFillSpace(oxygenSystem, grid);
+        }
+    );
+  }
+
+  private int getAnswer(Loader2 loader, BiFunction<State, MutableObject<ImmutablePoint>, Integer> toAnswer) {
+    List<Long> program = IntCode.parseProgram(loader);
+    return toAnswer.apply(IntCode.run(program), new MutableObject<>());
   }
 
   private int getMinStepsToOxygenSystem(

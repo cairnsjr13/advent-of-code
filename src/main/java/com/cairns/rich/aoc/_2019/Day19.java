@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.google.common.collect.Range;
 import java.util.LinkedList;
@@ -9,22 +10,9 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day19 extends Base2019 {
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
-    LongBinaryOperator isAffected = (x, y) -> {
-      State state = IntCode.run(program);
-      state.programInput.put(x);
-      state.programInput.put(y);
-      long affected = state.programOutput.take();
-      state.blockUntilHalt();
-      return (int) affected;
-    };
-
-    System.out.println(countNumAffected(isAffected, 50));
-    System.out.println(findSquare(isAffected, 100));
-  }
-
-  private long countNumAffected(LongBinaryOperator isAffected, long maxReach) {
+  protected Object part1(Loader2 loader) {
+    LongBinaryOperator isAffected = generateIsAffected(loader);
+    long maxReach = 50;
     long numAffected = 0;
     Range<Long> above = null;
     for (long y = 0; y < maxReach; ++y) {
@@ -34,7 +22,10 @@ class Day19 extends Base2019 {
     return numAffected;
   }
 
-  private long findSquare(LongBinaryOperator isAffected, long size) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    LongBinaryOperator isAffected = generateIsAffected(loader);
+    int size = 100;
     LinkedList<Pair<Long, Range<Long>>> yAndXRanges = new LinkedList<>();
     Range<Long> above = null;
     for (long y = 0; y < size; ++y) {
@@ -53,6 +44,18 @@ class Day19 extends Base2019 {
       long y = max.getLeft() + 1;
       yAndXRanges.add(Pair.of(y, getXRangeForY(isAffected, y, max.getRight())));
     }
+  }
+
+  private LongBinaryOperator generateIsAffected(Loader2 loader) {
+    List<Long> program = IntCode.parseProgram(loader);
+    return (x, y) -> {
+      State state = IntCode.run(program);
+      state.programInput.put(x);
+      state.programInput.put(y);
+      long affected = state.programOutput.take();
+      state.blockUntilHalt();
+      return affected;
+    };
   }
 
   private Range<Long> getXRangeForY(LongBinaryOperator isAffected, long y, Range<Long> above) {

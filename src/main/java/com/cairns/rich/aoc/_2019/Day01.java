@@ -1,17 +1,20 @@
 package com.cairns.rich.aoc._2019;
 
-import java.util.List;
+import com.cairns.rich.aoc.Loader2;
 
 class Day01 extends Base2019 {
   @Override
-  protected void run() {
-    List<Integer> masses = fullLoader.ml(Integer::parseInt);
-    System.out.println(getFuelReq(masses, false));
-    System.out.println(getFuelReq(masses, true));
+  protected Object part1(Loader2 loader) {
+    return getFuelReq(loader, false);
   }
 
-  private int getFuelReq(List<Integer> masses, boolean recursive) {
-    return masses.stream().mapToInt((m) -> fuelReq(m, recursive)).sum();
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getFuelReq(loader, true);
+  }
+
+  private int getFuelReq(Loader2 loader, boolean recursive) {
+    return loader.ml(Integer::parseInt).stream().mapToInt((m) -> fuelReq(m, recursive)).sum();
   }
 
   private int fuelReq(int mass, boolean recursive) {

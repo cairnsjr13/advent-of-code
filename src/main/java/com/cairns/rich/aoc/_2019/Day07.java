@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.ArrayList;
@@ -11,14 +12,17 @@ import java.util.stream.LongStream;
 
 class Day07 extends Base2019 {
   @Override
-  protected void run() {
-    List<Long> program = IntCode.parseProgram(fullLoader);
-    System.out.println(getMaxThrust(ConnType.Simple, program));
-    System.out.println(getMaxThrust(ConnType.Feedback, program));
+  protected Object part1(Loader2 loader) {
+    return getMaxThrust(loader, ConnType.Simple);
   }
 
-  private long getMaxThrust(ConnType connType, List<Long> program) {
-    return getMaxThrust(connType, program, new ArrayList<>(connType.phases), new ArrayList<>());
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getMaxThrust(loader, ConnType.Feedback);
+  }
+
+  private long getMaxThrust(Loader2 loader, ConnType connType) {
+    return getMaxThrust(connType, IntCode.parseProgram(loader), new ArrayList<>(connType.phases), new ArrayList<>());
   }
 
   private long getMaxThrust(

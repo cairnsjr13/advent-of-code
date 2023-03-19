@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -16,27 +17,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
-import java.util.function.ToLongFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Day18 extends Base2019 {
-  private ReadDir[] dirs = EnumUtils.enumValues(ReadDir.class);
+  private static ReadDir[] dirs = EnumUtils.enumValues(ReadDir.class);
 
   @Override
-  protected void run() {
-    char[][] grid = fullLoader.ml(String::toCharArray).toArray(char[][]::new);
-    List<Table<Character, Character, PathDesc>> pathsByRobot = computePaths(grid);
-    int numKeysNeeded = pathsByRobot.get(0).columnKeySet().size();
-    ToLongFunction<List<Table<Character, Character, PathDesc>>> getFastestSteps = (ps) -> getFastestPathSteps(
-        numKeysNeeded,
-        ps,
+  protected Object part1(Loader2 loader) {
+    return getFastestSteps(loader, (state) -> state.pathsByRobot);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getFastestSteps(loader, (state) -> computePaths(split(state.grid)));
+  }
+
+  private long getFastestSteps(Loader2 loader, Function<State, List<Table<Character, Character, PathDesc>>> toPaths) {
+    State state = new State(loader);
+    List<Table<Character, Character, PathDesc>> paths = toPaths.apply(state);
+    return getFastestPathSteps(
+        state.pathsByRobot.get(0).columnKeySet().size(),
+        paths,
         HashBasedTable.create(),
-        ps.stream().map((i) -> '@').collect(Collectors.toList()),
+        paths.stream().map((i) -> '@').collect(Collectors.toList()),
         new HashSet<>()
     );
-    System.out.println(getFastestSteps.applyAsLong(pathsByRobot));
-    System.out.println(getFastestSteps.applyAsLong(computePaths(split(grid))));
   }
 
   private long getFastestPathSteps(
@@ -83,7 +90,7 @@ class Day18 extends Base2019 {
     }).collect(Collectors.toList());
   }
 
-  private List<Table<Character, Character, PathDesc>> computePaths(char[][]... grids) {
+  private static List<Table<Character, Character, PathDesc>> computePaths(char[][]... grids) {
     return Arrays.stream(grids)
         .map((grid) -> {
           MapState mapState = new MapState(grid);
@@ -143,6 +150,16 @@ class Day18 extends Base2019 {
     private WalkDesc(ImmutablePoint location, Set<Character> keysNeededOnThisPath) {
       this.location = location;
       this.keysNeededOnThisPath = keysNeededOnThisPath;
+    }
+  }
+
+  private static class State {
+    private final char[][] grid;
+    private final List<Table<Character, Character, PathDesc>> pathsByRobot;
+
+    private State(Loader2 loader) {
+      this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+      this.pathsByRobot = computePaths(grid);
     }
   }
 

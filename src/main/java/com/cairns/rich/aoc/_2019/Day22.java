@@ -1,9 +1,9 @@
 package com.cairns.rich.aoc._2019;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Lists;
 import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
@@ -17,30 +17,26 @@ class Day22 extends Base2019 {
   private static BinaryOperator<BigInteger> inverseDealWithIncrementMag = (mag, numCards) -> mag.modInverse(numCards);
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    System.out.println(findIndexOfCard(lines, BigInteger.valueOf(10_007), 2019));
-    System.out.println(findCardInPosition(lines, BigInteger.valueOf(119_315_717_514_047L), 101_741_582_076_661L, 2020));
-  }
-
-  private long findIndexOfCard(List<String> lines, BigInteger numCards, long card) {
+  protected Object part1(Loader2 loader) {
+    BigInteger numCards = BigInteger.valueOf(10_007);
+    long card = 2019;
     return reduce(
-        lines.stream().map((spec) -> new Shuffle(spec, numCards, cutMag, dealWithIncrementMag)),
+        loader.ml((spec) -> new Shuffle(spec, numCards, cutMag, dealWithIncrementMag)).stream(),
         numCards
     ).apply(numCards, card);
   }
 
-  private long findCardInPosition(
-      List<String> lines,
-      BigInteger numCards,
-      Long numFullShuffles,
-      long position
-  ) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    BigInteger numCards = BigInteger.valueOf(119_315_717_514_047L);
+    Long numFullShuffles = 101_741_582_076_661L;
+    long position = 2020;
     return multiple(
         new HashMap<>(),
         reduce(
-            Lists.reverse(lines).stream()
-                .map((spec) -> new Shuffle(spec, numCards, inverseCutMag, inverseDealWithIncrementMag)),
+            Lists.reverse(
+                loader.ml((spec) -> new Shuffle(spec, numCards, inverseCutMag, inverseDealWithIncrementMag))
+            ).stream(),
             numCards
         ),
         numCards,
