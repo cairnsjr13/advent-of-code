@@ -9,7 +9,7 @@ import java.util.function.IntToLongFunction;
 class Day02 extends Base2018 {
   @Override
   protected Object part1(Loader2 loader) {
-    List<String> boxIds = fullLoader.ml();
+    List<String> boxIds = loader.ml();
     IntToLongFunction numWithCount = (target) -> boxIds.stream()
         .map((str) -> str.chars().mapToObj((i) -> (char) i).collect(HashMultiset::create, Multiset::add, Multiset::addAll))
         .filter((cc) -> cc.elementSet().stream().anyMatch((ch) -> target == cc.count(ch)))
@@ -19,7 +19,7 @@ class Day02 extends Base2018 {
 
   @Override
   protected Object part2(Loader2 loader) {
-    List<String> boxIds = fullLoader.ml();
+    List<String> boxIds = loader.ml();
     for (int l = 0; l < boxIds.size(); ++l) {
       String leftBoxId = boxIds.get(l);
       for (int r = l + 1; r < boxIds.size(); ++r) {

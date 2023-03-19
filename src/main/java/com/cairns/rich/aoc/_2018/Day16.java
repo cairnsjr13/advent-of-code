@@ -25,7 +25,7 @@ class Day16 extends Base2018 {
   }
 
   private long runProgram(Loader2 loader, boolean returnProgramOutput) {
-    List<String> lines = fullLoader.ml();
+    List<String> lines = loader.ml();
     List<Spec> specs = new ArrayList<>();
     for (int startIndex = 0; !lines.get(startIndex).isEmpty(); startIndex += 4) {
       specs.add(new Spec(lines, startIndex));

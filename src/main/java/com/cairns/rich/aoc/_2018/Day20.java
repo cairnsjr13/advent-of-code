@@ -30,7 +30,7 @@ class Day20 extends Base2018 {
   }
 
   private long findAnswerFromMinDists(Loader2 loader, Function<Map<ImmutablePoint, Long>, Long> toAnswer) {
-    AndPiece topLevelPiece = parse(fullLoader.sl());
+    AndPiece topLevelPiece = parse(loader.sl());
     ImmutablePoint origin = new ImmutablePoint(0, 0);
     Multimap<ImmutablePoint, ImmutablePoint> doors = HashMultimap.create();
     addDoors(HashMultimap.create(), doors, origin, new LinkedList<>(topLevelPiece.subs));

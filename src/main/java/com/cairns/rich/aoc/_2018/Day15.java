@@ -18,13 +18,13 @@ import org.apache.commons.lang3.mutable.MutableInt;
 class Day15 extends Base2018 {
   @Override
   protected Object part1(Loader2 loader) {
-    char[][] map = fullLoader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] map = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
     return computeOutcome(getResult(map, 3));
   }
 
   @Override
   protected Object part2(Loader2 loader) {
-    char[][] map = fullLoader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] map = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
     for (int elfStrength = 4; true; ++elfStrength) {
       Result result = getResult(map, elfStrength);
       if (result.units.stream().filter(Unit::isElf).allMatch((e) -> e.hp > 0)) {

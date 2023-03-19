@@ -35,7 +35,7 @@ class Day24 extends Base2018 {
   }
 
   private int getFightResultsWhen(Loader2 loader, Predicate<Pair<String, Integer>> when) {
-    List<Group> groups = fullLoader.gDelim("", Group::parseTeam).stream().flatMap(List::stream).collect(Collectors.toList());
+    List<Group> groups = loader.gDelim("", Group::parseTeam).stream().flatMap(List::stream).collect(Collectors.toList());
     for (int immBoost = 0; true; ++immBoost) {
       Pair<String, Integer> result = fight(groups, immBoost);
       if (when.test(result)) {

@@ -19,7 +19,7 @@ class Day08 extends Base2018 {
   }
 
   private int computeAnswer(Loader2 loader, ToIntFunction<Node> toAnswer) {
-    Queue<Integer> inputs = new ArrayDeque<>(fullLoader.sl(" +", Integer::parseInt));
+    Queue<Integer> inputs = new ArrayDeque<>(loader.sl(" +", Integer::parseInt));
     return toAnswer.applyAsInt(new Node(inputs));
   }
 
