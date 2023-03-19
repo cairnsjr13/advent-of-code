@@ -1,17 +1,26 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.function.ToIntFunction;
 
 class Day08 extends Base2018 {
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
+    return computeAnswer(loader, Node::getRecursiveMetadataSum);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return computeAnswer(loader, Node::getValue);
+  }
+
+  private int computeAnswer(Loader2 loader, ToIntFunction<Node> toAnswer) {
     Queue<Integer> inputs = new ArrayDeque<>(fullLoader.sl(" +", Integer::parseInt));
-    Node root = new Node(inputs);
-    System.out.println(root.getRecursiveMetadataSum());
-    System.out.println(root.getValue());
+    return toAnswer.applyAsInt(new Node(inputs));
   }
 
   private static class Node {

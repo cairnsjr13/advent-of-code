@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.BiMap;
@@ -7,7 +8,6 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.HashSet;
@@ -32,23 +32,20 @@ class Day13 extends Base2018 {
   }
 
   @Override
-  protected void run() {
-    char[][] tracks = loadTracks(fullLoader.ml());
-    System.out.println(findFirstCrash(copy(tracks)));
-    System.out.println(findLastCrash(copy(tracks)));
-  }
-
-  private MutablePoint findFirstCrash(char[][] tracks) {
+  protected Object part1(Loader2 loader) {
+    char[][] tracks = loadTracks(loader.ml());
     List<Cart> carts = findCarts(tracks);
     while (true) {
       Optional<Cart> collision = carts.stream().sorted(Cart.cmp).filter((cart) -> cart.move(tracks)).findFirst();
       if (collision.isPresent()) {
-        return collision.get().location;
+        return collision.get().location.x() + "," + collision.get().location.y();
       }
     }
   }
 
-  private MutablePoint findLastCrash(char[][] tracks) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    char[][] tracks = loadTracks(loader.ml());
     List<Cart> carts = findCarts(tracks);
     Set<Cart> crashed = new HashSet<>();
     while (true) {
@@ -59,7 +56,8 @@ class Day13 extends Base2018 {
         tracks[colliding.location.y()][colliding.location.x()] = colliding.onTopOf;
       });
       if (carts.size() - crashed.size() == 1) {
-        return carts.stream().filter((cart) -> !crashed.contains(cart)).findFirst().get().location;
+        MutablePoint lastCollision = carts.stream().filter((cart) -> !crashed.contains(cart)).findFirst().get().location;
+        return lastCollision.x() + "," + lastCollision.y();
       }
     }
   }
@@ -70,10 +68,6 @@ class Day13 extends Base2018 {
 
   private char[][] loadTracks(List<String> lines) {
     return lines.stream().map(String::toCharArray).toArray(char[][]::new);
-  }
-
-  private char[][] copy(char[][] tracks) {
-    return Arrays.stream(tracks).map((arr) -> Arrays.copyOf(arr, arr.length)).toArray((i) -> new char[i][]);
   }
 
   private List<Cart> findCarts(char[][] tracks) {

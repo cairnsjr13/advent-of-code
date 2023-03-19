@@ -1,23 +1,23 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.stream.LongStream;
 
 class Day09 extends Base2018 {
   @Override
-  protected void run() {
-    System.out.println(getHighestScore(9, 25));
-    System.out.println(getHighestScore(10, 1_618));
-    System.out.println(getHighestScore(13, 7_999));
-    System.out.println(getHighestScore(17, 1_104));
-    System.out.println(getHighestScore(21, 6_111));
-    System.out.println(getHighestScore(30, 5_807));
-    System.out.println();
-    System.out.println(getHighestScore(429, 70_901));
-    System.out.println(getHighestScore(429, 7_090_100));
+  protected Object part1(Loader2 loader) {
+    return getHighestScore(loader, 1);
   }
 
-  private long getHighestScore(int numElves, int lastMarble) {
-    long[] elves = new long[numElves];
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getHighestScore(loader, 100);
+  }
+
+  private long getHighestScore(Loader2 loader, int lastMarbleFactor) {
+    String[] input = loader.sl().split(" ");
+    long[] elves = new long[Integer.parseInt(input[0])];
+    int lastMarble = Integer.parseInt(input[6]) * lastMarbleFactor;
     Marble currentMarble = new Marble(0);
     currentMarble.ccw = currentMarble.cw = currentMarble;
 

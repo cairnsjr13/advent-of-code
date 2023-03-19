@@ -1,19 +1,24 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Day11 extends Base2018 {
   @Override
-  protected void run() {
-    int serialNum = 4455;
-    int[][] cells = buildCells(serialNum);
-    System.out.println(findIdOfLargest(cells, List.of(3)));
-    System.out.println(findIdOfLargest(cells, IntStream.range(1, 301).boxed().collect(Collectors.toList())));
+  protected Object part1(Loader2 loader) {
+    int[][] cells = buildCells(Integer.parseInt(loader.sl()));
+    return findIdOfLargest(cells, List.of(3), false);
   }
 
-  private String findIdOfLargest(int[][] cells, Iterable<Integer> sizes) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    int[][] cells = buildCells(Integer.parseInt(loader.sl()));
+    return findIdOfLargest(cells, IntStream.range(1, 301).boxed().collect(Collectors.toList()), true);
+  }
+
+  private String findIdOfLargest(int[][] cells, Iterable<Integer> sizes, boolean includeSize) {
     int[][] sums = buildSums(cells);
     int bestX = -1;
     int bestY = -1;
@@ -38,7 +43,7 @@ class Day11 extends Base2018 {
         }
       }
     }
-    return bestX + "," + bestY + "," + bestSize;
+    return bestX + "," + bestY + ((includeSize) ? "," + bestSize : "");
   }
 
   private int zeroAccess(int[][] cells, int y, int x) {

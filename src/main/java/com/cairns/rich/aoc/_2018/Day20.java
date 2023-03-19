@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.HashMultimap;
@@ -19,14 +20,21 @@ class Day20 extends Base2018 {
   private static final Map<Character, CardDir> dirLookup = EnumUtils.getLookup(CardDir.class);
 
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
+    return findAnswerFromMinDists(loader, (minDists) -> getMax(minDists.values(), Function.identity()));
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findAnswerFromMinDists(loader, (minDists) -> minDists.values().stream().filter((dist) -> dist >= 1000).count());
+  }
+
+  private long findAnswerFromMinDists(Loader2 loader, Function<Map<ImmutablePoint, Long>, Long> toAnswer) {
     AndPiece topLevelPiece = parse(fullLoader.sl());
     ImmutablePoint origin = new ImmutablePoint(0, 0);
     Multimap<ImmutablePoint, ImmutablePoint> doors = HashMultimap.create();
     addDoors(HashMultimap.create(), doors, origin, new LinkedList<>(topLevelPiece.subs));
-    Map<ImmutablePoint, Long> minDists = minDists(doors, origin);
-    System.out.println(getMax(minDists.values(), Function.identity()));
-    System.out.println(minDists.values().stream().filter((dist) -> dist >= 1000).count());
+    return toAnswer.apply(minDists(doors, origin));
   }
 
   private void addDoors(

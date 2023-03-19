@@ -1,15 +1,17 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 class Day25 extends Base2018 {
   @Override
-  protected void run() {
-    List<Star> stars = fullLoader.ml(Star::new);
+  protected Object part1(Loader2 loader) {
+    List<Star> stars = loader.ml(Star::new);
     List<List<Star>> constellations = new LinkedList<>();
     for (Star star : stars) {
       Iterator<List<Star>> itr = constellations.iterator();
@@ -32,7 +34,7 @@ class Day25 extends Base2018 {
       }
       firstConnected.add(star);
     }
-    System.out.println(constellations.size());
+    return constellations.size();
   }
 
   private static class Star {
@@ -43,11 +45,7 @@ class Day25 extends Base2018 {
     }
 
     private int manhattan(Star other) {
-      int manhattan = 0;
-      for (int i = 0; i < coords.length; ++i) {
-        manhattan += Math.abs(coords[i] - other.coords[i]);
-      }
-      return manhattan;
+      return IntStream.range(0, coords.length).map((i) -> Math.abs(coords[i] - other.coords[i])).sum();
     }
   }
 }

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,23 +9,23 @@ import java.util.function.IntPredicate;
 
 class Day12 extends Base2018 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    TreeSet<Integer> plants = buildInit(lines.get(0).split(" ")[2]);
-    Set<Integer> plantRules = buildPlantRules(lines.subList(2, lines.size()));
-    System.out.println(sumIndexesAfterGens(plants, plantRules, 20));
-    System.out.println(sumIndexesLargeGens(plants, plantRules, 10_000));
+  protected Object part1(Loader2 loader) {
+    return sumIndexesAfterGens(loader, 20);
   }
 
-  private long sumIndexesLargeGens(TreeSet<Integer> plants, Set<Integer> plantRules, int chunk) {
-    long numInChunk = sumIndexesAfterGens(plants, plantRules, chunk);
+  @Override
+  protected Object part2(Loader2 loader) {
+    int chunk = 10_000;
+    long numInChunk = sumIndexesAfterGens(loader, chunk);
     long multiplier = (numInChunk / chunk) * chunk;
     long mod = numInChunk % chunk;
     return (50_000_000_000L / chunk) * multiplier + mod;
   }
 
-  private int sumIndexesAfterGens(TreeSet<Integer> init, Set<Integer> plantRules, int numGens) {
-    TreeSet<Integer> plants = new TreeSet<>(init);
+  private int sumIndexesAfterGens(Loader2 loader, int numGens) {
+    List<String> lines = loader.ml();
+    TreeSet<Integer> plants = buildInit(lines.get(0).split(" ")[2]);
+    Set<Integer> plantRules = buildPlantRules(lines.subList(2, lines.size()));
     TreeSet<Integer> nextGen = new TreeSet<>();
     for (int i = 0; i < numGens; ++i) {
       nextGen.clear();

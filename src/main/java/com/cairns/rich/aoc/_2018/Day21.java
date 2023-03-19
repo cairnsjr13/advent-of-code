@@ -1,35 +1,52 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day21 extends Base2018 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    String ipLine = lines.get(0);
-    int instructionRegister = ipLine.charAt(ipLine.length() - 1) - '0';
-    List<Consumer<long[]>> instructions =
-        lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());
+  protected Object part1(Loader2 loader) {
+    return findReg0Value(loader, (state) -> state.firstSeen);
+  }
 
-    MutableLong lastSeen = new MutableLong(-1);
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findReg0Value(loader, (state) -> state.lastSeen);
+  }
+
+  private long findReg0Value(Loader2 loader, ToLongFunction<State> toAnswer) {
+    State state = new State(loader);
     Set<Long> seen = new HashSet<>();
-    OpProgram.run(instructionRegister, instructions, (instructionPtr, registers) -> {
+    OpProgram.run(state.instructionRegister, state.instructions, (instructionPtr, registers) -> {
       if (instructionPtr == 28) {
-        if (lastSeen.longValue() == -1) {
-          System.out.println(registers[4]);
+        if (state.lastSeen == -1) {
+          state.firstSeen = registers[4];
         }
         if (!seen.add(registers[4])) {
           return true;
         }
-        lastSeen.setValue(registers[4]);
+        state.lastSeen = registers[4];
       }
       return false;
     });
-    System.out.println(lastSeen.longValue());
+    return toAnswer.applyAsLong(state);
+  }
+
+  private static class State {
+    private final int instructionRegister;
+    private final List<Consumer<long[]>> instructions;
+    private long firstSeen = -1L;
+    private long lastSeen = -1L;
+
+    private State(Loader2 loader) {
+      List<String> lines = loader.ml();
+      this.instructionRegister = safeCharAt(lines.get(0), -1) - '0';
+      this.instructions = lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());
+    }
   }
 }

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Range;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
@@ -8,6 +9,7 @@ import com.google.common.collect.TreeMultimap;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
@@ -18,19 +20,25 @@ class Day17 extends Base2018 {
   private static final EnumSet<Status> moistStatuses = EnumSet.of(Status.Water, Status.Wet);
 
   @Override
-  protected void run() {
-    long mark = System.currentTimeMillis();
+  protected Object part1(Loader2 loader) {
+    return countTilesAfterDrip(loader, moistStatuses::contains);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return countTilesAfterDrip(loader, Status.Water::equals);
+  }
+
+  private long countTilesAfterDrip(Loader2 loader, Predicate<Status> filter) {
     TreeBasedTable<Integer, Integer, Status> yToXTileStatus = TreeBasedTable.create();
     TreeMultimap<Integer, Integer> yToXClay = TreeMultimap.create();
-    fullLoader.ml().forEach((line) -> addAllClayTiles(line, yToXClay));
+    loader.ml().forEach((line) -> addAllClayTiles(line, yToXClay));
     yToXClay.forEach((y, x) -> yToXTileStatus.put(y, x, Status.Clay));
     int yMin = yToXClay.keySet().first();
 
     drip(yToXTileStatus, yToXClay, 0, 500);
     IntStream.range(0, yMin).forEach((row) -> yToXTileStatus.row(row).clear());
-    System.out.println(yToXTileStatus.cellSet().stream().map(Cell::getValue).filter(moistStatuses::contains).count());
-    System.out.println(yToXTileStatus.cellSet().stream().map(Cell::getValue).filter((s) -> s == Status.Water).count());
-    System.out.println((System.currentTimeMillis() - mark) + "ms");
+    return yToXTileStatus.cellSet().stream().map(Cell::getValue).filter(filter).count();
   }
 
   private void drip(

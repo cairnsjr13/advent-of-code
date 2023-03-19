@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -16,13 +17,14 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day15 extends Base2018 {
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
     char[][] map = fullLoader.ml(String::toCharArray).stream().toArray(char[][]::new);
-    System.out.println(computeOutcome(getResult(map, 3)));
-    System.out.println(getOutcomeOfWeakestNoDeathElfVictory(map));
+    return computeOutcome(getResult(map, 3));
   }
 
-  private int getOutcomeOfWeakestNoDeathElfVictory(char[][] map) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    char[][] map = fullLoader.ml(String::toCharArray).stream().toArray(char[][]::new);
     for (int elfStrength = 4; true; ++elfStrength) {
       Result result = getResult(map, elfStrength);
       if (result.units.stream().filter(Unit::isElf).allMatch((e) -> e.hp > 0)) {

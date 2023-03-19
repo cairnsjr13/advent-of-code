@@ -1,21 +1,29 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class Day19 extends Base2018 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
+  protected Object part1(Loader2 loader) {
+    List<String> lines = loader.ml();
     String ipLine = lines.get(0);
     int instructionRegister = ipLine.charAt(ipLine.length() - 1) - '0';
     List<Consumer<long[]>> instructions =
         lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());
+    long fromOpProgram = OpProgram.run(instructionRegister, instructions)[0];
+    long fromJava = sumOfFactors(919);
+    if (fromOpProgram != fromJava) {
+      throw fail(fromOpProgram + " - " + fromJava);
+    }
+    return fromJava;
+  }
 
-    System.out.println(OpProgram.run(instructionRegister, instructions)[0]);
-    System.out.println(sumOfFactors(919));
-    System.out.println(sumOfFactors(10551319));
+  @Override
+  protected Object part2(Loader2 loader) {
+    return sumOfFactors(10551319);
   }
 
   private int sumOfFactors(int num) {

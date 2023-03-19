@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 import java.util.Comparator;
@@ -15,16 +16,11 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day07 extends Base2018 {
   @Override
-  protected void run() {
-    Multimap<Character, Character> stepDependsOn = buildDeps(fullLoader.ml());
+  protected Object part1(Loader2 loader) {
+    Multimap<Character, Character> stepDependsOn = buildDeps(loader.ml());
     TreeSet<Character> steps = new TreeSet<>();
     steps.addAll(stepDependsOn.keySet());
     steps.addAll(stepDependsOn.values());
-    System.out.println(findWorkOrder(stepDependsOn, steps));
-    System.out.println(timeToComplete(stepDependsOn, steps, 5, 60));
-  }
-
-  private String findWorkOrder(Multimap<Character, Character> stepDependsOn, TreeSet<Character> steps) {
     LinkedHashSet<Character> order = new LinkedHashSet<>();
     while (order.size() < steps.size()) {
       order.add(steps.stream().filter((s) -> !order.contains(s) && canRun(stepDependsOn, order, s)).findFirst().get());
@@ -32,12 +28,15 @@ class Day07 extends Base2018 {
     return order.stream().map(Object::toString).collect(Collectors.joining());
   }
 
-  private int timeToComplete(
-      Multimap<Character, Character> stepDependsOn,
-      TreeSet<Character> stepsLeft,
-      int numWorkers,
-      int timeBuffer
-  ) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    Multimap<Character, Character> stepDependsOn = buildDeps(loader.ml());
+    TreeSet<Character> stepsLeft = new TreeSet<>();
+    stepsLeft.addAll(stepDependsOn.keySet());
+    stepsLeft.addAll(stepDependsOn.values());
+    int numWorkers = 5;
+    int timeBuffer = 60;
+
     Set<Character> finished = new HashSet<>();
     PriorityQueue<Pair<Character, Integer>> workers = new PriorityQueue<>(Comparator.comparing(Pair::getRight));
     int currentTime = 0;

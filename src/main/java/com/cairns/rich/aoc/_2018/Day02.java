@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.List;
@@ -7,13 +8,8 @@ import java.util.function.IntToLongFunction;
 
 class Day02 extends Base2018 {
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
     List<String> boxIds = fullLoader.ml();
-    System.out.println(computeChecksum(boxIds));
-    System.out.println(getEqualCharsOfSimilarBoxes(boxIds));
-  }
-
-  private long computeChecksum(List<String> boxIds) {
     IntToLongFunction numWithCount = (target) -> boxIds.stream()
         .map((str) -> str.chars().mapToObj((i) -> (char) i).collect(HashMultiset::create, Multiset::add, Multiset::addAll))
         .filter((cc) -> cc.elementSet().stream().anyMatch((ch) -> target == cc.count(ch)))
@@ -21,7 +17,9 @@ class Day02 extends Base2018 {
     return numWithCount.applyAsLong(2) * numWithCount.applyAsLong(3);
   }
 
-  private String getEqualCharsOfSimilarBoxes(List<String> boxIds) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<String> boxIds = fullLoader.ml();
     for (int l = 0; l < boxIds.size(); ++l) {
       String leftBoxId = boxIds.get(l);
       for (int r = l + 1; r < boxIds.size(); ++r) {

@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.HashMultiset;
@@ -11,12 +12,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
+import java.util.function.IntBinaryOperator;
 import org.apache.commons.lang3.tuple.Pair;
 
 class Day18 extends Base2018 {
   @Override
-  protected void run() {
-    State[][] map = loadInit(fullLoader.ml());
+  protected Object part1(Loader2 loader) {
+    return getTotalResourceValue(loader, (firstSeenGen, secondSeenGen) -> 10);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getTotalResourceValue(
+        loader,
+        (firstSeenGen, secondSeenGen) -> firstSeenGen + ((1_000_000_000 - firstSeenGen) % (secondSeenGen - firstSeenGen))
+    );
+  }
+
+  private int getTotalResourceValue(Loader2 loader, IntBinaryOperator computeGenToScoreLookupKey) {
+    State[][] map = loadInit(loader.ml());
     Pair<Map<Integer, Integer>, TreeMultimap<Integer, Integer>> results = getScoresUntil3Repeat(map);
     Map<Integer, Integer> genToScore = results.getLeft();
     TreeMultimap<Integer, Integer> scoresFromGen = results.getRight();
@@ -26,10 +40,8 @@ class Day18 extends Base2018 {
     NavigableSet<Integer> gensWithTripleRepeatScore = scoresFromGen.get(tripleRepeatScore);
     int firstSeenGen = gensWithTripleRepeatScore.first();
     int secondSeenGen = gensWithTripleRepeatScore.last(); // the one in the middle is actually a different tree/lumber
-    int targetGen = firstSeenGen + ((1_000_000_000 - firstSeenGen) % (secondSeenGen - firstSeenGen));
 
-    System.out.println(genToScore.get(10));
-    System.out.println(genToScore.get(targetGen));
+    return genToScore.get(computeGenToScoreLookupKey.applyAsInt(firstSeenGen, secondSeenGen));
   }
 
   private Pair<Map<Integer, Integer>, TreeMultimap<Integer, Integer>> getScoresUntil3Repeat(State[][] map) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
@@ -13,13 +14,8 @@ import java.util.function.Function;
 
 class Day06 extends Base2018 {
   @Override
-  protected void run() {
-    State state = new State(fullLoader.ml(this::parse));
-    System.out.println(getLargestNonInfiniteSize(state));
-    System.out.println(getSizeOfSafeRegion(state, 10_000));
-  }
-
-  private int getLargestNonInfiniteSize(State state) {
+  protected Object part1(Loader2 loader) {
+    State state = new State(loader.ml(this::parse));
     Multiset<ImmutablePoint> closestCounts = HashMultiset.create();
     Set<ImmutablePoint> infinites = new HashSet<>();
     for (int x = state.minX; x <= state.maxX; ++x) {
@@ -43,7 +39,10 @@ class Day06 extends Base2018 {
     return closestCounts.count(getMax(closestCounts.elementSet(), closestCounts::count));
   }
 
-  private int getSizeOfSafeRegion(State state, int maxExclusive) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    State state = new State(loader.ml(this::parse));
+    int maxExclusive = 10_000;
     int size = 0;
     for (int x = state.minX; x <= state.maxX; ++x) {
       for (int y = state.minY; y <= state.maxY; ++y) {

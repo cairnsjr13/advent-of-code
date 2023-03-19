@@ -1,10 +1,12 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
@@ -12,20 +14,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day22 extends Base2018 {
   @Override
-  protected void run() {
-    executeFor(510, new ImmutablePoint(10, 10));
-    executeFor(11739, new ImmutablePoint(11, 718));
-  }
-
-  private void executeFor(int depth, ImmutablePoint target) {
-    System.out.println(depth + " - " + target);
-    StatusMap map = new StatusMap(depth, target);
-    System.out.println("Part 1: " + computeRiskLevel(map));
-    System.out.println("Part 2: " + minMinutesToFind(map));
-    System.out.println();
-  }
-
-  private int computeRiskLevel(StatusMap map) {
+  protected Object part1(Loader2 loader) {
+    StatusMap map = new StatusMap(loader);
     int riskLevel = 0;
     for (int y = 0; y <= map.target.y(); ++y) {
       for (int x = 0; x <= map.target.x(); ++x) {
@@ -35,7 +25,9 @@ class Day22 extends Base2018 {
     return riskLevel;
   }
 
-  private long minMinutesToFind(StatusMap map) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    StatusMap map = new StatusMap(loader);
     Table<ImmutablePoint, Tool, Integer> visited = HashBasedTable.create();
     return bfs( // TODO: have custom step sizes in base function
         new State(new ImmutablePoint(0, 0), Tool.Torch, 0),
@@ -95,9 +87,13 @@ class Day22 extends Base2018 {
     private final IntUnaryOperator geoIndexToErosionLevel;
     private final ImmutablePoint target;
 
-    private StatusMap(int depth, ImmutablePoint target) {
-      this.geoIndexToErosionLevel = (geoIndex) -> (geoIndex + depth) % 20183;
-      this.target = target;
+    private StatusMap(Loader2 loader) {
+      List<String> lines = loader.ml();
+      int depth = Integer.parseInt(lines.get(0).split(" ")[1]);
+      String[] targetParts = lines.get(1).split(" ")[1].split(",");
+
+      this.geoIndexToErosionLevel = (geoIndex) -> (geoIndex + depth) % 20_183;
+      this.target = new ImmutablePoint(Integer.parseInt(targetParts[0]), Integer.parseInt(targetParts[1]));
     }
 
     private Status getStatus(ImmutablePoint location) {

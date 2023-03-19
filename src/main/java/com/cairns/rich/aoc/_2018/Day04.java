@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.HashMap;
@@ -14,13 +15,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day04 extends Base2018 {
   @Override
-  protected void run() {
-    List<Action> actions = fullLoader.ml(Action::new); // already sorted
-    System.out.println(getGuardTimesMinuteStrategy1(actions));
-    System.out.println(getGuardTimesMinuteStrategy2(actions));
-  }
-
-  private int getGuardTimesMinuteStrategy1(List<Action> actions) {
+  protected Object part1(Loader2 loader) {
+    List<Action> actions = loader.ml(Action::new);  // already sorted
     Map<Integer, Multiset<Integer>> guardToMinutesAsleep = buildGuardToMinutesAsleep(actions);
     int maxGuard = getMax(guardToMinutesAsleep.keySet(), (guard) -> guardToMinutesAsleep.get(guard).size());
     Multiset<Integer> minutesAsleep = guardToMinutesAsleep.get(maxGuard);
@@ -28,7 +24,9 @@ class Day04 extends Base2018 {
     return maxGuard * maxMinute;
   }
 
-  private int getGuardTimesMinuteStrategy2(List<Action> actions) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Action> actions = loader.ml(Action::new);  // already sorted
     Map<Integer, Multiset<Integer>> guardToMinutesAsleep = buildGuardToMinutesAsleep(actions);
     Stream<Pair<Integer, Integer>> guardAndMinutes = guardToMinutesAsleep.keySet().stream()
         .map((guard) -> guardToMinutesAsleep.get(guard).stream().map((minute) -> Pair.of(guard, minute)))

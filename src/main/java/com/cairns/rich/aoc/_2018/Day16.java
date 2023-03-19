@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc._2018.OpProgram.Op;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -10,10 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day16 extends Base2018 {
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
+    return runProgram(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runProgram(loader, true);
+  }
+
+  private long runProgram(Loader2 loader, boolean returnProgramOutput) {
     List<String> lines = fullLoader.ml();
     List<Spec> specs = new ArrayList<>();
     for (int startIndex = 0; !lines.get(startIndex).isEmpty(); startIndex += 4) {
@@ -23,16 +34,21 @@ class Day16 extends Base2018 {
         .map((line) -> fromStrWithSep(line, " "))
         .collect(Collectors.toList());
 
-    Map<Integer, String> opCodeToName = findOpCodes(specs);
+    MutableLong numSpecsWithAtLeast3Matches = new MutableLong(0);
+    Map<Integer, String> opCodeToName = findOpCodes(specs, numSpecsWithAtLeast3Matches);
+    if (!returnProgramOutput) {
+      return numSpecsWithAtLeast3Matches.getValue();
+    }
+
     long[] registers = new long[4];
     for (int[] inst : program) {
       OpProgram.ops.get(opCodeToName.get(inst[0])).action.accept(registers, inst);
     }
-    System.out.println(registers[0]);
+    return registers[0];
   }
 
-  private Map<Integer, String> findOpCodes(List<Spec> specs) {
-    Multimap<String, Integer> opCodeOptions = getOpCodeOptions(specs);
+  private Map<Integer, String> findOpCodes(List<Spec> specs, MutableLong numSpecsWithAtLeast3Matches) {
+    Multimap<String, Integer> opCodeOptions = getOpCodeOptions(specs, numSpecsWithAtLeast3Matches);
     Map<Integer, String> opCodeToName = new HashMap<>();
     while (opCodeToName.size() != OpProgram.ops.size()) {
       for (String opName : OpProgram.ops.keySet()) {
@@ -47,8 +63,7 @@ class Day16 extends Base2018 {
     return opCodeToName;
   }
 
-  private Multimap<String, Integer> getOpCodeOptions(List<Spec> specs) {
-    int numSpecsWithAtLeast3Matches = 0;
+  private Multimap<String, Integer> getOpCodeOptions(List<Spec> specs, MutableLong numSpecsWithAtLeast3Matches) {
     Multimap<String, Integer> opCodeOptions = HashMultimap.create();
     for (Spec spec : specs) {
       int numMatches = 0;
@@ -61,10 +76,9 @@ class Day16 extends Base2018 {
         }
       }
       if (numMatches >= 3) {
-        ++numSpecsWithAtLeast3Matches;
+        numSpecsWithAtLeast3Matches.increment();
       }
     }
-    System.out.println(numSpecsWithAtLeast3Matches);
     return opCodeOptions;
   }
 

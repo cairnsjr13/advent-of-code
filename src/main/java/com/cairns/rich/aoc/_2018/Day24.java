@@ -1,9 +1,9 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,38 +11,42 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
 class Day24 extends Base2018 {
+  private static final String IMM = "Immune System:";
   private static final Comparator<Group> targetSelectionChooseCmp = Comparator
       .<Group>comparingInt((g) -> -g.effectivePower())
       .thenComparingInt((g) -> -g.initiative);
   private static final Comparator<Group> attackOrderCmp = Comparator.<Group>comparingInt((g) -> -g.initiative);
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    int idxOfBlank = lines.indexOf("");
-    List<Group> allGroups = new ArrayList<>();
-    lines.subList(1, idxOfBlank).stream().map((spec) -> new Group("imm", spec)).forEach(allGroups::add);
-    lines.subList(idxOfBlank + 2, lines.size()).stream().map((spec) -> new Group("inf", spec)).forEach(allGroups::add);
+  protected Object part1(Loader2 loader) {
+    return getFightResultsWhen(loader, (result) -> true);
+  }
 
-    System.out.println(fight(allGroups, 0));
-    for (int immBoost = 1; true; ++immBoost) {
-      Pair<String, Integer> result = fight(allGroups, immBoost);
-      if ("imm".equals(result.getLeft())) {
-        System.out.println(immBoost + " - " + result);
-        break;
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getFightResultsWhen(loader, (result) -> IMM.equals(result.getLeft()));
+  }
+
+  private int getFightResultsWhen(Loader2 loader, Predicate<Pair<String, Integer>> when) {
+    List<Group> groups = fullLoader.gDelim("", Group::parseTeam).stream().flatMap(List::stream).collect(Collectors.toList());
+    for (int immBoost = 0; true; ++immBoost) {
+      Pair<String, Integer> result = fight(groups, immBoost);
+      if (when.test(result)) {
+        return result.getRight();
       }
     }
   }
 
   private Pair<String, Integer> fight(List<Group> allGroups, int immBoost) {
     allGroups = allGroups.stream().map(Group::clone).collect(Collectors.toList());
-    allGroups.stream().filter((g) -> "imm".equals(g.team)).forEach((g) -> g.attackDamage += immBoost);
+    allGroups.stream().filter((g) -> IMM.equals(g.team)).forEach((g) -> g.attackDamage += immBoost);
     while (true) {
       if (shouldStopAfterAttack(allGroups, computeAttacks(allGroups))) {
         return Pair.of(
@@ -117,6 +121,11 @@ class Day24 extends Base2018 {
     private int attackDamage;
     private final AttackType attackType;
     private final int initiative;
+
+    private static List<Group> parseTeam(List<String> lines) {
+      String team = lines.get(0);
+      return lines.subList(1, lines.size()).stream().map((line) -> new Group(team, line)).collect(Collectors.toList());
+    }
 
     private Group(String team, String spec) {
       this.team = team;
