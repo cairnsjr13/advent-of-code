@@ -1,20 +1,17 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 
 class Day05 extends Base2020 {
   @Override
-  protected void run() {
-    List<Integer> seatIds = fullLoader.ml(this::parseSeatId);
-    System.out.println(findHighestSeatId(seatIds));
-    System.out.println(getMissingId(seatIds));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(this::parseSeatId).stream().mapToInt(Integer::intValue).max().getAsInt();
   }
 
-  private int findHighestSeatId(List<Integer> seatIds) {
-    return seatIds.stream().mapToInt(Integer::intValue).max().getAsInt();
-  }
-
-  private int getMissingId(List<Integer> seatIds) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Integer> seatIds = loader.ml(this::parseSeatId);
     seatIds.sort(Integer::compare);
     for (int i = 0; i < seatIds.size(); ++i) {
       if (seatIds.get(i) + 1 != seatIds.get(i + 1)) {

@@ -1,23 +1,21 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import java.util.List;
 
 class Day12 extends Base2020 {
   @Override
-  protected void run() {
-    List<Inst> insts = fullLoader.ml(Inst::new);
-    System.out.println(getManDistanceOfShipMovingInsts(insts));
-    System.out.println(getManDistanceWithWaypointing(insts));
-  }
-
-  private int getManDistanceOfShipMovingInsts(List<Inst> insts) {
+  protected Object part1(Loader2 loader) {
+    List<Inst> insts = loader.ml(Inst::new);
     MutablePoint ship = new MutablePoint(0, 0);
     MutablePoint delta = new MutablePoint(1, 0);
     return getManDistance(insts, ship, ship, delta);
   }
 
-  private int getManDistanceWithWaypointing(List<Inst> insts) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Inst> insts = loader.ml(Inst::new);
     MutablePoint ship = new MutablePoint(0, 0);
     MutablePoint way = new MutablePoint(10, 1);
     return getManDistance(insts, way, ship, way);

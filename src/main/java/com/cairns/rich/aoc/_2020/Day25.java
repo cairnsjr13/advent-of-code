@@ -1,22 +1,24 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
+import java.util.List;
+
 class Day25 extends Base2020 {
   private static final int SUBJECT = 7;
 
   @Override
-  protected void run() {
-    print(5764801, 17807724);
-    print(1965712, 19072108);
-  }
+  protected Object part1(Loader2 loader) {
+    List<Long> input = loader.ml(Long::parseLong);
+    long cardPublic = input.get(0);
+    long doorPublic = input.get(1);
 
-  private void print(long cardPublic, long doorPublic) {
     long cardLoopSize = computeLoopSize(cardPublic);
     long encryption = 1;
     for (long i = 0; i < cardLoopSize; ++i) {
       encryption *= doorPublic;
       encryption %= 20201227;
     }
-    System.out.println(encryption);
+    return encryption;
   }
 
   private long computeLoopSize(long publicKey) {

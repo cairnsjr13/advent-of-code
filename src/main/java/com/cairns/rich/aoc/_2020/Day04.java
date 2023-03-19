@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +26,13 @@ class Day04 extends Base2020 {
   );
 
   @Override
-  protected void run() {
-    List<Passport> passports = fullLoader.gDelim("", Passport::new);
-    System.out.println(count(passports, Passport::hasAllRequired));
-    System.out.println(count(passports, Passport::hasAllRequiredAndAllValid));
+  protected Object part1(Loader2 loader) {
+    return loader.gDelim("", Passport::new).stream().filter(Passport::hasAllRequired).count();
   }
 
-  private long count(List<Passport> passports, Predicate<Passport> filter) {
-    return passports.stream().filter(filter).count();
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.gDelim("", Passport::new).stream().filter(Passport::hasAllRequiredAndAllValid).count();
   }
 
   private static boolean numberValid(String value, long lower, long upper) {

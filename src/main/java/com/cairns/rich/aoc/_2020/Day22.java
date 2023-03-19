@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,10 +11,13 @@ import java.util.stream.Collectors;
 
 class Day22 extends Base2020 {
   @Override
-  protected void run() {
-    List<List<Long>> players = fullLoader.gDelim("", this::parseCards);
-    System.out.println(getScoreOfWinner(players, this::getWinnerOfSimpleGame));
-    System.out.println(getScoreOfWinner(players, this::getWinnerOfComplexGame));
+  protected Object part1(Loader2 loader) {
+    return getScoreOfWinner(loader.gDelim("", this::parseCards), this::getWinnerOfSimpleGame);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getScoreOfWinner(loader.gDelim("", this::parseCards), this::getWinnerOfComplexGame);
   }
 
   private long getScoreOfWinner(List<List<Long>> players, Function<State, Integer> game) {

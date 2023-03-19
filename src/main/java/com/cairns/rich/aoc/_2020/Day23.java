@@ -1,34 +1,28 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 class Day23 extends Base2020 {
   @Override
-  protected void run() {
-    outputSimpleGame("389125467", 10);
-    outputSimpleGame("389125467", 100);
-    outputSimpleGame("685974213", 100);
-    outputComplexGame("389125467", 10_000_000);
-    outputComplexGame("685974213", 10_000_000);
-  }
-
-  private void outputSimpleGame(String input, int numMoves) {
-    Map<Integer, Node> lookup = runGame(input, numMoves, input.length());
+  protected Object part1(Loader2 loader) {
+    String input = loader.sl();
+    StringBuilder out = new StringBuilder();
+    Map<Integer, Node> lookup = runGame(input, 100, input.length());
     Node curCup = lookup.get(1);
     for (int i = 0; i < 8; ++i) {
       curCup = curCup.cw;
-      System.out.print(curCup.label);
+      out.append(curCup.label);
     }
-    System.out.println();
+    return out;
   }
 
-  private void outputComplexGame(String input, int numMoves) {
-    Map<Integer, Node> lookup = runGame(input, numMoves, 1_000_000);
-    Node curCup = lookup.get(1);
-    long output = ((long) curCup.cw.label) * ((long) curCup.cw.cw.label);
-    System.out.println(output);
+  @Override
+  protected Object part2(Loader2 loader) {
+    Node curCup = runGame(loader.sl(), 10_000_000, 1_000_000).get(1);
+    return ((long) curCup.cw.label) * ((long) curCup.cw.cw.label);
   }
 
   private Map<Integer, Node> runGame(String input, int numMoves, int padTo) {

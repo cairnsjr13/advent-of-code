@@ -6,9 +6,13 @@ import java.util.List;
 
 class Day11 extends Base2020 {
   @Override
-  protected void run() {
-    System.out.println(runSimulation(fullLoader, 1, 4));
-    System.out.println(runSimulation(fullLoader, Integer.MAX_VALUE, 5));
+  protected Object part1(Loader2 loader) {
+    return runSimulation(loader, 1, 4);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runSimulation(loader, Integer.MAX_VALUE, 5);
   }
 
   private long runSimulation(Loader2 loader, int maxFactor, int bailThreshold) {

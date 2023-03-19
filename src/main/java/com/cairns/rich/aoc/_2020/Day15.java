@@ -1,21 +1,23 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 class Day15 extends Base2020 {
   @Override
-  protected void run() {
-    int[] inputs = { 6, 4, 12, 1, 20, 0, 16 };
-
-    System.out.println(findValueAfterTurns(2020, inputs));
-    System.out.println(findValueAfterTurns(30_000_000, inputs));
+  protected Object part1(Loader2 loader) {
+    return findValueAfterTurns(loader, 2020);
   }
 
-  private int findValueAfterTurns(int numTurns, int[] inputs) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findValueAfterTurns(loader, 30_000_000);
+  }
+
+  private int findValueAfterTurns(Loader2 loader, int numTurns) {
     State state = new State();
-    IntStream.of(inputs).forEach(state::ingest);
+    loader.sl(",", Integer::parseInt).forEach(state::ingest);
     while (state.ingested < numTurns) {
       state.ingest(state.nextNumber);
     }

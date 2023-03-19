@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,15 +8,18 @@ import java.util.Set;
 
 class Day17 extends Base2020 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    System.out.println("3d -> " + runSimulation(lines, 3));
-    System.out.println("4d -> " + runSimulation(lines, 4));
+  protected Object part1(Loader2 loader) {
+    return runSimulation(loader, 3);
   }
 
-  private int runSimulation(List<String> lines, int dimensions) {
-    Set<Point> grid = parseGrid(lines, dimensions);
-    for (int i = 1; i <= 6; ++i) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runSimulation(loader, 4);
+  }
+
+  private int runSimulation(Loader2 loader, int dimensions) {
+    Set<Point> grid = parseGrid(loader.ml(), dimensions);
+    for (int i = 0; i < 6; ++i) {
       grid = nextStep(grid, dimensions);
     }
     return grid.size();

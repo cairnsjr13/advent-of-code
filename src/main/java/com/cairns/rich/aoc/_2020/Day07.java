@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -8,11 +9,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day07 extends Base2020 {
+  private static final String SHINY_GOLD = "shiny gold";
   @Override
-  protected void run() {
-    Map<String, Rule> rules = getLookup(fullLoader.ml(Rule::new));
-    System.out.println(countNumThatCanContainShinyGold(rules));
-    System.out.println(countNumBagsInside(rules, new HashMap<>(), "shiny gold"));
+  protected Object part1(Loader2 loader) {
+    Map<String, Set<String>> insideCache = new HashMap<>();
+    Map<String, Rule> rules = getLookup(loader.ml(Rule::new));
+    return rules.keySet().stream()
+        .map((bag) -> getAllBags(rules, bag, insideCache))
+        .filter((insides) -> insides.contains(SHINY_GOLD))
+        .count();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return countNumBagsInside(getLookup(loader.ml(Rule::new)), new HashMap<>(), SHINY_GOLD);
   }
 
   private int countNumBagsInside(Map<String, Rule> rules, Map<String, Integer> bagCountCache, String bag) {
@@ -25,14 +35,6 @@ class Day07 extends Base2020 {
       bagCountCache.put(bag, numBags);
     }
     return bagCountCache.get(bag);
-  }
-
-  private long countNumThatCanContainShinyGold(Map<String, Rule> rules) {
-    Map<String, Set<String>> insideCache = new HashMap<>();
-    return rules.keySet().stream()
-        .map((bag) -> getAllBags(rules, bag, insideCache))
-        .filter((insides) -> insides.contains("shiny gold"))
-        .count();
   }
 
   private Set<String> getAllBags(Map<String, Rule> rules, String curBag, Map<String, Set<String>> insideCache) {

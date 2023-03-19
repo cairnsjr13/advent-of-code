@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,15 +8,11 @@ import java.util.stream.Collectors;
 
 class Day13 extends Base2020 {
   @Override
-  protected void run() {
-    List<String> input = fullLoader.ml();
+  protected Object part1(Loader2 loader) {
+    List<String> input = loader.ml();
     double earliest = Double.parseDouble(input.get(0));
     String[] busses = input.get(1).split(",");
-    System.out.println(getWaitTimesBus(earliest, busses));
-    System.out.println(getContestTimestamp(busses));
-  }
 
-  private double getWaitTimesBus(double earliest, String[] busses) {
     double min = Double.MAX_VALUE;
     int minBus = Integer.MAX_VALUE;
 
@@ -32,7 +29,9 @@ class Day13 extends Base2020 {
     return minBus * (min - earliest);
   }
 
-  private long getContestTimestamp(String[] consts) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    String[] consts = loader.ml().get(1).split(",");
     List<Equation> eqs = new ArrayList<>();
     for (int i = 0; i < consts.length; ++i) {
       if (!"x".equals(consts[i])) {

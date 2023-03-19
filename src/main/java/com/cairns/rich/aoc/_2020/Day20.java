@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 // TODO: this could definitely be done better
-// TODO: There is something bizarre where part2 answer is wrong if we change the parsing?  something dependent on itr order
 class Day20 extends Base2020 {
   private static final int[][] monsterDeltaRowAndCols = {
       { 0, 0 },
@@ -31,15 +31,19 @@ class Day20 extends Base2020 {
   );
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml(); // TODO: Candidate for gDelim
-    Map<Long, Tile> tiles = parseTiles(lines);
+  protected Object part1(Loader2 loader) {
+    return fail("Why does part 2 fail if this is implemented :-(  something is dependent on itr order.  static state?");
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Map<Long, Tile> tiles = parseTiles(loader.ml());
     Set<Connection> cornerConnections = findCornerConnections(tiles);
     System.out.println(productOfCorners(cornerConnections));
 
     boolean[][] picture = buildPicture(tiles, cornerConnections);
     int numMonsters = getNumMonsters(picture);
-    System.out.println(countAll(picture) - numMonsters * monsterDeltaRowAndCols.length);
+    return countAll(picture) - numMonsters * monsterDeltaRowAndCols.length;
   }
 
   private int getNumMonsters(boolean[][] picture) {
@@ -299,7 +303,7 @@ class Day20 extends Base2020 {
   }
 
   private static class Tile implements HasId<Long> {
-    private static Multimap<String, Long> edgeToId = HashMultimap.create();
+    private static Multimap<String, Long> edgeToId = HashMultimap.create(); // any other type of map and it breaks
 
     private final long id;
     private final List<String> rows;

@@ -1,20 +1,18 @@
 package com.cairns.rich.aoc._2020;
 
-import java.util.List;
-import java.util.function.Predicate;
+import com.cairns.rich.aoc.Loader2;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day02 extends Base2020 {
   @Override
-  protected void run() {
-    List<Password> passwords = fullLoader.ml(Password::new);
-    System.out.println(countValids(passwords, Password::part1IsValid));
-    System.out.println(countValids(passwords, Password::part2IsValid));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Password::new).stream().filter(Password::part1IsValid).count();
   }
 
-  private long countValids(List<Password> passwords, Predicate<Password> test) {
-    return passwords.stream().filter(test).count();
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.ml(Password::new).stream().filter(Password::part2IsValid).count();
   }
 
   private static class Password {

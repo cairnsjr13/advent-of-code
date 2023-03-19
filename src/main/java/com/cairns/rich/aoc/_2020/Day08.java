@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2020;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,8 @@ import java.util.OptionalInt;
 
 class Day08 extends Base2020 {
   @Override
-  protected void run() {
-    List<Instruction> instructions = fullLoader.ml(Instruction::new);
-    System.out.println(runUntilBeforeLoopGetAccumulator(instructions));
-    System.out.println(getAccumulatorOnTerminate(instructions));
-  }
-
-  private int runUntilBeforeLoopGetAccumulator(List<Instruction> instructions) {
+  protected Object part1(Loader2 loader) {
+    List<Instruction> instructions = loader.ml(Instruction::new);
     State state = new State();
     while (!state.executedInstructions.get(state.instructionIndex)) {
       state.execute(instructions);
@@ -22,7 +18,9 @@ class Day08 extends Base2020 {
     return state.accumulator;
   }
 
-  private int getAccumulatorOnTerminate(List<Instruction> instructions) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Instruction> instructions = loader.ml(Instruction::new);
     for (int i = 0; i < instructions.size(); ++i) {
       Instruction instruction = instructions.get(i);
       if (instruction.instructionType == InstructionType.Acc) {

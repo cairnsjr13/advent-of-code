@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,13 +8,16 @@ import java.util.Map;
 
 class Day14 extends Base2020 {
   @Override
-  protected void run() {
-    List<Inst> insts = fullLoader.ml(Inst::parse);
-    System.out.println(runSimulation(1, insts));
-    System.out.println(runSimulation(2, insts));
+  protected Object part1(Loader2 loader) {
+    return runSimulation(loader.ml(Inst::parse), 1);
   }
 
-  private long runSimulation(int version, List<Inst> insts) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return runSimulation(loader.ml(Inst::parse), 2);
+  }
+
+  private long runSimulation(List<Inst> insts, int version) {
     State state = new State(version);
     insts.stream().forEach((inst) -> inst.apply(state));
     return state.memory.values().stream().mapToLong(Long::longValue).sum();

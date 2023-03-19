@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,14 +11,14 @@ import java.util.function.Function;
 
 class Day09 extends Base2020 {
   @Override
-  protected void run() {
-    List<Long> nums = fullLoader.ml(Long::parseLong);
-    long firstIncorrect = findFirstIncorrect(nums);
-    System.out.println(firstIncorrect);
-    System.out.println(sumSmallestAndLargestInExploit(firstIncorrect, nums));
+  protected Object part1(Loader2 loader) {
+    return findFirstIncorrect(loader.ml(Long::parseLong));
   }
 
-  private long sumSmallestAndLargestInExploit(long target, List<Long> nums) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Long> nums = loader.ml(Long::parseLong);
+    long target = findFirstIncorrect(nums);
     List<Long> sumTo = new ArrayList<>();
     Map<Long, Integer> lookup = new HashMap<>();
     long total = 0;

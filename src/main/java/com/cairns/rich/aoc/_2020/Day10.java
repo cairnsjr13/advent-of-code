@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -9,16 +10,8 @@ import java.util.stream.IntStream;
 
 class Day10 extends Base2020 {
   @Override
-  protected void run() {
-    List<Integer> adapters = fullLoader.ml(Integer::parseInt);
-    adapters.add(0);
-    Collections.sort(adapters);
-    adapters.add(adapters.get(adapters.size() - 1) + 3);
-    System.out.println(computeVoltageJumpProduct(adapters));
-    System.out.println(computeNumWalks(adapters));
-  }
-
-  private int computeVoltageJumpProduct(List<Integer> adapters) {
+  protected Object part1(Loader2 loader) {
+    List<Integer> adapters = getAdapters(loader);
     int numOnes = 0;
     int numThrees = 0;
     for (int i = 0; i < adapters.size() - 1; ++i) {
@@ -34,7 +27,9 @@ class Day10 extends Base2020 {
     return numOnes * numThrees;
   }
 
-  private long computeNumWalks(List<Integer> adapters) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Integer> adapters = getAdapters(loader);
     Map<Integer, Long> walkCache = new HashMap<>();
     List<Integer> jumps = IntStream.range(0, adapters.size() - 1)
         .map((i) -> adapters.get(i + 1) - adapters.get(i))
@@ -46,6 +41,14 @@ class Day10 extends Base2020 {
       jumps = jumps.subList(indexOfThree + 1, jumps.size());
     }
     return numWalks;
+  }
+
+  private List<Integer> getAdapters(Loader2 loader) {
+    List<Integer> adapters = loader.ml(Integer::parseInt);
+    adapters.add(0);
+    Collections.sort(adapters);
+    adapters.add(adapters.get(adapters.size() - 1) + 3);
+    return adapters;
   }
 
   private long computeWalksInRange(Map<Integer, Long> walkCache, int size) {

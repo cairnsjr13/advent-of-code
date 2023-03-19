@@ -1,14 +1,18 @@
 package com.cairns.rich.aoc._2020;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.List;
 
 class Day06 extends Base2020 {
   @Override
-  protected void run() {
-    List<Group> groups = fullLoader.gDelim("", Group::new);
-    System.out.println(groups.stream().mapToLong(Group::numAny).sum());
-    System.out.println(groups.stream().mapToLong(Group::numAll).sum());
+  protected Object part1(Loader2 loader) {
+    return loader.gDelim("", Group::new).stream().mapToLong(Group::numAny).sum();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.gDelim("", Group::new).stream().mapToLong(Group::numAll).sum();
   }
 
   private static class Group {
