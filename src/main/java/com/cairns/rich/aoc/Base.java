@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.NotImplementedException;
 
 public abstract class Base extends SafeAccessor {
+  public static final char DARK_PIXEL = 0x2588;
   private static final ExecutorService daemonExec = Executors.newCachedThreadPool((r) -> {
     Thread thread = new Thread(r);
     thread.setDaemon(true);

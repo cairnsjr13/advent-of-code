@@ -90,7 +90,7 @@ class Day10 extends Base2018 {
       int maxY = getMax(points, (p) -> p.y()).y();
       for (int y = minY; y <= maxY; ++y) {
         for (MutablePoint point = new MutablePoint(minX, y); point.x() <= maxX; point.move(ReadDir.Right)) {
-          out.append((points.contains(point)) ? 0x2588 : ' ');  // TODO: centralize dark pixel
+          out.append((points.contains(point)) ? DARK_PIXEL : ' ');
         }
         out.append("\n");
       }

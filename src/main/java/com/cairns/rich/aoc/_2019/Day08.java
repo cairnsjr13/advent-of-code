@@ -36,11 +36,10 @@ class Day08 extends Base2019 {
   }
 
   private StringBuilder printImage(int[][][] image) {
-    char setPixel = 0x2588; // TODO: centralize dark pixel
     StringBuilder out = new StringBuilder("\n");
     for (int row = 0; row < image[0].length; ++row) {
       for (int col = 0; col < image[0][0].length; ++col) {
-        out.append((isPixelSet(image, row, col)) ? setPixel : ' ');
+        out.append((isPixelSet(image, row, col)) ? DARK_PIXEL : ' ');
       }
       out.append("\n");
     }

@@ -14,7 +14,7 @@ class Day13 extends Base2019 {
   private static final int height = 21;
   private static final Map<Long, Character> display = Map.of(
       0L, ' ',
-      1L, (char) 0x2588,  // TODO: centralize dark color
+      1L, DARK_PIXEL,
       2L, 'X',
       3L, '-',
       4L, 'o'

@@ -24,12 +24,11 @@ class Day11 extends Base2019 {
     int maxX = getMax(map.keySet(), ImmutablePoint::x).x();
     int minY = getMin(map.keySet(), ImmutablePoint::y).y();
     int maxY = getMax(map.keySet(), ImmutablePoint::y).y();
-    char setPixel = 0x2588; // TODO: Use centralized pixel color
     StringBuilder out = new StringBuilder();
     out.append("\n");
     for (int y = minY; y <= maxY; ++y) {
       for (int x = minX; x <= maxX; ++x) {
-        out.append((map.getOrDefault(new ImmutablePoint(x, y), 0L) == 0L) ? ' ' : setPixel);
+        out.append((map.getOrDefault(new ImmutablePoint(x, y), 0L) == 0L) ? ' ' : DARK_PIXEL);
       }
       out.append("\n");
     }

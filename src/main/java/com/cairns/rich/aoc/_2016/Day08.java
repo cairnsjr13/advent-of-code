@@ -41,7 +41,7 @@ class Day08 extends Base2016 {
     out.append("\n");
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
-        out.append((grid[row][col]) ? '\u25A0' : ' ');  // TODO: use central color
+        out.append((grid[row][col]) ? DARK_PIXEL : ' ');
       }
       out.append("\n");
     }

@@ -27,7 +27,7 @@ class Day13 extends Base2021 {
     out.append("\n");
     for (int r = minR; r <= maxR; ++r) {
       for (int c = minC; c <= maxC; ++c) {
-        out.append((points.contains(new ImmutablePoint(c, r)) ? 0x2588 : ' ')); // TODO: centralize dark pixel
+        out.append((points.contains(new ImmutablePoint(c, r)) ? DARK_PIXEL : ' '));
       }
       out.append("\n");
     }

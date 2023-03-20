@@ -44,7 +44,7 @@ class Day10 extends Base2022 {
       interestingSum.add(x * cycle);
     }
     int pixel = (cycle - 1) % screenWidth;
-    screen.append((Math.abs(x - pixel) <= 1) ? 0x2588 : ' '); // TODO: centralize dark pixel
+    screen.append((Math.abs(x - pixel) <= 1) ? DARK_PIXEL : ' ');
     if (pixel == (screenWidth - 1)) {
       screen.append('\n');
     }
