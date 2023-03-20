@@ -41,7 +41,7 @@ class Day22 extends Base2017 {
       Function<Status, Status> statusLookup
   ) {
     Map<ImmutablePoint, Status> grid = parseGrid(loader.ml());
-    ImmutablePoint location = new ImmutablePoint(0, 0);
+    ImmutablePoint location = ImmutablePoint.origin;
     ReadDir facing = ReadDir.Up;
     int numInfections = 0;
     for (int i = 0; i < numBursts; ++i) {

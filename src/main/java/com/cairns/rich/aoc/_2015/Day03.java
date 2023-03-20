@@ -31,7 +31,7 @@ class Day03 extends Base2015 {
 
   private int numUniqueHouses(String input, int numSantas) {
     Set<ImmutablePoint> seen = new HashSet<>();
-    seen.add(new ImmutablePoint(0, 0));
+    seen.add(ImmutablePoint.origin);
     List<MutablePoint> santas =
         IntStream.range(0, numSantas).mapToObj((i) -> new MutablePoint(0, 0)).collect(Collectors.toList());
     for (int i = 0; i < input.length();) {

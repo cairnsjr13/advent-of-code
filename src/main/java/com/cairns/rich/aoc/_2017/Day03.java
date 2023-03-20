@@ -19,7 +19,7 @@ class Day03 extends Base2017 {
   protected Object part2(Loader2 loader) {
     int target = Integer.parseInt(loader.sl());
     Map<ImmutablePoint, Integer> cache = new HashMap<>();
-    ImmutablePoint location = new ImmutablePoint(0, 0);
+    ImmutablePoint location = ImmutablePoint.origin;
     computeSumOfNeighbors(cache, location);
     cache.put(location, 1);
     for (int i = 2; true; ++i) {

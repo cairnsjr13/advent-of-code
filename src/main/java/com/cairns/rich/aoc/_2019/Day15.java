@@ -25,7 +25,7 @@ class Day15 extends Base2019 {
   protected Object part1(Loader2 loader) {
     return getAnswer(
         loader,
-        (state, oxygenSystem) -> getMinStepsToOxygenSystem(state, oxygenSystem, new HashMap<>(), new ImmutablePoint(0, 0), 0)
+        (state, oxygenSystem) -> getMinStepsToOxygenSystem(state, oxygenSystem, new HashMap<>(), ImmutablePoint.origin, 0)
     );
   }
 
@@ -35,7 +35,7 @@ class Day15 extends Base2019 {
         loader,
         (state, oxygenSystem) -> {
           HashMap<ImmutablePoint, Character> grid = new HashMap<>();
-          getMinStepsToOxygenSystem(state, oxygenSystem, grid, new ImmutablePoint(0, 0), 0);
+          getMinStepsToOxygenSystem(state, oxygenSystem, grid, ImmutablePoint.origin, 0);
           return getTimeToFillSpace(oxygenSystem, grid);
         }
     );

@@ -22,7 +22,7 @@ class Day15 extends Base2021 {
     int[][] risks = loader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
     Cave cave = new Cave(repeat, risks);
     Map<ImmutablePoint, Integer> shortestPaths = new HashMap<>();
-    ImmutablePoint start = new ImmutablePoint(0, 0);
+    ImmutablePoint start = ImmutablePoint.origin;
     shortestPaths.put(start, 0);
 
     ImmutablePoint best = bfs(

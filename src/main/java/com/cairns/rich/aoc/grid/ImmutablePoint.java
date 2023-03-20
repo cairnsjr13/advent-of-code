@@ -6,6 +6,8 @@ package com.cairns.rich.aoc.grid;
  * original unchanged.  Because of this, it is important to be careful with memory usage.
  */
 public class ImmutablePoint extends Point<ImmutablePoint> {
+  public static final ImmutablePoint origin = new ImmutablePoint(0, 0);
+
   public ImmutablePoint(Point<?> copy) {
     this(copy.x, copy.y);
   }

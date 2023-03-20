@@ -27,7 +27,7 @@ class Day17 extends Base2016 {
   protected Object part1(Loader2 loader) {
     String prefix = loader.sl();
     return bfs(
-        new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
+        new State(prefix, ImmutablePoint.origin, new ArrayList<>()),
         (s) -> s.location.equals(target),
         (ss) -> ss.state.path.size(),
         this::explore
@@ -39,7 +39,7 @@ class Day17 extends Base2016 {
     String prefix = loader.sl();
     MutableInt maxLength = new MutableInt(0);
     bfs(
-        new State(prefix, new ImmutablePoint(0, 0), new ArrayList<>()),
+        new State(prefix, ImmutablePoint.origin, new ArrayList<>()),
         (s) -> false,
         (ss) -> ss.state.path.size(),
         (candidate, registrar) -> {

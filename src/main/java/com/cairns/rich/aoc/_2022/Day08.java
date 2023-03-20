@@ -28,7 +28,7 @@ class Day08 extends Base2022 {
   protected Object part2(Loader2 loader) {
     List<String> lines = loader.ml();
     int maxScenicScore = 0;
-    for (ImmutablePoint start = new ImmutablePoint(0, 0); inBounds(lines, start); start = start.move(ReadDir.Down)) {
+    for (ImmutablePoint start = ImmutablePoint.origin; inBounds(lines, start); start = start.move(ReadDir.Down)) {
       for (ImmutablePoint from = start; inBounds(lines, from); from = from.move(ReadDir.Right)) {
         maxScenicScore = Math.max(maxScenicScore, findScenicScore(lines, from));
       }
@@ -37,7 +37,7 @@ class Day08 extends Base2022 {
   }
 
   private Table<ImmutablePoint, ReadDir, ReadDir> buildWalks(List<String> lines) {
-    ImmutablePoint topLeft = new ImmutablePoint(0, 0);
+    ImmutablePoint topLeft = ImmutablePoint.origin;
     ImmutablePoint bottomRight = new ImmutablePoint(lines.get(0).length() - 1, lines.size() - 1);
     Table<ImmutablePoint, ReadDir, ReadDir> walks = HashBasedTable.create();
     walks.put(topLeft, ReadDir.Right, ReadDir.Down);

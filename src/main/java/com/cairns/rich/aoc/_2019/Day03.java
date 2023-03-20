@@ -49,7 +49,7 @@ class Day03 extends Base2019 {
     for (int routeI = 0; routeI < routes.size(); ++routeI) {
       List<Pair<RelDir, Integer>> route = routes.get(routeI);
       int numStepsForRoute = 0;
-      ImmutablePoint cur = new ImmutablePoint(0, 0);
+      ImmutablePoint cur = ImmutablePoint.origin;
       for (Pair<RelDir, Integer> move : route) {
         RelDir dir = move.getLeft();
         int numMoves = move.getRight();

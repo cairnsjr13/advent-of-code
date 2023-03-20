@@ -25,7 +25,7 @@ class Day09 extends Base2022 {
   private int numTailVists(Loader2 loader, int numKnots) {
     Set<ImmutablePoint> tailVisited = new HashSet<>();
     List<ImmutablePoint> knots =
-        IntStream.range(0, numKnots).mapToObj((i) -> new ImmutablePoint(0, 0)).collect(Collectors.toList());
+        IntStream.range(0, numKnots).mapToObj((i) -> ImmutablePoint.origin).collect(Collectors.toList());
     tailVisited.add(knots.get(knots.size() - 1));
     for (Inst inst : loader.ml(Inst::new)) {
       for (int i = 0; i < inst.magnitude; ++i) {

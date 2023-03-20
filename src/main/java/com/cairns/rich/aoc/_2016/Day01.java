@@ -29,7 +29,7 @@ class Day01 extends Base2016 {
     Set<ImmutablePoint> seen = new HashSet<>();
 
     CardDir dir = CardDir.North;
-    ImmutablePoint location = new ImmutablePoint(0, 0);
+    ImmutablePoint location = ImmutablePoint.origin;
     for (String instruction : instructions) {
       dir = turns.get(instruction.charAt(0)).apply(dir);
       int steps = Integer.parseInt(instruction.substring(1));

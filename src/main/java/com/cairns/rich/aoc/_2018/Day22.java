@@ -30,7 +30,7 @@ class Day22 extends Base2018 {
     StatusMap map = new StatusMap(loader);
     Table<ImmutablePoint, Tool, Integer> visited = HashBasedTable.create();
     return bfs( // TODO: have custom step sizes in base function
-        new State(new ImmutablePoint(0, 0), Tool.Torch, 0),
+        new State(ImmutablePoint.origin, Tool.Torch, 0),
         (s) -> s.location.equals(map.target) && (s.equiped == Tool.Torch),
         (ss) -> ss.state.weight(map),
         (current, registrar) -> {

@@ -38,7 +38,7 @@ class Day11 extends Base2019 {
   private Map<ImmutablePoint, Long> runWithStartingSquare(List<Long> program, long start) {
     State state = IntCode.run(program);
     ReadDir facing = ReadDir.Up;
-    ImmutablePoint current = new ImmutablePoint(0, 0);
+    ImmutablePoint current = ImmutablePoint.origin;
     Map<ImmutablePoint, Long> panels = new HashMap<>();
     panels.put(current, start);
     while (true) {
