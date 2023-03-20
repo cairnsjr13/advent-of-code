@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,20 +15,21 @@ class Day05 extends Base2022 {
   private static final Pattern movePattern = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
+  protected Object part1(Loader2 loader) {
+    return calculateHeadOfStacksAfterMoves(loader, ArrayDeque::pollFirst);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return calculateHeadOfStacksAfterMoves(loader, ArrayDeque::pollLast);
+  }
+
+  private String calculateHeadOfStacksAfterMoves(Loader2 loader, Function<ArrayDeque<Character>, Character> fromTemp) {
+    List<String> lines = loader.ml();
     int emptyLine = lines.indexOf("");
     List<String> init = lines.subList(0, emptyLine);
     List<String> moves = lines.subList(emptyLine + 1, lines.size());
-    System.out.println(calculateHeadOfStacksAfterMoves(ArrayDeque::pollFirst, init, moves));
-    System.out.println(calculateHeadOfStacksAfterMoves(ArrayDeque::pollLast, init, moves));
-  }
 
-  private String calculateHeadOfStacksAfterMoves(
-      Function<ArrayDeque<Character>, Character> fromTemp,
-      List<String> init,
-      List<String> moves
-  ) {
     List<Stack<Character>> stacks = initStacks(init);
     ArrayDeque<Character> temp = new ArrayDeque<>();
     for (String move : moves) {

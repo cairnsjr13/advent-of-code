@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +8,15 @@ import java.util.function.BinaryOperator;
 
 class Day21 extends Base2022 {
   @Override
-  protected void run() {
-    Map<String, Monkey> lookup = getLookup(fullLoader.ml(Monkey::parse));
-    System.out.println(lookup.get("root").simplify(lookup).getValue(lookup));
-    System.out.println(solveEquality(lookup));
+  protected Object part1(Loader2 loader) {
+    Map<String, Monkey> lookup = getLookup(loader.ml(Monkey::parse));
+    return lookup.get("root").simplify(lookup).getValue(lookup);
   }
 
-  private BigInteger solveEquality(Map<String, Monkey> lookup) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    Map<String, Monkey> lookup = getLookup(loader.ml(Monkey::parse));
+    lookup.get("root").simplify(lookup);
     OpMonkey root = (OpMonkey) lookup.get("root");
     BigInteger value;
     Monkey current;

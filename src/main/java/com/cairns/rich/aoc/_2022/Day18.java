@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -16,12 +17,20 @@ class Day18 extends Base2022 {
   private static final int WATER = 2;
 
   @Override
-  protected void run() {
-    List<int[]> droplets = fullLoader.ml((l) -> Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray());
+  protected Object part1(Loader2 loader) {
+    return totalSurfaceArea(loader, (s) -> s != LAVA);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return totalSurfaceArea(loader, (s) -> s == WATER);
+  }
+
+  private int totalSurfaceArea(Loader2 loader, IntPredicate test) {
+    List<int[]> droplets = loader.ml((l) -> Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray());
     Grid grid = new Grid(droplets);
     fillWater(grid);
-    System.out.println(totalSurfaceArea(droplets, grid, (s) -> s != LAVA));
-    System.out.println(totalSurfaceArea(droplets, grid, (s) -> s == WATER));
+    return droplets.stream().mapToInt((d) -> numSaEdges(grid, test, d)).sum();
   }
 
   private void fillWater(Grid grid) {
@@ -36,10 +45,6 @@ class Day18 extends Base2022 {
         }
       }
     }
-  }
-
-  private int totalSurfaceArea(List<int[]> droplets, Grid grid, IntPredicate test) {
-    return droplets.stream().mapToInt((d) -> numSaEdges(grid, test, d)).sum();
   }
 
   private int numSaEdges(Grid grid, IntPredicate test, int[] coord) {

@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -12,18 +13,9 @@ import java.util.stream.Collectors;
 
 class Day15 extends Base2022 {
   @Override
-  protected void run() {
-    /*List<Sensor> testSensors = testLoader.ml(Sensor::new);
-    System.out.println(countExcludedPoints(testSensors, 10));
-    System.out.println(computeTuning(testSensors, 20, 20));
-    System.out.println();*/
-
-    List<Sensor> fullSensors = fullLoader.ml(Sensor::new);
-    System.out.println(countExcludedPoints(fullSensors, 2_000_000));
-    System.out.println(computeTuning(fullSensors, 4_000_000, 4_000_000));
-  }
-
-  private int countExcludedPoints(List<Sensor> sensors, int y) {
+  protected Object part1(Loader2 loader) {
+    List<Sensor> sensors = loader.ml(Sensor::new);
+    int y = 2_000_000;  //TODO: example of more specs than in the file
     Set<Point<?>> allSensorsAndBeacons =
         sensors.stream().map((s) -> List.of(s.location, s.closestBeacon)).flatMap(List::stream).collect(Collectors.toSet());
     int maxDist = sensors.stream().mapToInt((s) -> computeManDist(s.location, s.closestBeacon)).max().getAsInt();
@@ -39,7 +31,11 @@ class Day15 extends Base2022 {
     return numExcludedPoints;
   }
 
-  private long computeTuning(List<Sensor> sensors, int maxX, int maxY) {
+  @Override
+  protected Object part2(Loader2 loader)  {
+    List<Sensor> sensors = loader.ml(Sensor::new);
+    int maxX = 4_000_000;
+    int maxY = 4_000_000;
     Set<ImmutablePoint> allSensorsAndBeacons =
         sensors.stream().map((s) -> List.of(s.location, s.closestBeacon)).flatMap(List::stream).collect(Collectors.toSet());
     for (int y = 0; y <= maxY; ++y) {

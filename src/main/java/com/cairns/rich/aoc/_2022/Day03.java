@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
@@ -7,17 +8,13 @@ import java.util.stream.Collectors;
 
 class Day03 extends Base2022 {
   @Override
-  protected void run() {
-    List<Rucksack> rucksacks = fullLoader.ml(Rucksack::new);
-    System.out.println(getPerSackCommonTotalPriority(rucksacks));
-    System.out.println(getGroupedCommonTotalPriority(rucksacks));
+  protected Object part1(Loader2 loader) {
+    return loader.ml(Rucksack::new).stream().map((r) -> r.inBoth).mapToInt(this::priority).sum();
   }
 
-  private int getPerSackCommonTotalPriority(List<Rucksack> rucksacks) {
-    return rucksacks.stream().map((r) -> r.inBoth).mapToInt(this::priority).sum();
-  }
-
-  private int getGroupedCommonTotalPriority(List<Rucksack> rucksacks) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Rucksack> rucksacks = loader.ml(Rucksack::new);
     int total = 0;
     for (int i = 0; i < rucksacks.size(); i += 3) {
       Set<Integer> overlap = Sets.intersection(

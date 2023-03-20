@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -16,14 +17,17 @@ class Day14 extends Base2022 {
   private static final Supplier<MutablePoint> newSandCreator = () -> new MutablePoint(500, 0);
 
   @Override
-  protected void run() {
-    List<List<ImmutablePoint>> rockDescs = fullLoader.ml(this::parseRockDesc);
-    System.out.println(countSand(rockDescs, 0, 2));
-    System.out.println(countSand(rockDescs, 4, 2));
+  protected Object part1(Loader2 loader) {
+    return countSand(loader, 0, 2);
   }
 
-  private int countSand(List<List<ImmutablePoint>> rockDescs, int voidOffset, int floorOffset) {
-    Set<Point<?>> scan = buildScan(rockDescs);
+  @Override
+  protected Object part2(Loader2 loader) {
+    return countSand(loader, 4, 2);
+  }
+
+  private int countSand(Loader2 loader, int voidOffset, int floorOffset) {
+    Set<Point<?>> scan = buildScan(loader);
     int maxY = scan.stream().mapToInt(Point::y).max().getAsInt();
     int voidY = maxY + voidOffset;
     int floorY = maxY + floorOffset;
@@ -56,7 +60,8 @@ class Day14 extends Base2022 {
     return false;
   }
 
-  private Set<Point<?>> buildScan(List<List<ImmutablePoint>> rockDescs) {
+  private Set<Point<?>> buildScan(Loader2 loader) {
+    List<List<ImmutablePoint>> rockDescs = loader.ml(this::parseRockDesc);
     Set<Point<?>> scan = new HashSet<>();
     for (List<ImmutablePoint> rockDesc : rockDescs) {
       for (int i = 0; i < rockDesc.size() - 1; ++i) {

@@ -1,16 +1,19 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Range;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day04 extends Base2022 {
   @Override
-  protected void run() {
-    List<ElfPair> pairs = fullLoader.ml(ElfPair::new);
-    System.out.println(pairs.stream().filter(ElfPair::hasRedundant).count());
-    System.out.println(pairs.stream().filter(ElfPair::hasOverlap).count());
+  protected Object part1(Loader2 loader) {
+    return loader.ml(ElfPair::new).stream().filter(ElfPair::hasRedundant).count();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return loader.ml(ElfPair::new).stream().filter(ElfPair::hasOverlap).count();
   }
 
   private static class ElfPair {

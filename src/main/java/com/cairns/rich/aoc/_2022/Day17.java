@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -19,8 +20,17 @@ class Day17 extends Base2022 {
   private static final Shape[] shapes = EnumUtils.enumValues(Shape.class);
 
   @Override
-  protected void run() {
-    String jets = fullLoader.sl();
+  protected Object part1(Loader2 loader) {
+    String jets = loader.sl();
+    List<Integer> maxHeights = new ArrayList<>();
+    maxHeights.add(0);
+    dropPiecesAndFindRestarts(jets, 2022, maxHeights);
+    return maxHeights.get(2022);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    String jets = loader.sl();
     List<Integer> maxHeights = new ArrayList<>();
     maxHeights.add(0);
     List<Integer> factors = findFactors(dropPiecesAndFindRestarts(jets, 10_000, maxHeights));
@@ -32,13 +42,10 @@ class Day17 extends Base2022 {
     long numFalls = 1_000_000_000_000L;
     long jumps = (numFalls - firstRepeatDrop) / dropCycle;
     long mod = (numFalls - firstRepeatDrop) % dropCycle;
-    long heightAfterNumFalls = firstRepeatMaxY
-                             + (jumps * maxYCycle)
-                             + 1
-                             + (maxHeights.get((int) (firstRepeatDrop + mod)) - maxHeights.get(firstRepeatDrop));
-
-    System.out.println(maxHeights.get(2022));
-    System.out.println(heightAfterNumFalls);
+    return firstRepeatMaxY
+         + (jumps * maxYCycle)
+         + 1
+         + (maxHeights.get((int) (firstRepeatDrop + mod)) - maxHeights.get(firstRepeatDrop));
   }
 
   private List<Integer> findFactors(List<RestartDescription> restarts) {

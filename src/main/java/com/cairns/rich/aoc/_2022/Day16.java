@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,18 +14,13 @@ import java.util.stream.IntStream;
 
 class Day16 extends Base2022 {  // TODO: part two is comically slow.  There is probably optimizations abound
   @Override
-  protected void run() {
-    Map<String, Valve> lookup = getLookup(fullLoader.ml(Valve::new));
-    initMinDists(lookup);
-    lookup.values().removeIf((valve) -> !"AA".equals(valve.id) && valve.rate == 0);
+  protected Object part1(Loader2 loader) {
+    return maxReleased(Valve.generateLookup(loader), 30, initPq(1), new HashSet<>(), new HashSet<>(), 0);
+  }
 
-    long mark = System.currentTimeMillis();
-    long answer = maxReleased(lookup, 30, initPq(1), new HashSet<>(), new HashSet<>(), 0);
-    System.out.println((System.currentTimeMillis() - mark) + "ms\t- ANSWER: " + answer);
-
-    mark = System.currentTimeMillis();
-    answer = maxReleased(lookup, 26, initPq(2), new HashSet<>(), new HashSet<>(), 0);
-    System.out.println((System.currentTimeMillis() - mark) + "ms\t- ANSWER: " + answer);
+  @Override
+  protected Object part2(Loader2 loader) {
+    return maxReleased(Valve.generateLookup(loader), 26, initPq(2), new HashSet<>(), new HashSet<>(), 0);
   }
 
   private PriorityQueue<InMotion> initPq(int numPlayers) {
@@ -83,22 +79,6 @@ class Day16 extends Base2022 {  // TODO: part two is comically slow.  There is p
     return result;
   }
 
-  private void initMinDists(Map<String, Valve> lookup) {
-    for (Valve start : lookup.values()) {
-      if ((start.rate > 0) || "AA".equals(start.id)) {
-        for (Valve end : lookup.values()) {
-          if ((start != end) && (end.rate > 0) && !start.minDists.containsKey(end.id)) {
-            long minDist = bfs(start.id, end.id::equals, SearchState::getNumSteps, (current, registrar) -> {
-              lookup.get(current).paths.forEach(registrar::accept);
-            }).get().getNumSteps();
-            start.minDists.put(end.id, minDist);
-            end.minDists.put(start.id, minDist);
-          }
-        }
-      }
-    }
-  }
-
   private static class InMotion implements Comparable<InMotion> {
     private final String towards;
     private long timeLeft;
@@ -137,6 +117,25 @@ class Day16 extends Base2022 {  // TODO: part two is comically slow.  There is p
     @Override
     public String getId() {
       return id;
+    }
+
+    private static Map<String, Valve> generateLookup(Loader2 loader) {
+      Map<String, Valve> lookup = getLookup(loader.ml(Valve::new));
+      for (Valve start : lookup.values()) {
+        if ((start.rate > 0) || "AA".equals(start.id)) {
+          for (Valve end : lookup.values()) {
+            if ((start != end) && (end.rate > 0) && !start.minDists.containsKey(end.id)) {
+              long minDist = bfs(start.id, end.id::equals, SearchState::getNumSteps, (current, registrar) -> {
+                lookup.get(current).paths.forEach(registrar::accept);
+              }).get().getNumSteps();
+              start.minDists.put(end.id, minDist);
+              end.minDists.put(start.id, minDist);
+            }
+          }
+        }
+      }
+      lookup.values().removeIf((valve) -> !"AA".equals(valve.id) && valve.rate == 0);
+      return lookup;
     }
   }
 }

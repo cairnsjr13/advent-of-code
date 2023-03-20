@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -10,15 +11,17 @@ import java.util.Map;
 
 class Day24 extends Base2022 {
   @Override
-  protected void run() {
-    Init init = new Init(fullLoader.ml());
-    long mark = System.currentTimeMillis();
+  protected Object part1(Loader2 loader) {
+    Init init = new Init(loader.ml());
+    return minTimeNeeded(init, init.start, init.end, 0);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    Init init = new Init(loader.ml());
     int there = minTimeNeeded(init, init.start, init.end, 0);
     int back = minTimeNeeded(init, init.end, init.start, there);
-    int finish = minTimeNeeded(init, init.start, init.end, back);
-    System.out.println(there);
-    System.out.println(finish);
-    System.out.println((System.currentTimeMillis() - mark) + "ms");
+    return minTimeNeeded(init, init.start, init.end, back);
   }
 
   private int minTimeNeeded(Init init, ImmutablePoint from, ImmutablePoint to, int startingTime) {

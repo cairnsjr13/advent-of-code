@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -11,13 +12,8 @@ import java.util.Set;
 
 class Day08 extends Base2022 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    System.out.println(findVisibleTrees(lines));
-    System.out.println(findMaxScenicScore(lines));
-  }
-
-  private int findVisibleTrees(List<String> lines) {
+  protected Object part1(Loader2 loader) {
+    List<String> lines = loader.ml();
     Table<ImmutablePoint, ReadDir, ReadDir> walks = buildWalks(lines);
     Set<ImmutablePoint> visible = new HashSet<>();
     walks.rowKeySet().forEach((from) -> walks.row(from).forEach((walk, look) -> {
@@ -26,6 +22,18 @@ class Day08 extends Base2022 {
       }
     }));
     return visible.size();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<String> lines = loader.ml();
+    int maxScenicScore = 0;
+    for (ImmutablePoint start = new ImmutablePoint(0, 0); inBounds(lines, start); start = start.move(ReadDir.Down)) {
+      for (ImmutablePoint from = start; inBounds(lines, from); from = from.move(ReadDir.Right)) {
+        maxScenicScore = Math.max(maxScenicScore, findScenicScore(lines, from));
+      }
+    }
+    return maxScenicScore;
   }
 
   private Table<ImmutablePoint, ReadDir, ReadDir> buildWalks(List<String> lines) {
@@ -48,16 +56,6 @@ class Day08 extends Base2022 {
         maxHeight = height;
       }
     }
-  }
-
-  private int findMaxScenicScore(List<String> lines) {
-    int maxScenicScore = 0;
-    for (ImmutablePoint start = new ImmutablePoint(0, 0); inBounds(lines, start); start = start.move(ReadDir.Down)) {
-      for (ImmutablePoint from = start; inBounds(lines, from); from = from.move(ReadDir.Right)) {
-        maxScenicScore = Math.max(maxScenicScore, findScenicScore(lines, from));
-      }
-    }
-    return maxScenicScore;
   }
 
   private int findScenicScore(List<String> lines, ImmutablePoint from) {

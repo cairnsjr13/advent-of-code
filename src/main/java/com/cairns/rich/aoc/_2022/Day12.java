@@ -1,19 +1,21 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.List;
 
 class Day12 extends Base2022 {
   @Override
-  protected void run() {
-    Init init = new Init(fullLoader.ml());
-    System.out.println(minStepsFrom(init, init.part1Start));
-    System.out.println(minStepsFromBottom(init));
+  protected Object part1(Loader2 loader) {
+    Init init = new Init(loader.ml());
+    return minStepsFrom(init, init.part1Start);
   }
 
-  private long minStepsFromBottom(Init init) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    Init init = new Init(loader.ml());
     long min = Integer.MAX_VALUE;
     for (int y = 0; y < init.grid.length; ++y) {
       for (int x = 0; x < init.grid[0].length; ++x) {

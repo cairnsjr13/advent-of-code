@@ -10,7 +10,7 @@ import com.google.common.collect.Table;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import org.apache.commons.lang3.tuple.Pair;
 
 class Day22 extends Base2022 {
@@ -22,25 +22,25 @@ class Day22 extends Base2022 {
   );
 
   @Override
-  protected void run() {
-    System.out.println("Test");
-    solve(testLoader, this::wirePart2Test);
-    System.out.println("\nFull");
-    solve(fullLoader, this::wirePart2Full);
+  protected Object part1(Loader2 loader) {
+    return getPassword(loader, this::wirePart1);
   }
 
-  private void solve(Loader2 loader, Consumer<Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>>> wirePart2) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getPassword(loader, (graph, map) -> wirePart2Full(graph));
+  }
+
+  private int getPassword(
+      Loader2 loader,
+      BiConsumer<Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>>, char[][]> wire
+  ) {
     List<String> input = loader.ml();
     char[][] map = buildMap(input.subList(0, input.size() - 2));
     String movements = input.get(input.size() - 1);
-
-    Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> part1Graph = buildGraph(map);
-    wirePart1(part1Graph, map);
-    System.out.println(getPassword(map, part1Graph, movements));
-
-    Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> part2Graph = buildGraph(map);
-    wirePart2.accept(part2Graph);
-    System.out.println(getPassword(map, part2Graph, movements));
+    Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph = buildGraph(map);
+    wire.accept(graph, map);
+    return getPassword(map, graph, movements);
   }
 
   private int getPassword(char[][] map, Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph, String movements) {
@@ -161,6 +161,7 @@ class Day22 extends Base2022 {
     wire(graph, fromX, fromY, dir, toX, toY, dir);
   }
 
+  @SuppressWarnings("unused") // TODO: only because genericizing it is a pain. Probably want to add something to testLoaders
   private void wirePart2Test(Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>> graph) {
     for (int i = 0; i < 4; ++i) {
       wire(graph,  0 + i,     7, ReadDir.Down, 11 - i,     11, ReadDir.Up);

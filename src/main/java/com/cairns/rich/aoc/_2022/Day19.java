@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -24,19 +25,24 @@ class Day19 extends Base2022 {
   private static final Supplier<Multiset<Character>> initRobots = () -> HashMultiset.create(List.of('o'));
 
   @Override
-  protected void run() {
-    List<Blueprint> blueprints = fullLoader.ml(Blueprint::new);
-    System.out.println(maxFromBlueprints(24, blueprints, 0, (i) -> i + 1, Math::addExact));
-    System.out.println(maxFromBlueprints(32, blueprints.subList(0, 3), 1, (i) -> 1, Math::multiplyExact));
+  protected Object part1(Loader2 loader) {
+    return maxFromBlueprints(loader, Function.identity(), 24, 0, (i) -> i + 1, Math::addExact);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return maxFromBlueprints(loader, (bs) -> bs.subList(0, 3), 32, 1, (i) -> 1, Math::multiplyExact);
   }
 
   private int maxFromBlueprints(
+      Loader2 loader,
+      Function<List<Blueprint>, List<Blueprint>> blueprintRestriction,
       int time,
-      List<Blueprint> blueprints,
       int reductionInit,
       IntUnaryOperator indexFactor,
       IntBinaryOperator reduceOp
   ) {
+    List<Blueprint> blueprints = blueprintRestriction.apply(loader.ml(Blueprint::new));
     ExecutorService exec = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     List<Future<Integer>> futures = blueprints.stream()
         .map((b) -> exec.submit(() -> maxFromBlueprint(b, 0, 0, time, initRobots.get(), HashMultiset.create())))

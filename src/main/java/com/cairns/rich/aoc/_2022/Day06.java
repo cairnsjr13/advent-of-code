@@ -1,14 +1,18 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 class Day06 extends Base2022 {
   @Override
-  protected void run() {
-    String input = fullLoader.sl();
-    System.out.println(lastIndexOfUniqueWindow(input, 4));
-    System.out.println(lastIndexOfUniqueWindow(input, 14));
+  protected Object part1(Loader2 loader) {
+    return lastIndexOfUniqueWindow(loader.sl(), 4);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return lastIndexOfUniqueWindow(loader.sl(), 14);
   }
 
   private int lastIndexOfUniqueWindow(String input, int windowSize) {

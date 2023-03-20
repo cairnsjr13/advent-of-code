@@ -1,17 +1,22 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.PriorityQueue;
 
 class Day01 extends Base2022 {
   @Override
-  protected void run() {
-    List<Integer> elves = fullLoader.gDelim("", (l) -> l.stream().mapToInt(Integer::parseInt).sum());
-    System.out.println(sumOfTop(elves, 1));
-    System.out.println(sumOfTop(elves, 3));
+  protected Object part1(Loader2 loader) {
+    return sumOfTop(loader, 1);
   }
 
-  private int sumOfTop(List<Integer> elves, int top) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return sumOfTop(loader, 3);
+  }
+
+  private int sumOfTop(Loader2 loader, int top) {
+    List<Integer> elves = loader.gDelim("", (l) -> l.stream().mapToInt(Integer::parseInt).sum());
     PriorityQueue<Integer> pq = new PriorityQueue<>();
     for (int elf : elves) {
       if (pq.size() < top) {

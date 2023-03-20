@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
@@ -15,17 +16,24 @@ class Day23 extends Base2022 {
   private static final CardDir[] dirs = { CardDir.North, CardDir.South, CardDir.West, CardDir.East };
 
   @Override
-  protected void run() {
-    List<Elf> elves = parse(fullLoader.ml());
+  protected Object part1(Loader2 loader) {
+    List<Elf> elves = parse(loader.ml());
+    Set<Point<?>> map = elves.stream().map((e) -> e.location).collect(Collectors.toSet());
+    for (int round = 0; round <10; ++round) {
+      computeProposals(elves, map, round);
+      tryMovesHadAnyMoves(elves, map);
+    }
+    return numEmptyTiles(map);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Elf> elves = parse(loader.ml());
     Set<Point<?>> map = elves.stream().map((e) -> e.location).collect(Collectors.toSet());
     for (int round = 0; true; ++round) {
-      if (round == 10) {
-        System.out.println(numEmptyTiles(map));
-      }
       computeProposals(elves, map, round);
       if (!tryMovesHadAnyMoves(elves, map)) {
-        System.out.println((round + 1));
-        break;
+        return round + 1;
       }
     }
   }

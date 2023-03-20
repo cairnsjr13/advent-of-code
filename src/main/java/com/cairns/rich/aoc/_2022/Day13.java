@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,14 +11,9 @@ import java.util.stream.IntStream;
 
 class Day13 extends Base2022 {
   @Override
-  protected void run() {
+  protected Object part1(Loader2 loader) {
     List<List<ListPacket>> packetPairs =
-        fullLoader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()));
-    System.out.println(computeCorrectIndexSum(packetPairs));
-    System.out.println(computeDistressSignal(packetPairs));
-  }
-
-  private int computeCorrectIndexSum(List<List<ListPacket>> packetPairs) {
+        loader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()));
     return IntStream.range(0, packetPairs.size())
         .filter((i) -> {
           List<ListPacket> packetPair = packetPairs.get(i);
@@ -26,8 +22,10 @@ class Day13 extends Base2022 {
         .sum();
   }
 
-  private int computeDistressSignal(List<List<ListPacket>> packetPairs) {
-    List<ListPacket> packets = packetPairs.stream().flatMap(List::stream).collect(Collectors.toList());
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<ListPacket> packets = loader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()))
+        .stream().flatMap(List::stream).collect(Collectors.toList());
     Set<ListPacket> dividers = Set.of(ListPacket.parse("[[2]]"), ListPacket.parse("[[6]]"));
     packets.addAll(dividers);
     Collections.sort(packets);
