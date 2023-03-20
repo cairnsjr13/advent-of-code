@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multimap;
@@ -8,8 +9,17 @@ import java.util.List;
 
 class Day12 extends Base2021 {
   @Override
-  protected void run() {
-    List<String[]> inputs = fullLoader.ml((line) -> line.split("-"));
+  protected Object part1(Loader2 loader) {
+    return numPathsFrom(loader, false);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return numPathsFrom(loader, true);
+  }
+
+  private int numPathsFrom(Loader2 loader, boolean allowRevisit) {
+    List<String[]> inputs = loader.ml((line) -> line.split("-"));
     Multimap<String, String> edges = HashMultimap.create();
     for (String[] input : inputs) {
       edges.put(input[0], input[1]);
@@ -19,8 +29,7 @@ class Day12 extends Base2021 {
 
     Multiset<String> cavesVisited = HashMultiset.create();
     cavesVisited.add("start");
-    System.out.println(numPathsFrom(false, edges, cavesVisited, "start"));
-    System.out.println(numPathsFrom(true, edges, cavesVisited, "start"));
+    return numPathsFrom(allowRevisit, edges, cavesVisited, "start");
   }
 
   private int numPathsFrom(boolean allowRevisit, Multimap<String, String> edges, Multiset<String> cavesVisited, String current)

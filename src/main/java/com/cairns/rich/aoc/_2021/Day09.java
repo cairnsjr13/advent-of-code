@@ -1,43 +1,48 @@
 package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.RelDir;
 import java.util.PriorityQueue;
+import java.util.function.ToIntFunction;
 
 class Day09 extends Base2021 {
   @Override
-  protected void run() {
-    int[][] heights = fullLoader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).stream().toArray(int[][]::new);
-    System.out.println(findTotalRiskOfLowpoints(heights));
-    System.out.println(findProductOfLargest3Basins(heights));
-  }
-
-  private int findTotalRiskOfLowpoints(int[][] heights) {
-    int totalRisks = 0;
-    for (int r = 0; r < heights.length; ++r) {
-      for (int c = 0; c < heights[0].length; ++c) {
-        if (isLowPoint(heights, r, c)) {
-          totalRisks += 1 + heights[r][c];
-        }
-      }
-    }
-    return totalRisks;
-  }
-
-  private int findProductOfLargest3Basins(int[][] heights) {
-    boolean[][] visited = new boolean[heights.length + 2][heights[0].length + 2];
-    PriorityQueue<Integer> largestBasinSizes = new PriorityQueue<>();
-    for (int r = 0; r < heights.length; ++r) {
-      for (int c = 0; c < heights[0].length; ++c) {
-        if (!visited[c + 1][r + 1]) {
-          largestBasinSizes.offer(numLocationsInBasin(heights, visited, r, c));
-          if (largestBasinSizes.size() > 3) {
-            largestBasinSizes.poll();
+  protected Object part1(Loader2 loader) {
+    return getAnswer(loader, (heights) -> {
+      int totalRisks = 0;
+      for (int r = 0; r < heights.length; ++r) {
+        for (int c = 0; c < heights[0].length; ++c) {
+          if (isLowPoint(heights, r, c)) {
+            totalRisks += 1 + heights[r][c];
           }
         }
       }
-    }
-    return largestBasinSizes.stream().mapToInt(Integer::intValue).reduce(1, Math::multiplyExact);
+      return totalRisks;
+    });
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getAnswer(loader, (heights) -> {
+      boolean[][] visited = new boolean[heights.length + 2][heights[0].length + 2];
+      PriorityQueue<Integer> largestBasinSizes = new PriorityQueue<>();
+      for (int r = 0; r < heights.length; ++r) {
+        for (int c = 0; c < heights[0].length; ++c) {
+          if (!visited[c + 1][r + 1]) {
+            largestBasinSizes.offer(numLocationsInBasin(heights, visited, r, c));
+            if (largestBasinSizes.size() > 3) {
+              largestBasinSizes.poll();
+            }
+          }
+        }
+      }
+      return largestBasinSizes.stream().mapToInt(Integer::intValue).reduce(1, Math::multiplyExact);
+    });
+  }
+
+  private int getAnswer(Loader2 loader, ToIntFunction<int[][]> toAnswer) {
+    return toAnswer.applyAsInt(loader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).stream().toArray(int[][]::new));
   }
 
   private int numLocationsInBasin(int[][] heights, boolean[][] visited, int r, int c) {

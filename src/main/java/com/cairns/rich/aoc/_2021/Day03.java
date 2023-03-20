@@ -1,18 +1,14 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
 class Day03 extends Base2021 {
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
-    System.out.println(partOne(inputs));
-    System.out.println(partTwo(inputs));
-  }
-
-  private int partOne(List<String> inputs) {
+  protected Object part1(Loader2 loader) {
+    List<String> inputs = loader.ml();
     int[][] counts = new int[inputs.get(0).length()][2];
     for (String input : inputs) {
       for (int i = 0; i < counts.length; ++i) {
@@ -30,7 +26,9 @@ class Day03 extends Base2021 {
     return gamma * epsilon;
   }
 
-  private int partTwo(List<String> inputs) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<String> inputs = loader.ml();
     return lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount > oneCount)
          * lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount <= oneCount);
   }

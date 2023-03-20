@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
 import java.util.List;
@@ -8,14 +9,14 @@ import java.util.stream.Stream;
 
 class Day25 extends Base2021 {
   @Override
-  protected void run() throws Throwable {
-    char[][] current = loadInitial(fullLoader.ml());
+  protected Object part1(Loader2 loader) {
+    char[][] current = loadInitial(loader.ml());
     char[][] next = new char[current.length][current[0].length];
     int steps = 1;
     while (0 != step(current, next)) {
       ++steps;
     }
-    System.out.println(steps);
+    return steps;
   }
 
   // only works if there are an even number of herds

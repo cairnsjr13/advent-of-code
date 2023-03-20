@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collector;
@@ -16,26 +18,24 @@ class Day08 extends Base2021 {
   private static final Set<Integer> uniqueConfigs = Set.of(1, 4, 7, 8);
 
   @Override
-  protected void run() {
-    List<Signal> signals = fullLoader.ml(Signal::new);
+  protected Object part1(Loader2 loader) {
+    return findSignalSum(loader, this::numUniqueLengthOutputs);
+  }
 
-    long partOneCount = 0;
-    long partTwoTotal = 0;
-    for (Signal signal : signals) {
-      BiMap<Integer, Set<Character>> configs = deduceConfigs(signal.inputs);
-      partOneCount += numUniqueLengthOutputs(configs, signal);
-      partTwoTotal += parseOutput(configs, signal);
-    }
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findSignalSum(loader, this::parseOutput);
+  }
 
-    System.out.println(partOneCount);
-    System.out.println(partTwoTotal);
+  private long findSignalSum(Loader2 loader, BiFunction<BiMap<Integer, Set<Character>>, Signal, Long> toSignalSum) {
+    return loader.ml(Signal::new).stream().mapToLong((signal) -> toSignalSum.apply(deduceConfigs(signal.inputs), signal)).sum();
   }
 
   private long numUniqueLengthOutputs(BiMap<Integer, Set<Character>> configs, Signal signal) {
     return signal.outputs.stream().filter((output) -> uniqueConfigs.contains(configs.inverse().get(output))).count();
   }
 
-  private int parseOutput(BiMap<Integer, Set<Character>> configs, Signal signal) {
+  private long parseOutput(BiMap<Integer, Set<Character>> configs, Signal signal) {
     return 1000 * configs.inverse().get(signal.outputs.get(0))
          +  100 * configs.inverse().get(signal.outputs.get(1))
          +   10 * configs.inverse().get(signal.outputs.get(2))

@@ -1,10 +1,12 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -14,21 +16,26 @@ class Day22 extends Base2021 {
   private static final Instruction initCuboid = new Instruction(false, initRange, initRange, initRange);
 
   @Override
-  protected void run() {
-    List<Instruction> insts = fullLoader.ml(Instruction::new);
-    System.out.println(countFinalOns(insts.stream().filter(initCuboid::isConnected).collect(Collectors.toList())));
-    System.out.println(countFinalOns(insts));
+  protected Object part1(Loader2 loader) {
+    return countFinalOns(loader, initCuboid::isConnected);
   }
 
-  private long countFinalOns(List<Instruction> insts) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return countFinalOns(loader, (i) -> true);
+  }
+
+  private long countFinalOns(Loader2 loader, Predicate<Instruction> filter) {
     List<Instruction> finalList = new ArrayList<>();
-    for (Instruction inst : insts) {
-      List<Instruction> intersections =
-          finalList.stream().filter(inst::isConnected).map(inst::intersection).collect(Collectors.toList());
-      if (inst.on) {
-        finalList.add(inst);
+    for (Instruction inst : loader.ml(Instruction::new)) {
+      if (filter.test(inst)) {
+        List<Instruction> intersections =
+            finalList.stream().filter(inst::isConnected).map(inst::intersection).collect(Collectors.toList());
+        if (inst.on) {
+          finalList.add(inst);
+        }
+        finalList.addAll(intersections);
       }
-      finalList.addAll(intersections);
     }
     return finalList.stream().mapToLong(Instruction::computeOnValue).sum();
   }

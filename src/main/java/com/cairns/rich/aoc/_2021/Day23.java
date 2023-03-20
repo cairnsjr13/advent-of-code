@@ -24,10 +24,13 @@ class Day23 extends Base2021 {
       IntStream.of(3, 5, 7, 9).mapToObj((x) -> new ImmutablePoint(x, 1)).collect(Collectors.toSet());
 
   @Override
-  protected void run() throws Throwable {
-    Loader2 loader = fullLoader;
-    System.out.println(findLeastCost(loader, 2));
-    System.out.println(findLeastCost(loader, 4));
+  protected Object part1(Loader2 loader) {
+    return findLeastCost(loader, 2);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findLeastCost(loader, 4);
   }
 
   private int findLeastCost(Loader2 loader, int numEachType) {

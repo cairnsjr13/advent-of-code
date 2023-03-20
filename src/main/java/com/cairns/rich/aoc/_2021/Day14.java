@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.HashMap;
@@ -10,17 +11,24 @@ import java.util.regex.Pattern;
 
 class Day14 extends Base2021 {
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
+  protected Object part1(Loader2 loader) {
+    return answerAfterSteps(loader, 10);
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return answerAfterSteps(loader, 40);
+  }
+
+  private long answerAfterSteps(Loader2 loader, int numSteps) {
+    List<String> lines = loader.ml(); // TODO: multi group
     String polymer = lines.get(0);
     Multimap<String, String> insertionRuleExpansions = HashMultimap.create();
     lines.subList(2, lines.size()).stream().map(InsertionRule::new).forEach((i) -> {
       insertionRuleExpansions.put(i.pair, i.pair.charAt(0) + i.insert);
       insertionRuleExpansions.put(i.pair, i.insert + i.pair.charAt(1));
     });
-
-    System.out.println(answerAfterSteps(polymer, insertionRuleExpansions, 10));
-    System.out.println(answerAfterSteps(polymer, insertionRuleExpansions, 40));
+    return answerAfterSteps(polymer, insertionRuleExpansions, numSteps);
   }
 
   private long answerAfterSteps(String polymer, Multimap<String, String> insertionRuleExpansions, int numSteps) {

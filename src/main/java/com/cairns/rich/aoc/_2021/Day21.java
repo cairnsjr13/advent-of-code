@@ -1,12 +1,11 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 class Day21 extends Base2021 {
   private static final Map<Integer, BigInteger> diceTotalToUniverseMultiplier = new HashMap<>();
@@ -22,14 +21,8 @@ class Day21 extends Base2021 {
   }
 
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
-    Supplier<List<Player>> players = () -> inputs.stream().map(Player::new).collect(Collectors.toList());
-    System.out.println(deterministicGameResult(players.get()));
-    System.out.println(diracGameHighestWins(players.get()));
-  }
-
-  private long deterministicGameResult(List<Player> players) {
+  protected Object part1(Loader2 loader) {
+    List<Player> players = loader.ml(Player::new);
     DeterministicDice dice = new DeterministicDice();
     for (int playerIndex = 0; true; playerIndex = 1 - playerIndex) {
       Player player = players.get(playerIndex);
@@ -42,7 +35,9 @@ class Day21 extends Base2021 {
     }
   }
 
-  private BigInteger diracGameHighestWins(List<Player> players) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Player> players = loader.ml(Player::new);
     UniverseSummary[/* turn */][/* player1Position */][/* player2Position */][/* player1Score */][/* player2Score */] cache =
         new UniverseSummary[2][10][10][21][21];
     UniverseSummary fullGameSummary =

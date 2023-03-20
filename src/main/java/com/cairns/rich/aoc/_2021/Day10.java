@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -24,23 +25,16 @@ class Day10 extends Base2021 {
   );
 
   @Override
-  protected void run() {
-    List<String> lines = fullLoader.ml();
-    System.out.println(partOne(lines));
-    System.out.println(partTwo(lines));
-  }
-
-  private int partOne(List<String> lines) {
-    return lines.stream()
-        .map(this::getCompletionStack)
+  protected Object part1(Loader2 loader) {
+    return loader.ml(this::getCompletionStack).stream()
         .filter((completionStack) -> completionStack.pop() == 'c')
         .mapToInt((completionStack) -> points.get(completionStack.pop()))
         .sum();
   }
 
-  private long partTwo(List<String> lines) {
-    List<Long> scores = lines.stream()
-        .map(this::getCompletionStack)
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Long> scores = loader.ml(this::getCompletionStack).stream()
         .filter((completionStack) -> completionStack.peek() != 'c')
         .mapToLong((completionStack) -> {
           long score = 0;

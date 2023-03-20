@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -7,22 +8,24 @@ import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.EnumSet;
-import java.util.List;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 class Day05 extends Base2021 {
   @Override
-  protected void run() {
-    List<LineSeg> lineSegs = fullLoader.ml(LineSeg::new);
-    System.out.println(findNumOverlaps(lineSegs.stream().filter(LineSeg::isHorizOrVert).collect(Collectors.toList())));
-    System.out.println(findNumOverlaps(lineSegs));
+  protected Object part1(Loader2 loader) {
+    return findNumOverlaps(loader, LineSeg::isHorizOrVert);
   }
 
-  private long findNumOverlaps(List<LineSeg> lineSegs) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return findNumOverlaps(loader, (lineSeg) -> true);
+  }
+
+  private long findNumOverlaps(Loader2 loader, Predicate<LineSeg> filter) {
     Multiset<ImmutablePoint> points = HashMultiset.create();
-    for (LineSeg lineSeg : lineSegs) {
+    loader.ml(LineSeg::new).stream().filter(filter).forEach((lineSeg) -> {
       EnumSet<RelDir> dirs = getDirsToMove(lineSeg);
       Point<?> cur = new MutablePoint(lineSeg.start);
       while (!cur.equals(lineSeg.end)) {
@@ -30,7 +33,7 @@ class Day05 extends Base2021 {
         dirs.forEach(cur::move);
       }
       points.add(lineSeg.end);
-    }
+    });
     return points.elementSet().stream().filter((e) -> points.count(e) > 1).count();
   }
 

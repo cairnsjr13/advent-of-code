@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.HashMap;
@@ -8,13 +9,17 @@ import java.util.Map;
 
 class Day15 extends Base2021 {
   @Override
-  protected void run() {
-    int[][] risks = fullLoader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
-    System.out.println(getLowestRisk(1, risks));
-    System.out.println(getLowestRisk(5, risks));
+  protected Object part1(Loader2 loader) {
+    return getLowestRisk(loader, 1);
   }
 
-  private int getLowestRisk(int repeat, int[][] risks) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return getLowestRisk(loader, 5);
+  }
+
+  private int getLowestRisk(Loader2 loader, int repeat) {
+    int[][] risks = loader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
     Cave cave = new Cave(repeat, risks);
     Map<ImmutablePoint, Integer> shortestPaths = new HashMap<>();
     ImmutablePoint start = new ImmutablePoint(0, 0);

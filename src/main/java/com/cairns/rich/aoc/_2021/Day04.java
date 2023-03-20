@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,13 +11,8 @@ import java.util.stream.IntStream;
 
 class Day04 extends Base2021 {
   @Override
-  protected void run() throws Throwable { // TODO: multi group candidate
-    State state = new State(fullLoader.ml()); // TODO: kinda weird to have mutated the state for part 2
-    System.out.println(firstBoardToWinScore(state));
-    System.out.println(lastBoardToWinScore(state));
-  }
-
-  private int firstBoardToWinScore(State state) {
+  protected Object part1(Loader2 loader) {
+    State state = new State(loader);
     for (int calledNumber : state.calledNumbers) {
       for (int[][] board : state.boards) {
         if (markBoard(board, calledNumber)) {
@@ -30,7 +26,9 @@ class Day04 extends Base2021 {
     throw fail();
   }
 
-  private int lastBoardToWinScore(State state) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    State state = new State(loader);
     for (int calledNumber : state.calledNumbers) {
       Iterator<int[][]> itr = state.boards.iterator();
       while (itr.hasNext()) {
@@ -75,7 +73,8 @@ class Day04 extends Base2021 {
     private final List<Integer> calledNumbers;
     private final Set<int[][]> boards = new HashSet<>();
 
-    private State(List<String> lines) {
+    private State(Loader2 loader) { // TODO: multi group candidate
+      List<String> lines = loader.ml();
       this.calledNumbers = Arrays.stream(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
       for (int i = 2; i < lines.size(); i += 6) {
         int[][] board = new int[5][];

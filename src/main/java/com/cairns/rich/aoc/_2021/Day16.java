@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,11 +8,13 @@ import java.util.function.LongBinaryOperator;
 
 class Day16 extends Base2021 {
   @Override
-  protected void run() {
-    BytePositioner input = new BytePositioner(fullLoader.sl());
-    Packet rootPacket = parsePacket(input);
-    System.out.println(rootPacket.sumOfAllVersions());
-    System.out.println(rootPacket.getValue());
+  protected Object part1(Loader2 loader) {
+    return parsePacket(new BytePositioner(loader.sl())).sumOfAllVersions();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    return parsePacket(new BytePositioner(loader.sl())).getValue();
   }
 
   private static Packet parsePacket(BytePositioner input) {

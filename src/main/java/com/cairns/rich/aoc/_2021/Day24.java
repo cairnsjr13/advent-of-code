@@ -1,10 +1,11 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 class Day24 extends Base2021 {
-  private static final Constants[] digitConstants = {
+  private static final Constants[] digitConstants = { // TODO: we can parse these from the loader, diminishing return, no tests
       new Constants(1, 11, 14, 1),
       new Constants(1, 13, 8, 1),
       new Constants(1, 11, 4, 6),
@@ -22,18 +23,25 @@ class Day24 extends Base2021 {
   };
 
   @Override
-  protected void run() {
-    verifyAndPrintResult(new int[] { 7, 4, 9, 2, 9, 9, 9, 5, 9, 9, 9, 3, 8, 9 });   // Largest
-    verifyAndPrintResult(new int[] { 1, 1, 1, 1, 8, 1, 5, 1, 6, 3, 7, 1, 1, 2 });   // Smallest
+  protected Object part1(Loader2 loader) {
+    return verifyAndGetResult(new int[] { 7, 4, 9, 2, 9, 9, 9, 5, 9, 9, 9, 3, 8, 9 });
   }
 
-  private void verifyAndPrintResult(int[] ws) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    return verifyAndGetResult(new int[] { 1, 1, 1, 1, 8, 1, 5, 1, 6, 3, 7, 1, 1, 2 });
+  }
+
+  private String verifyAndGetResult(int[] ws) {
     int z = 0;
     for (int i = 0; i < ws.length; ++i) {
       z = getFinalZValue(digitConstants[i], ws[i], z);
     }
     String answer = Arrays.stream(ws).mapToObj(Integer::toString).collect(Collectors.joining());
-    System.out.println(z + " <-- " + answer);
+    if (z != 0) {
+      throw fail(z + " <-- " + answer);
+    }
+    return answer;
   }
 
   private int getFinalZValue(Constants constants, int w, int z) {

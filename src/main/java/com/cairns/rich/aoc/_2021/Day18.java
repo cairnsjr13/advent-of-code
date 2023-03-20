@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -7,22 +8,13 @@ import java.util.stream.Collectors;
 
 class Day18 extends Base2021 {
   @Override
-  protected void run() {
-    List<String> inputs = fullLoader.ml();
-    System.out.println(getSumAllMagnitude(inputs));
-    System.out.println(getMaxSumMagnitude(inputs));
+  protected Object part1(Loader2 loader) {
+    return getSumAllMagnitude(loader.ml());
   }
 
-  private long getSumAllMagnitude(List<String> inputs) {
-    SnailfishNode accumulator = parse(inputs.get(0));
-    for (int i = 1; i < inputs.size(); ++i) {
-      accumulator = new PairNode(accumulator, parse(inputs.get(i)));
-      while (accumulator.explode(0) || accumulator.split()) ;
-    }
-    return accumulator.magnitude();
-  }
-
-  private long getMaxSumMagnitude(List<String> inputs) {
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<String> inputs = loader.ml();
     long maxSumMagnitude = -1;
     for (int i = 0; i < inputs.size(); ++i) {
       for (int j = 0; j < inputs.size(); ++j) {
@@ -35,6 +27,15 @@ class Day18 extends Base2021 {
       }
     }
     return maxSumMagnitude;
+  }
+
+  private long getSumAllMagnitude(List<String> inputs) {
+    SnailfishNode accumulator = parse(inputs.get(0));
+    for (int i = 1; i < inputs.size(); ++i) {
+      accumulator = new PairNode(accumulator, parse(inputs.get(i)));
+      while (accumulator.explode(0) || accumulator.split()) ;
+    }
+    return accumulator.magnitude();
   }
 
   private SnailfishNode parse(String input) {

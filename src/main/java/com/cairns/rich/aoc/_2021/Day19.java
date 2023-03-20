@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,15 +22,23 @@ class Day19 extends Base2021 {
   private static final Transformation rotateAroundZ = new Transformation(toY, toNegX, toZ);
 
   @Override
-  protected void run() {
-    List<Scanner> scanners = fullLoader.gDelim("", Scanner::new);
-    long mark = System.currentTimeMillis();
+  protected Object part1(Loader2 loader) {
+    List<Scanner> scanners = loader.gDelim("", Scanner::new);
     baseScanners(scanners);
-    System.out.println(countUniqueBeacons(scanners));
-    System.out.println("\t" + (System.currentTimeMillis() - mark) + "ms");
-    mark = System.currentTimeMillis();
-    System.out.println(computeLargestManhattanDistance(scanners));
-    System.out.println("\t" + (System.currentTimeMillis() - mark) + "ms");
+    return scanners.stream().map((s) -> s.beacons).flatMap(Set::stream).collect(Collectors.toSet()).size();
+  }
+
+  @Override
+  protected Object part2(Loader2 loader) {
+    List<Scanner> scanners = loader.gDelim("", Scanner::new);
+    baseScanners(scanners);
+    int maxDist = 0;
+    for (int i = 0; i < scanners.size(); ++i) {
+      for (int j = i + 1; j < scanners.size(); ++j) {
+        maxDist = Math.max(maxDist, Scanner.manhattanDist(scanners.get(i), scanners.get(j)));
+      }
+    }
+    return maxDist;
   }
 
   private void baseScanners(List<Scanner> scanners) {
@@ -80,20 +89,6 @@ class Day19 extends Base2021 {
         }
       }
     }
-  }
-
-  private int countUniqueBeacons(List<Scanner> scanners) {
-    return scanners.stream().map((s) -> s.beacons).flatMap(Set::stream).collect(Collectors.toSet()).size();
-  }
-
-  private int computeLargestManhattanDistance(List<Scanner> scanners) {
-    int maxDist = 0;
-    for (int i = 0; i < scanners.size(); ++i) {
-      for (int j = i + 1; j < scanners.size(); ++j) {
-        maxDist = Math.max(maxDist, Scanner.manhattanDist(scanners.get(i), scanners.get(j)));
-      }
-    }
-    return maxDist;
   }
 
   private boolean forEachRotation(Scanner scanner, BooleanSupplier action) {

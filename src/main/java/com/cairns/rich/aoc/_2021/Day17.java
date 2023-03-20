@@ -1,17 +1,34 @@
 package com.cairns.rich.aoc._2021;
 
+import com.cairns.rich.aoc.Loader2;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day17 extends Base2021 {
   @Override
-  protected void run() {
-    TargetArea targetArea = new TargetArea(fullLoader.sl());
+  protected Object part1(Loader2 loader) {
+    return simulateVelocities(
+        loader,
+        (highestMaxHeight, maxHeight) -> highestMaxHeight.setValue(Math.max(highestMaxHeight.getValue(), maxHeight))
+    );
+  }
 
-    int highestMaxHeight = 0;
-    int numValidVelocities = 0;
+  @Override
+  protected Object part2(Loader2 loader) {
+    return simulateVelocities(
+        loader,
+        (numValidVelocities, maxHeight) -> numValidVelocities.increment()
+    );
+  }
+
+  private int simulateVelocities(Loader2 loader, BiConsumer<MutableInt, Integer> positiveMaxHeightAction) {
+    TargetArea targetArea = new TargetArea(loader.sl());
+
+    MutableInt positiveMaxHeightTracker = new MutableInt(0);
     MutablePoint velocity = new MutablePoint(0, 0);
     for (int vx = 1; vx <= 1000; ++vx) {
       for (int vy = -1000; vy <= 1000; ++vy) {
@@ -19,14 +36,11 @@ class Day17 extends Base2021 {
         velocity.y(vy);
         int maxHeight = findMaxHeight(targetArea, velocity);
         if (maxHeight >= 0) {
-          highestMaxHeight = Math.max(highestMaxHeight, maxHeight);
-          ++numValidVelocities;
+          positiveMaxHeightAction.accept(positiveMaxHeightTracker, maxHeight);
         }
       }
     }
-
-    System.out.println(highestMaxHeight);
-    System.out.println(numValidVelocities);
+    return positiveMaxHeightTracker.getValue();
   }
 
   private int findMaxHeight(TargetArea targetArea, MutablePoint velocity) {
