@@ -8,25 +8,15 @@ import org.junit.Test;
  */
 public class TestMutablePoint extends TestPoint<MutablePoint> {
   public TestMutablePoint() {
-    super(MutablePoint::new);
+    super(MutablePoint::origin, MutablePoint::new);
   }
 
   /**
-   * This test ensures that {@link MutablePoint#origin()} behaves properly.  Namely:
-   *   1) the point is at the origin (0, 0)
-   *   2) repeated calls to the method return points that are {@link Point#equals(Object)}
-   *   3) repeated calls do NOT return the same object (since they are mutable)
+   * This test ensures that the origins provided are not the same point since they are mutable.
    */
   @Test
-  public void testOrigin() {
-    MutablePoint first = MutablePoint.origin();
-    MutablePoint second = MutablePoint.origin();
-
-    Assert.assertEquals(0, first.x());
-    Assert.assertEquals(0, first.y());
-
-    Assert.assertEquals(first, second);
-    Assert.assertNotSame(first, second);
+  public void testOriginNotSameness() {
+    Assert.assertNotSame(MutablePoint.origin(), MutablePoint.origin());
   }
 
   /**

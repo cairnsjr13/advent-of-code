@@ -3,6 +3,7 @@ package com.cairns.rich.aoc.grid;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,12 +18,24 @@ abstract class TestPoint<P extends Point<P>> {
   protected static final List<Pair<Integer, Integer>> testPoints =
       List.of(Pair.of(0, 0), Pair.of(1, 2), Pair.of(-3, 4), Pair.of(-5, -6), Pair.of(7, -8));
 
+  private final Supplier<P> originSup;
   private final BiFunction<Integer, Integer, P> ctor;
   private final Function<Pair<Integer, Integer>, P> fromSpec;
 
-  protected TestPoint(BiFunction<Integer, Integer, P> ctor) {
+  protected TestPoint(Supplier<P> originSup, BiFunction<Integer, Integer, P> ctor) {
+    this.originSup = originSup;
     this.ctor = ctor;
     this.fromSpec = (spec) -> ctor.apply(spec.getLeft(), spec.getRight());
+  }
+
+  /**
+   * This test ensures that the origin point is indeed at the origin (0, 0).
+   */
+  @Test
+  public final void testOriginLocation() {
+    P origin = originSup.get();
+    Assert.assertEquals(0, origin.x());
+    Assert.assertEquals(0, origin.y());
   }
 
   /**
