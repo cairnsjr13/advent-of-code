@@ -20,7 +20,7 @@ class Day02 extends Base2021 {
 
   @Override
   protected Object part2(Loader2 loader) {
-    MutablePoint location = new MutablePoint(0, 0);
+    MutablePoint location = MutablePoint.origin();
     int aim = 0;
     for (MoveAndMagnitude inst : loader.ml(MoveAndMagnitude::new)) {
       if ("forward".equals(inst.move)) {

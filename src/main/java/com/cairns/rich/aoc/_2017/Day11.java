@@ -24,7 +24,7 @@ class Day11 extends Base2017 {
   }
 
   private static class State {
-    private final MutablePoint location = new MutablePoint(0, 0);
+    private final MutablePoint location = MutablePoint.origin();
     private int maxDistance = 0;
 
     private void move(SHexDir dir) {

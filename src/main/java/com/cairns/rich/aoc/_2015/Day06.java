@@ -35,7 +35,7 @@ class Day06 extends Base2015 {
 
   private final int countLightsOn(List<Instruction> instructions, Map<Type, IntUnaryOperator> rules) {
     int lightsOn = 0;
-    MutablePoint light = new MutablePoint(0, 0);
+    MutablePoint light = MutablePoint.origin();
     for (light.x(0); light.x() < 1000; light.move(ReadDir.Right)) {
       for (light.y(0); light.y() < 1000; light.move(ReadDir.Down)) {
         int bulb = 0;

@@ -71,7 +71,7 @@ class Day23 extends Base2022 {
   }
 
   private boolean needsToMove(Elf elf, Set<Point<?>> map) {
-    MutablePoint test = new MutablePoint(0, 0);
+    MutablePoint test = MutablePoint.origin();
     for (int dx = -1; dx <= 1; ++dx) {
       test.x(elf.location.x() + dx);
       for (int dy = -1; dy <= 1; ++dy) {

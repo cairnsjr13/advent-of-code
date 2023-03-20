@@ -48,7 +48,7 @@ class Day24 extends Base2020 {
   private Set<ImmutablePoint> getInitialBlackTiles(List<List<UHexDir>> tileSpecs) {
     Set<ImmutablePoint> blackTiles = new HashSet<>();
     for (List<UHexDir> tileSpec : tileSpecs) {
-      MutablePoint total = new MutablePoint(0, 0);
+      MutablePoint total = MutablePoint.origin();
       tileSpec.forEach(total::move);
       ImmutablePoint flip = new ImmutablePoint(total);
       flipActions.get(blackTiles.contains(flip)).accept(blackTiles, flip);

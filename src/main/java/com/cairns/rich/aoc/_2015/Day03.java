@@ -33,7 +33,7 @@ class Day03 extends Base2015 {
     Set<ImmutablePoint> seen = new HashSet<>();
     seen.add(ImmutablePoint.origin);
     List<MutablePoint> santas =
-        IntStream.range(0, numSantas).mapToObj((i) -> new MutablePoint(0, 0)).collect(Collectors.toList());
+        IntStream.range(0, numSantas).mapToObj((i) -> MutablePoint.origin()).collect(Collectors.toList());
     for (int i = 0; i < input.length();) {
       for (MutablePoint santa : santas) {
         santa.move(lookup.get(input.charAt(i)));

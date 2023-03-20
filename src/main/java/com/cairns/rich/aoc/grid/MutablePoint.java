@@ -5,6 +5,13 @@ package com.cairns.rich.aoc.grid;
  * Because of this, these are unsafe for use in hash based data-structures.
  */
 public class MutablePoint extends Point<MutablePoint> {
+  /**
+   * Convenience constructor for a new origin point.  Will be a new object each time.
+   */
+  public static MutablePoint origin() {
+    return new MutablePoint(0, 0);
+  }
+
   public MutablePoint(Point<?> copy) {
     this(copy.x, copy.y);
   }

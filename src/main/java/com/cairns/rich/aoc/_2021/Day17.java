@@ -29,7 +29,7 @@ class Day17 extends Base2021 {
     TargetArea targetArea = new TargetArea(loader.sl());
 
     MutableInt positiveMaxHeightTracker = new MutableInt(0);
-    MutablePoint velocity = new MutablePoint(0, 0);
+    MutablePoint velocity = MutablePoint.origin();
     for (int vx = 1; vx <= 1000; ++vx) {
       for (int vy = -1000; vy <= 1000; ++vy) {
         velocity.x(vx);
@@ -45,7 +45,7 @@ class Day17 extends Base2021 {
 
   private int findMaxHeight(TargetArea targetArea, MutablePoint velocity) {
     int maxHeight = 0;
-    MutablePoint location = new MutablePoint(0, 0);
+    MutablePoint location = MutablePoint.origin();
     while (!targetArea.isPast(location)) {
       location.mutateX(velocity.x());
       location.mutateY(velocity.y());
