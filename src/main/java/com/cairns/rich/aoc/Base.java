@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc;
 
+import com.cairns.rich.aoc.Loader2.ConfigBinding;
 import com.cairns.rich.aoc._2022.Base2022;
 import com.google.common.base.Strings;
 import java.security.MessageDigest;
@@ -42,10 +43,10 @@ public abstract class Base extends SafeAccessor {
   protected final Loader2 testLoader;
   protected final Loader2 fullLoader;
 
-  protected Base() {
+  protected Base(ConfigBinding... fullLoaderConfigBindings) {
     String pkgPrefix = "/" + getClass().getPackageName().replace('.', '/') + "/";
     this.testLoader = new Loader2(pkgPrefix + "test.txt");
-    this.fullLoader = new Loader2(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt");
+    this.fullLoader = new Loader2(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt", fullLoaderConfigBindings);
   }
 
   protected void run() throws Throwable {

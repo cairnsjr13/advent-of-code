@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader2.ConfigToken;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -12,10 +13,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 class Day15 extends Base2022 {
+  private static final long TUNING_FACTOR = 4_000_000L;
+  private static final ConfigToken<Integer> inspectY = ConfigToken.of("inspectY", Integer::parseInt);
+  private static final ConfigToken<Integer> maxXY = ConfigToken.of("maxXY", Integer::parseInt);
+
+  public Day15() {
+    super(inspectY.binding(2_000_000), maxXY.binding(4_000_000));
+  }
+
   @Override
   protected Object part1(Loader2 loader) {
     List<Sensor> sensors = loader.ml(Sensor::new);
-    int y = 2_000_000;  //TODO: example of more specs than in the file
+    int y = loader.getConfig(inspectY);
     Set<Point<?>> allSensorsAndBeacons =
         sensors.stream().map((s) -> List.of(s.location, s.closestBeacon)).flatMap(List::stream).collect(Collectors.toSet());
     int maxDist = sensors.stream().mapToInt((s) -> computeManDist(s.location, s.closestBeacon)).max().getAsInt();
@@ -34,8 +43,8 @@ class Day15 extends Base2022 {
   @Override
   protected Object part2(Loader2 loader)  {
     List<Sensor> sensors = loader.ml(Sensor::new);
-    int maxX = 4_000_000;
-    int maxY = 4_000_000;
+    int maxX = loader.getConfig(maxXY);
+    int maxY = loader.getConfig(maxXY);
     Set<ImmutablePoint> allSensorsAndBeacons =
         sensors.stream().map((s) -> List.of(s.location, s.closestBeacon)).flatMap(List::stream).collect(Collectors.toSet());
     for (int y = 0; y <= maxY; ++y) {
@@ -48,7 +57,7 @@ class Day15 extends Base2022 {
         else {
           int xJump = getXJump(sensors, cur);
           if (xJump == 0) {
-            return (x * 4_000_000L) + y;
+            return (x * TUNING_FACTOR) + y;
           }
           x += xJump;
         }

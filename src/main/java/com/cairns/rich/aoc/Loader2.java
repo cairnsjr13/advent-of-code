@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,9 +15,12 @@ import java.util.stream.Collectors;
  */
 public class Loader2 extends QuietCapable {
   public final String file;
+  private final Map<String, String> configRawStrings = new HashMap<>();
+  private final Map<ConfigToken<?>, Object> configValues = new HashMap<>();
 
-  public Loader2(String file) {
-    this.file = file;
+  public Loader2(String file, ConfigBinding... bindings) {
+    this.file = file; // TODO: create config section at top of test files (use delimiter that is unlikely)
+    Arrays.stream(bindings).forEach((binding) -> configValues.put(binding.token, binding.value));
   }
 
   /**
@@ -83,6 +88,11 @@ public class Loader2 extends QuietCapable {
     });
   }
 
+  @SuppressWarnings("unchecked")  // The only way it can get in the map is type safe
+  public <T> T getConfig(ConfigToken<T> token) {
+    return (T) configValues.computeIfAbsent(token, (t) -> token.parser.apply(configRawStrings.get(token.key)));
+  }
+
   /**
    * Helper method that reads the entire file, transforms each line using the given map fn, and returns them in a list.
    */
@@ -115,6 +125,34 @@ public class Loader2 extends QuietCapable {
 
     public String next() {
       return (lines.size() == position) ? null : lines.get(position++);
+    }
+  }
+
+  public static class ConfigToken<T> {
+    private final String key;
+    private final Function<String, T> parser;
+
+    private ConfigToken(String key, Function<String, T> parser) {
+      this.key = key;
+      this.parser = parser;
+    }
+
+    public static <T> ConfigToken<T> of(String key, Function<String, T> parser) {
+      return new ConfigToken<>(key, parser);
+    }
+
+    public ConfigBinding binding(T value) {
+      return new ConfigBinding(this, value);
+    }
+  }
+
+  public static class ConfigBinding {
+    private final ConfigToken<?> token;
+    private final Object value;
+
+    private <T> ConfigBinding(ConfigToken<T> token, T value) {
+      this.token = token;
+      this.value = value;
     }
   }
 }
