@@ -66,13 +66,7 @@ public abstract class Base extends SafeAccessor {
     }
   }
 
-  protected void run(Loader2 loader, ResultRegistrar result) {
-    throw fail("Leaving this here to make sure each commit compiles.  Will be removing once 2016 is fixed");
-  }
-
-  protected Object part1(Loader2 loader) throws Throwable {
-    throw fail("Once this is ported through all existing years, i will change it to be abstract");
-  }
+  protected abstract Object part1(Loader2 loader) throws Throwable;
 
   protected Object part2(Loader2 loader) throws Throwable {
     throw new NotImplementedException();
@@ -207,11 +201,5 @@ public abstract class Base extends SafeAccessor {
     public final long getNumSteps() {
       return numSteps;
     }
-  }
-
-  protected interface ResultRegistrar {
-    void part1(Object answer);
-
-    void part2(Object answer);
   }
 }
