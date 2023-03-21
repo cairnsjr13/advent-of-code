@@ -1,10 +1,10 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day17 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int stepSize = Integer.parseInt(loader.sl());
     Node head = new Node(0);
     head.next = head;
@@ -21,7 +21,7 @@ class Day17 extends Base2017 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int stepSize = Integer.parseInt(loader.sl());
     int current = 0;
     int second = 0;

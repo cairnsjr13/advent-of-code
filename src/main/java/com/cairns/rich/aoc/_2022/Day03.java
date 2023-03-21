@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 class Day03 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Rucksack::new).stream().map((r) -> r.inBoth).mapToInt(this::priority).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Rucksack> rucksacks = loader.ml(Rucksack::new);
     int total = 0;
     for (int i = 0; i < rucksacks.size(); i += 3) {

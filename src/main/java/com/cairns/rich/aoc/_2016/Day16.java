@@ -1,15 +1,15 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day16 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getChecksum(loader.sl(), 272);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getChecksum(loader.sl(), 35651584);
   }
 

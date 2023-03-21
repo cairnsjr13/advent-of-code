@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import java.util.HashSet;
 import java.util.List;
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 class Day13 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getPointsAfterFolds(loader, (folds) -> 1).size();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Set<ImmutablePoint> points = getPointsAfterFolds(loader, List::size);
     StringBuilder out = new StringBuilder();
     int minR = getMin(points, ImmutablePoint::y).y();
@@ -34,7 +34,7 @@ class Day13 extends Base2021 {
     return out;
   }
 
-  private Set<ImmutablePoint> getPointsAfterFolds(Loader2 loader, ToIntFunction<List<Fold>> numFolds) {
+  private Set<ImmutablePoint> getPointsAfterFolds(Loader loader, ToIntFunction<List<Fold>> numFolds) {
     List<String> lines = loader.ml();   // TODO: multi group
     int breakIndex = lines.indexOf("");
     Set<ImmutablePoint> points = lines.subList(0, breakIndex).stream().map(this::toPoint).collect(Collectors.toSet());

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.ArrayList;
@@ -12,12 +12,12 @@ import java.util.stream.Collectors;
 
 class Day04 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Room::new).stream().filter(Room::isReal).mapToInt((r) -> r.sectorId).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findNorthpoleRoomSectorId(loader.ml(Room::new), "north");
   }
 

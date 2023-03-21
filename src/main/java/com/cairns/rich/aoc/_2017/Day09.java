@@ -1,15 +1,15 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day09 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runCleanup(loader.sl()).totalScore;
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runCleanup(loader.sl()).removedNonCancelledGarbage;
   }
 

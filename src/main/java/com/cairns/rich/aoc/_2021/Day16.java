@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,12 +8,12 @@ import java.util.function.LongBinaryOperator;
 
 class Day16 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return parsePacket(new BytePositioner(loader.sl())).sumOfAllVersions();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return parsePacket(new BytePositioner(loader.sl())).getValue();
   }
 

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,12 +14,12 @@ class Day14 extends Base2019 {
   private static final long TRILLION = 1_000_000_000_000L;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getOreRequiredForNFuel(Reaction.parse(loader), new MutableLong(0), new HashMap<>(), 1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Map<String, Reaction> reactions = Reaction.parse(loader);
     MutableLong numOre = new MutableLong(0);
     Map<String, MutableLong> avail = new HashMap<>();
@@ -94,7 +94,7 @@ class Day14 extends Base2019 {
       this.inputs = Arrays.stream(ioParts[0].split(", ")).map(Component::new).collect(Collectors.toSet());
     }
 
-    private static Map<String, Reaction> parse(Loader2 loader) {
+    private static Map<String, Reaction> parse(Loader loader) {
       return loader.ml(Reaction::new).stream().collect(Collectors.toMap(
           (reaction) -> reaction.output.elem,
           Function.identity()

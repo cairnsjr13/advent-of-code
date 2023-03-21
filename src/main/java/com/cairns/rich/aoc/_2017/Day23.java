@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2017.TabletCode.State;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 class Day23 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
     State state = new State(false);
     TabletCode.executeState(insts, state);
@@ -17,7 +17,7 @@ class Day23 extends Base2017 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {  // TODO: parse out min/max/step from input
+  protected Object part2(Loader loader) {  // TODO: parse out min/max/step from input
     long fromJava = numCompositesBetweenInclusive(109300, 126300, 17);
     long fromTabletCode = numCompositesWithTabletCode(109300, 126300, 17);
     if (fromJava != fromTabletCode) {

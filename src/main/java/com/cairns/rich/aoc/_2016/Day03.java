@@ -1,17 +1,17 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 
 class Day03 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getNumValidTrianglesRowBased(loader.ml(this::parseRow));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getNumValidTrianglesColBased(loader.ml(this::parseRow));
   }
 

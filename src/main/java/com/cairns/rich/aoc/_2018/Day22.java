@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.HashBasedTable;
@@ -14,7 +14,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day22 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     StatusMap map = new StatusMap(loader);
     int riskLevel = 0;
     for (int y = 0; y <= map.target.y(); ++y) {
@@ -26,7 +26,7 @@ class Day22 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     StatusMap map = new StatusMap(loader);
     Table<ImmutablePoint, Tool, Integer> visited = HashBasedTable.create();
     return bfs( // TODO: have custom step sizes in base function
@@ -87,7 +87,7 @@ class Day22 extends Base2018 {
     private final IntUnaryOperator geoIndexToErosionLevel;
     private final ImmutablePoint target;
 
-    private StatusMap(Loader2 loader) {
+    private StatusMap(Loader loader) {
       List<String> lines = loader.ml();
       int depth = Integer.parseInt(lines.get(0).split(" ")[1]);
       String[] targetParts = lines.get(1).split(" ")[1].split(",");

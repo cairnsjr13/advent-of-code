@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 class Day21 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return execDroid(
         IntCode.parseProgram(loader),
         "OR A J",
@@ -24,7 +24,7 @@ class Day21 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return execDroid(
         IntCode.parseProgram(loader),
         "NOT H J",

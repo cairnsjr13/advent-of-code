@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +16,16 @@ class Day22 extends Base2021 {
   private static final Instruction initCuboid = new Instruction(false, initRange, initRange, initRange);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return countFinalOns(loader, initCuboid::isConnected);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countFinalOns(loader, (i) -> true);
   }
 
-  private long countFinalOns(Loader2 loader, Predicate<Instruction> filter) {
+  private long countFinalOns(Loader loader, Predicate<Instruction> filter) {
     List<Instruction> finalList = new ArrayList<>();
     for (Instruction inst : loader.ml(Instruction::new)) {
       if (filter.test(inst)) {

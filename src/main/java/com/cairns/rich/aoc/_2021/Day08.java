@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Sets;
@@ -18,16 +18,16 @@ class Day08 extends Base2021 {
   private static final Set<Integer> uniqueConfigs = Set.of(1, 4, 7, 8);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findSignalSum(loader, this::numUniqueLengthOutputs);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findSignalSum(loader, this::parseOutput);
   }
 
-  private long findSignalSum(Loader2 loader, BiFunction<BiMap<Integer, Set<Character>>, Signal, Long> toSignalSum) {
+  private long findSignalSum(Loader loader, BiFunction<BiMap<Integer, Set<Character>>, Signal, Long> toSignalSum) {
     return loader.ml(Signal::new).stream().mapToLong((signal) -> toSignalSum.apply(deduceConfigs(signal.inputs), signal)).sum();
   }
 

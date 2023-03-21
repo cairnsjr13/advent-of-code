@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
@@ -24,12 +24,12 @@ class Day06 extends Base2015 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return countLightsOn(loader.ml(Instruction::new), simple);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countLightsOn(loader.ml(Instruction::new), complex);
   }
 

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import org.apache.commons.lang3.mutable.MutableInt;
 
@@ -9,20 +9,20 @@ class Day10 extends Base2022 {
   private static final int screenWidth = 40;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     MutableInt interestingSum = new MutableInt(0);
     runProgram(loader, interestingSum, new StringBuilder());
     return interestingSum;
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     StringBuilder screen = new StringBuilder("\n");
     runProgram(loader, new MutableInt(), screen);
     return screen;
   }
 
-  private void runProgram(Loader2 loader, MutableInt interestingSum, StringBuilder screen) {
+  private void runProgram(Loader loader, MutableInt interestingSum, StringBuilder screen) {
     int x = 1;
     int cycle = 0;
     for (String[] inst : loader.ml((line) -> line.split(" +"))) {

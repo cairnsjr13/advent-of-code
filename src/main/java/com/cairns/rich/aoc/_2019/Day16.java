@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,7 +10,7 @@ class Day16 extends Base2019 {
   private int[] multiplierGroups = { 0, 1, 0, -1 };
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return exec(
         loader.sl("", Integer::parseInt),
         (in, next, outPos) -> IntStream.range(0, in.size()).map((inPos) -> in.get(inPos) * getMultiplier(outPos, inPos)).sum()
@@ -18,7 +18,7 @@ class Day16 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Integer> input = loader.sl("", Integer::parseInt);
     int offset = getOffset(input);
     List<Integer> largeInput = new ArrayList<>();

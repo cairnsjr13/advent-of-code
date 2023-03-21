@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.Collection;
@@ -25,16 +25,16 @@ class Day24 extends Base2018 {
   private static final Comparator<Group> attackOrderCmp = Comparator.<Group>comparingInt((g) -> -g.initiative);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getFightResultsWhen(loader, (result) -> true);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getFightResultsWhen(loader, (result) -> IMM.equals(result.getLeft()));
   }
 
-  private int getFightResultsWhen(Loader2 loader, Predicate<Pair<String, Integer>> when) {
+  private int getFightResultsWhen(Loader loader, Predicate<Pair<String, Integer>> when) {
     List<Group> groups = loader.gDelim("", Group::parseTeam).stream().flatMap(List::stream).collect(Collectors.toList());
     for (int immBoost = 0; true; ++immBoost) {
       Pair<String, Integer> result = fight(groups, immBoost);

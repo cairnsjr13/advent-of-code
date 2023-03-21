@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 class Day16 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Consumer<StringBuilder>> moves = loader.sl(",", this::parse);
     StringBuilder state = new StringBuilder("abcdefghijklmnop");
     moves.forEach((move) -> move.accept(state));
@@ -16,7 +16,7 @@ class Day16 extends Base2017 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Consumer<StringBuilder>> moves = loader.sl(",", this::parse);
     StringBuilder state = new StringBuilder("abcdefghijklmnop");
     int loopSize = getLoopSize(moves, state);

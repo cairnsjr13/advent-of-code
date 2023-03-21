@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,12 +14,12 @@ import java.util.stream.IntStream;
 
 class Day16 extends Base2022 {  // TODO: part two is comically slow.  There is probably optimizations abound
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return maxReleased(Valve.generateLookup(loader), 30, initPq(1), new HashSet<>(), new HashSet<>(), 0);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return maxReleased(Valve.generateLookup(loader), 26, initPq(2), new HashSet<>(), new HashSet<>(), 0);
   }
 
@@ -119,7 +119,7 @@ class Day16 extends Base2022 {  // TODO: part two is comically slow.  There is p
       return id;
     }
 
-    private static Map<String, Valve> generateLookup(Loader2 loader) {
+    private static Map<String, Valve> generateLookup(Loader loader) {
       Map<String, Valve> lookup = getLookup(loader.ml(Valve::new));
       for (Valve start : lookup.values()) {
         if ((start.rate > 0) || "AA".equals(start.id)) {

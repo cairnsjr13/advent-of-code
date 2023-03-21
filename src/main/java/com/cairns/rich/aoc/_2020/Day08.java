@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2020;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ import java.util.OptionalInt;
 
 class Day08 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Instruction> instructions = loader.ml(Instruction::new);
     State state = new State();
     while (!state.executedInstructions.get(state.instructionIndex)) {
@@ -19,7 +19,7 @@ class Day08 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Instruction> instructions = loader.ml(Instruction::new);
     for (int i = 0; i < instructions.size(); ++i) {
       Instruction instruction = instructions.get(i);

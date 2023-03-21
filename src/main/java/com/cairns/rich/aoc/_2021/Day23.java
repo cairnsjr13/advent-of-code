@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashMultimap;
@@ -24,16 +24,16 @@ class Day23 extends Base2021 {
       IntStream.of(3, 5, 7, 9).mapToObj((x) -> new ImmutablePoint(x, 1)).collect(Collectors.toSet());
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findLeastCost(loader, 2);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findLeastCost(loader, 4);
   }
 
-  private int findLeastCost(Loader2 loader, int numEachType) {
+  private int findLeastCost(Loader loader, int numEachType) {
     Problem problem = new Problem(numEachType);
     return bfs(
         new State(parse(loader, numEachType), 0),
@@ -132,7 +132,7 @@ class Day23 extends Base2021 {
         : 4 * location.y() + location.x() / 2 + 2;
   }
 
-  private SortedMap<ImmutablePoint, Character> parse(Loader2 loader, int numEachType) {
+  private SortedMap<ImmutablePoint, Character> parse(Loader loader, int numEachType) {
     List<String> inputs = loader.ml();
     BiFunction<Integer, Integer, Character> chAt = (y, x) -> inputs.get(y).charAt(x);
     SortedMap<ImmutablePoint, Character> map =

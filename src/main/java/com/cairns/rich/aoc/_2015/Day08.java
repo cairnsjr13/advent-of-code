@@ -1,15 +1,15 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day08 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Entry::new).stream().mapToInt((e) -> e.code.length() - e.memoryBytes()).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.ml(Entry::new).stream().mapToInt((e) -> e.encodedCodeBytes() - e.code.length()).sum();
   }
 

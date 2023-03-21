@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,16 @@ class Day05 extends Base2022 {
   private static final Pattern movePattern = Pattern.compile("^move (\\d+) from (\\d+) to (\\d+)$");
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return calculateHeadOfStacksAfterMoves(loader, ArrayDeque::pollFirst);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return calculateHeadOfStacksAfterMoves(loader, ArrayDeque::pollLast);
   }
 
-  private String calculateHeadOfStacksAfterMoves(Loader2 loader, Function<ArrayDeque<Character>, Character> fromTemp) {
+  private String calculateHeadOfStacksAfterMoves(Loader loader, Function<ArrayDeque<Character>, Character> fromTemp) {
     List<String> lines = loader.ml();
     int emptyLine = lines.indexOf("");
     List<String> init = lines.subList(0, emptyLine);

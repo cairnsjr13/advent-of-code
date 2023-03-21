@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.BiPredicate;
@@ -14,16 +14,16 @@ class Day08 extends Base2017 {
   private static final Map<String, TestOp> testOps = EnumUtils.getLookup(TestOp.class);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runInstructions(loader, (state) -> state.registers.values().stream().mapToInt(Integer::intValue).max().getAsInt());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runInstructions(loader, (state) -> state.highWaterMark);
   }
 
-  private int runInstructions(Loader2 loader, ToIntFunction<State> toAnswer) {
+  private int runInstructions(Loader loader, ToIntFunction<State> toAnswer) {
     State state = new State();
     for (Inst inst : loader.ml(Inst::new)) {
       String modifiedRegister = inst.executeAndGetModifiedRegister.apply(state);

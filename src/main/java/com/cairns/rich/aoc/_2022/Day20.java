@@ -1,22 +1,22 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class Day20 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return solve(loader, 1, 1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return solve(loader, 811_589_153, 10);
   }
 
-  private long solve(Loader2 loader, long factor, int loops) {
+  private long solve(Loader loader, long factor, int loops) {
     List<Integer> input = loader.ml(Integer::parseInt);
     List<Node> nodes = buildNodes(input.stream().map((n) -> n * factor).collect(Collectors.toList()));
     for (int loop = 0; loop < loops; ++loop) {

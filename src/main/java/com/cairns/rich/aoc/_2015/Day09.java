@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
@@ -12,16 +12,16 @@ import java.util.regex.Pattern;
 class Day09 extends Base2015 {
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return extremeRoute(loader, Integer.MAX_VALUE, Math::min);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return extremeRoute(loader, Integer.MIN_VALUE, Math::max);
   }
 
-  private int extremeRoute(Loader2 loader, int seed, IntBinaryOperator getExtreme) {
+  private int extremeRoute(Loader loader, int seed, IntBinaryOperator getExtreme) {
     List<Leg> legs = loader.ml(Leg::new);
     Table<String, String, Integer> routes = HashBasedTable.create();
     for (Leg leg : legs) {

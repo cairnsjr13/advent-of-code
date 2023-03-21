@@ -1,17 +1,17 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 
 class Day06 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.gDelim("", Group::new).stream().mapToLong(Group::numAny).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.gDelim("", Group::new).stream().mapToLong(Group::numAll).sum();
   }
 

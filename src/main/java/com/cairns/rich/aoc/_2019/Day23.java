@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,16 +15,16 @@ import java.util.stream.IntStream;
 // TODO: The threading synchronization could be better...
 class Day23 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runAndGetNatPacketY(loader, (nat) -> nat.firstRecv);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runAndGetNatPacketY(loader, (nat) -> nat.lastRecv);
   }
 
-  private long runAndGetNatPacketY(Loader2 loader, Function<Nat, Packet> toNatPacket) {
+  private long runAndGetNatPacketY(Loader loader, Function<Nat, Packet> toNatPacket) {
     List<Long> program = IntCode.parseProgram(loader);
     ConcurrentLinkedDeque<Packet> packetsToSend = new ConcurrentLinkedDeque<>();
     Map<Long, Machine> machines = new HashMap<>();

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 class Day13 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<List<ListPacket>> packetPairs =
         loader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()));
     return IntStream.range(0, packetPairs.size())
@@ -23,7 +23,7 @@ class Day13 extends Base2022 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<ListPacket> packets = loader.gDelim("", (l) -> l.stream().map(ListPacket::parse).collect(Collectors.toList()))
         .stream().flatMap(List::stream).collect(Collectors.toList());
     Set<ListPacket> dividers = Set.of(ListPacket.parse("[[2]]"), ListPacket.parse("[[6]]"));

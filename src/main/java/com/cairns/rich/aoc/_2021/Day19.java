@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -22,14 +22,14 @@ class Day19 extends Base2021 {
   private static final Transformation rotateAroundZ = new Transformation(toY, toNegX, toZ);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Scanner> scanners = loader.gDelim("", Scanner::new);
     baseScanners(scanners);
     return scanners.stream().map((s) -> s.beacons).flatMap(Set::stream).collect(Collectors.toSet()).size();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Scanner> scanners = loader.gDelim("", Scanner::new);
     baseScanners(scanners);
     int maxDist = 0;

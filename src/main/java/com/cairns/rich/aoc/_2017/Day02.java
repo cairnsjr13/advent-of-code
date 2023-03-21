@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.ToIntFunction;
@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 class Day02 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return computeResult(loader.ml(this::parse), this::computeChecksumResultForRow);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return computeResult(loader.ml(this::parse), this::computeEvenlyDivisibleResultForRow);
   }
 

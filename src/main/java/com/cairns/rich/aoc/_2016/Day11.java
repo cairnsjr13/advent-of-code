@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.ArrayList;
@@ -45,12 +45,12 @@ class Day11 extends Base2016 {
   private static final int LOCATION_COUNT_MASK = 0b111;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return computeMinMoves(loader.ml(Location::new));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Location> locations = loader.ml(Location::new);
     locations.add(new Location(0, 0));
     locations.add(new Location(0, 0));

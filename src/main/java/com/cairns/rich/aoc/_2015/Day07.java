@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,14 +17,14 @@ class Day07 extends Base2015 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Map<String, Instruction> instructionsByOutput = getLookup(loader.ml(Instruction::new));
     Map<String, Integer> circuit = new HashMap<>();
     return 0xffff & compute(circuit, instructionsByOutput, "a");
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Map<String, Instruction> instructionsByOutput = getLookup(loader.ml(Instruction::new));
     Map<String, Integer> circuit = new HashMap<>();
     int originalValue = 0xffff & compute(circuit, instructionsByOutput, "a");

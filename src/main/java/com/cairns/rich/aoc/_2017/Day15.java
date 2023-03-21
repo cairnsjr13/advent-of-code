@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
 class Day15 extends Base2017 {
@@ -10,16 +10,16 @@ class Day15 extends Base2017 {
   private static final long MOD = 2_147_483_647;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getNumMatch(loader, 40_000_000, 1, 1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getNumMatch(loader, 5_000_000, 4, 8);
   }
 
-  private int getNumMatch(Loader2 loader, int numTests, int aMod, int bMod) {
+  private int getNumMatch(Loader loader, int numTests, int aMod, int bMod) {
     List<Long> input = loader.ml(Long::parseLong);
     long aCur = input.get(0);
     long bCur = input.get(1);

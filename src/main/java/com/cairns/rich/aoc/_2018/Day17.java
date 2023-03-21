@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Range;
 import com.google.common.collect.Table;
 import com.google.common.collect.Table.Cell;
@@ -20,16 +20,16 @@ class Day17 extends Base2018 {
   private static final EnumSet<Status> moistStatuses = EnumSet.of(Status.Water, Status.Wet);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return countTilesAfterDrip(loader, moistStatuses::contains);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countTilesAfterDrip(loader, Status.Water::equals);
   }
 
-  private long countTilesAfterDrip(Loader2 loader, Predicate<Status> filter) {
+  private long countTilesAfterDrip(Loader loader, Predicate<Status> filter) {
     TreeBasedTable<Integer, Integer, Status> yToXTileStatus = TreeBasedTable.create();
     TreeMultimap<Integer, Integer> yToXClay = TreeMultimap.create();
     loader.ml().forEach((line) -> addAllClayTiles(line, yToXClay));

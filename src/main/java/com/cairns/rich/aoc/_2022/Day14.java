@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -17,16 +17,16 @@ class Day14 extends Base2022 {
   private static final Supplier<MutablePoint> newSandCreator = () -> new MutablePoint(500, 0);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return countSand(loader, 0, 2);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countSand(loader, 4, 2);
   }
 
-  private int countSand(Loader2 loader, int voidOffset, int floorOffset) {
+  private int countSand(Loader loader, int voidOffset, int floorOffset) {
     Set<Point<?>> scan = buildScan(loader);
     int maxY = scan.stream().mapToInt(Point::y).max().getAsInt();
     int voidY = maxY + voidOffset;
@@ -60,7 +60,7 @@ class Day14 extends Base2022 {
     return false;
   }
 
-  private Set<Point<?>> buildScan(Loader2 loader) {
+  private Set<Point<?>> buildScan(Loader loader) {
     List<List<ImmutablePoint>> rockDescs = loader.ml(this::parseRockDesc);
     Set<Point<?>> scan = new HashSet<>();
     for (List<ImmutablePoint> rockDesc : rockDescs) {

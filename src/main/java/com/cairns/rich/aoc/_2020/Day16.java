@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 class Day16 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     State state = new State(loader);
     return state.nearbyTickets.stream()
         .map((nearbyTicket) -> getErrorRate(state.rules, nearbyTicket))
@@ -26,7 +26,7 @@ class Day16 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     State state = new State(loader);
     List<Set<Integer>> rulesAvailableByIndex = computeRuleAvailableByIndex(state);
     Map<Rule, Integer> ruleIndexes = new HashMap<>();
@@ -108,7 +108,7 @@ class Day16 extends Base2020 {
     private final int[] myTicket;
     private final List<int[]> nearbyTickets;
 
-    private State(Loader2 loader) {
+    private State(Loader loader) {
       List<String> lines = loader.ml(); // TODO: candidate for multiple group loader
       int indexOfFirstBlank = lines.indexOf("");
       int indexOfLastBlank = lines.lastIndexOf("");

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.function.IntToLongFunction;
 
 class Day02 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> boxIds = loader.ml();
     IntToLongFunction numWithCount = (target) -> boxIds.stream()
         .map((str) -> str.chars().mapToObj((i) -> (char) i).collect(HashMultiset::create, Multiset::add, Multiset::addAll))
@@ -18,7 +18,7 @@ class Day02 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<String> boxIds = loader.ml();
     for (int l = 0; l < boxIds.size(); ++l) {
       String leftBoxId = boxIds.get(l);

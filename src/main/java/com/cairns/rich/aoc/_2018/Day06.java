@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 class Day06 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     State state = new State(loader.ml(this::parse));
     Multiset<ImmutablePoint> closestCounts = HashMultiset.create();
     Set<ImmutablePoint> infinites = new HashSet<>();
@@ -40,7 +40,7 @@ class Day06 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     State state = new State(loader.ml(this::parse));
     int maxExclusive = 10_000;
     int size = 0;

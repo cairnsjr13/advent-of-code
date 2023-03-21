@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -13,16 +13,16 @@ class Day02 extends Base2022 {
   private static final int[] outcomeValues = { 3, 0, 6 };
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getTotalScore(loader, (g) -> g.myselfAsWeapon);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getTotalScore(loader, (g) -> g.myselfAsOutcome);
   }
 
-  private int getTotalScore(Loader2 loader, Function<Game, Weapon> toMyself) {
+  private int getTotalScore(Loader loader, Function<Game, Weapon> toMyself) {
     return loader.ml(Game::new).stream().mapToInt((g) -> {
       Weapon myself = toMyself.apply(g);
       return myself.score + myself.outcome(g.opponent);

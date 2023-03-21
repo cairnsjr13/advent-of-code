@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.function.BiPredicate;
 
 class Day06 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return decode(loader.ml(), (l, r) -> l > r);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return decode(loader.ml(), (l, r) -> l < r);
   }
 

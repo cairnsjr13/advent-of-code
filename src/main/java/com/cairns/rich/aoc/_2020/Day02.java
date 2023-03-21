@@ -1,17 +1,17 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day02 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Password::new).stream().filter(Password::part1IsValid).count();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.ml(Password::new).stream().filter(Password::part2IsValid).count();
   }
 

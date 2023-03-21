@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
@@ -13,12 +13,12 @@ class Day11 extends Base2019 {
   private static final Map<Long, Function<ReadDir, ReadDir>> turns = Map.of(0L, ReadDir::turnLeft, 1L, ReadDir::turnRight);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runWithStartingSquare(IntCode.parseProgram(loader), 0).size();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Map<ImmutablePoint, Long> map = runWithStartingSquare(IntCode.parseProgram(loader), 1);
     int minX = getMin(map.keySet(), ImmutablePoint::x).x();
     int maxX = getMax(map.keySet(), ImmutablePoint::x).x();

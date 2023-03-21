@@ -1,18 +1,18 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 class Day01 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Integer::parseInt).stream().mapToInt(Integer::intValue).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Integer> changes = loader.ml(Integer::parseInt);
     Set<Integer> seen = new HashSet<>();
     int current = 0;

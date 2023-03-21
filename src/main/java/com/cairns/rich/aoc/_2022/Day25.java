@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.List;
@@ -29,7 +29,7 @@ class Day25 extends Base2022 {
   }
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> inputs = loader.ml();
     String total = "";
     for (String input : inputs) {

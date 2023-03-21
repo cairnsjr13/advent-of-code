@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
 class Day03 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> inputs = loader.ml();
     int[][] counts = new int[inputs.get(0).length()][2];
     for (String input : inputs) {
@@ -27,7 +27,7 @@ class Day03 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<String> inputs = loader.ml();
     return lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount > oneCount)
          * lifeSupportPiece(inputs, (zeroCount, oneCount) -> zeroCount <= oneCount);

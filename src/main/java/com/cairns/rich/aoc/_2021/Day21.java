@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +21,7 @@ class Day21 extends Base2021 {
   }
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Player> players = loader.ml(Player::new);
     DeterministicDice dice = new DeterministicDice();
     for (int playerIndex = 0; true; playerIndex = 1 - playerIndex) {
@@ -36,7 +36,7 @@ class Day21 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Player> players = loader.ml(Player::new);
     UniverseSummary[/* turn */][/* player1Position */][/* player2Position */][/* player1Score */][/* player2Score */] cache =
         new UniverseSummary[2][10][10][21][21];

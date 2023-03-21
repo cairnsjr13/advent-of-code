@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Range;
 import com.google.common.collect.Table;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 class Day03 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Claim> claims = loader.ml(Claim::new);
     int multiClaims = 0;
     Table<Integer, Integer, Boolean> claimed = HashBasedTable.create();
@@ -32,7 +32,7 @@ class Day03 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Claim> claims = loader.ml(Claim::new);
     Predicate<Claim> isClear = (inspect) -> !claims.stream().filter((c) -> c != inspect).anyMatch(inspect::overlaps);
     return claims.stream().filter(isClear).findFirst().get().id;

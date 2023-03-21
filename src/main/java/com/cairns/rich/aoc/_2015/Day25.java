@@ -1,11 +1,11 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
 class Day25 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Integer> input = loader.sl(" ", Integer::parseInt);
     int targetRow = input.get(0);
     int targetCol = input.get(1);

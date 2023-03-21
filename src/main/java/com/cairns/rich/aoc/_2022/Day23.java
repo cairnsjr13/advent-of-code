@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
@@ -16,7 +16,7 @@ class Day23 extends Base2022 {
   private static final CardDir[] dirs = { CardDir.North, CardDir.South, CardDir.West, CardDir.East };
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Elf> elves = parse(loader.ml());
     Set<Point<?>> map = elves.stream().map((e) -> e.location).collect(Collectors.toSet());
     for (int round = 0; round <10; ++round) {
@@ -27,7 +27,7 @@ class Day23 extends Base2022 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Elf> elves = parse(loader.ml());
     Set<Point<?>> map = elves.stream().map((e) -> e.location).collect(Collectors.toSet());
     for (int round = 0; true; ++round) {

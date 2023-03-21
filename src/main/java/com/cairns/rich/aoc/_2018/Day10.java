@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.List;
@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 
 class Day10 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findMessage(loader, State::print);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findMessage(loader, (state) -> state.numTicksToMessage);
   }
 
-  private <T> T findMessage(Loader2 loader, Function<State, T> toAnswer) {
+  private <T> T findMessage(Loader loader, Function<State, T> toAnswer) {
     State state = new State(loader);
     int previousDistance = state.getVertDiff();
     while (true) {
@@ -72,7 +72,7 @@ class Day10 extends Base2018 {
     private final List<Light> lights;
     private int numTicksToMessage;
 
-    private State(Loader2 loader) {
+    private State(Loader loader) {
       this.lights = loader.ml(Light::new);
     }
 

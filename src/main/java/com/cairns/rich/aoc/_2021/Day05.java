@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -14,16 +14,16 @@ import java.util.regex.Pattern;
 
 class Day05 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findNumOverlaps(loader, LineSeg::isHorizOrVert);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findNumOverlaps(loader, (lineSeg) -> true);
   }
 
-  private long findNumOverlaps(Loader2 loader, Predicate<LineSeg> filter) {
+  private long findNumOverlaps(Loader loader, Predicate<LineSeg> filter) {
     Multiset<ImmutablePoint> points = HashMultiset.create();
     loader.ml(LineSeg::new).stream().filter(filter).forEach((lineSeg) -> {
       EnumSet<RelDir> dirs = getDirsToMove(lineSeg);

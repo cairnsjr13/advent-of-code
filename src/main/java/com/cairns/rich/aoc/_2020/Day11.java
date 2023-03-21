@@ -1,21 +1,21 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 
 class Day11 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runSimulation(loader, 1, 4);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runSimulation(loader, Integer.MAX_VALUE, 5);
   }
 
-  private long runSimulation(Loader2 loader, int maxFactor, int bailThreshold) {
+  private long runSimulation(Loader loader, int maxFactor, int bailThreshold) {
     State state = new State(maxFactor, bailThreshold, loader.ml());
     while (step(state)) ;
     return Arrays.stream(state.grid).mapToLong((r) -> Arrays.stream(r).filter((s) -> s == '#').count()).sum();

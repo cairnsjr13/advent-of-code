@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Lists;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ class Day22 extends Base2019 {
   private static BinaryOperator<BigInteger> inverseDealWithIncrementMag = (mag, numCards) -> mag.modInverse(numCards);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     BigInteger numCards = BigInteger.valueOf(10_007);
     long card = 2019;
     return reduce(
@@ -27,7 +27,7 @@ class Day22 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     BigInteger numCards = BigInteger.valueOf(119_315_717_514_047L);
     Long numFullShuffles = 101_741_582_076_661L;
     long position = 2020;

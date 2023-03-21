@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day05 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     String seed = loader.sl();
     StringBuilder str =  new StringBuilder();
     MutableInt state = new MutableInt();
@@ -18,7 +18,7 @@ class Day05 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String seed = loader.sl();
     TreeMap<Integer, Character> positions = new TreeMap<>();
     MutableInt state = new MutableInt();

@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 class Day06 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Map<String, String> orbits =
         loader.ml((s) -> s.split("\\)")).stream().collect(Collectors.toMap((o) -> o[1], (o) -> o[0]));
     Map<String, Integer> countCache = new HashMap<>();
@@ -17,7 +17,7 @@ class Day06 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Map<String, String> orbits =
         loader.ml((s) -> s.split("\\)")).stream().collect(Collectors.toMap((o) -> o[1], (o) -> o[0]));
     Map<String, Integer> youChain = new HashMap<>();

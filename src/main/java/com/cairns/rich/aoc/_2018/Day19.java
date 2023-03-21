@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 class Day19 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> lines = loader.ml();
     String ipLine = lines.get(0);
     int instructionRegister = ipLine.charAt(ipLine.length() - 1) - '0';
@@ -22,7 +22,7 @@ class Day19 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return sumOfFactors(10551319);
   }
 

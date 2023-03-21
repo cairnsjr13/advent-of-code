@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 class Day13 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> input = loader.ml();
     double earliest = Double.parseDouble(input.get(0));
     String[] busses = input.get(1).split(",");
@@ -30,7 +30,7 @@ class Day13 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String[] consts = loader.ml().get(1).split(",");
     List<Equation> eqs = new ArrayList<>();
     for (int i = 0; i < consts.length; ++i) {

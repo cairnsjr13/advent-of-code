@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 class Day02 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<MoveAndMagnitude> insts = loader.ml(MoveAndMagnitude::new);
     int horizontalMovement = insts.stream().filter((mm) -> "forward".equals(mm.move)).mapToInt((mm) -> mm.magnitude).sum();
     int depthChange = insts.stream()
@@ -19,7 +19,7 @@ class Day02 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     MutablePoint location = MutablePoint.origin();
     int aim = 0;
     for (MoveAndMagnitude inst : loader.ml(MoveAndMagnitude::new)) {

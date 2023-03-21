@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 class Day01 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Integer> inputs = loader.ml(Integer::parseInt);
     Set<Long> seen = new HashSet<>();
     for (long input : inputs) {
@@ -21,7 +21,7 @@ class Day01 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Integer> inputs = loader.ml(Integer::parseInt);
     for (int i = 0; i < inputs.size(); ++i) {
       int iVal = inputs.get(i);

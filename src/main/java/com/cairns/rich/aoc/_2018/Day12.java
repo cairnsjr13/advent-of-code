@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,12 +9,12 @@ import java.util.function.IntPredicate;
 
 class Day12 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return sumIndexesAfterGens(loader, 20);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int chunk = 10_000;
     long numInChunk = sumIndexesAfterGens(loader, chunk);
     long multiplier = (numInChunk / chunk) * chunk;
@@ -22,7 +22,7 @@ class Day12 extends Base2018 {
     return (50_000_000_000L / chunk) * multiplier + mod;
   }
 
-  private int sumIndexesAfterGens(Loader2 loader, int numGens) {
+  private int sumIndexesAfterGens(Loader loader, int numGens) {
     List<String> lines = loader.ml();
     TreeSet<Integer> plants = buildInit(lines.get(0).split(" ")[2]);
     Set<Integer> plantRules = buildPlantRules(lines.subList(2, lines.size()));

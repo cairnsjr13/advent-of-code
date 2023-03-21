@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day19 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Pair<String, Multimap<String, String>> moleculeAndReplacements = computeMoleculeAndReplacements(loader);
     String molecule = moleculeAndReplacements.getLeft();
     Multimap<String, String> replacements = moleculeAndReplacements.getRight();
@@ -23,7 +23,7 @@ class Day19 extends Base2015 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Pair<String, Multimap<String, String>> moleculeAndReplacements = computeMoleculeAndReplacements(loader);
     String molecule = moleculeAndReplacements.getLeft();
     Multimap<String, String> replacements = moleculeAndReplacements.getRight();
@@ -35,7 +35,7 @@ class Day19 extends Base2015 {
     }
   }
 
-  private Pair<String, Multimap<String, String>> computeMoleculeAndReplacements(Loader2 loader) {
+  private Pair<String, Multimap<String, String>> computeMoleculeAndReplacements(Loader loader) {
     List<String> inputs = loader.ml();
     String molecule = inputs.get(inputs.size() - 1);
     Multimap<String, String> replacements = HashMultimap.create();

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 class Day07 extends Base2020 {
   private static final String SHINY_GOLD = "shiny gold";
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Map<String, Set<String>> insideCache = new HashMap<>();
     Map<String, Rule> rules = getLookup(loader.ml(Rule::new));
     return rules.keySet().stream()
@@ -21,7 +21,7 @@ class Day07 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countNumBagsInside(getLookup(loader.ml(Rule::new)), new HashMap<>(), SHINY_GOLD);
   }
 

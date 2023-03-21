@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ class Day17 extends Base2016 {
   ));
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     String prefix = loader.sl();
     return bfs(
         new State(prefix, ImmutablePoint.origin, new ArrayList<>()),
@@ -35,7 +35,7 @@ class Day17 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String prefix = loader.sl();
     MutableInt maxLength = new MutableInt(0);
     bfs(

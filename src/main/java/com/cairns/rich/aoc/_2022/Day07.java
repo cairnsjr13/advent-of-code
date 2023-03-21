@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -8,13 +8,13 @@ import java.util.Map;
 
 class Day07 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Directory top = buildFS(loader.ml((line) -> line.split(" +")));
     return getSumOfDirsMaxedSize(100_000, top);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Directory top = buildFS(loader.ml((line) -> line.split(" +")));
     long spaceNeeded = top.getSize() - 40_000_000;    // 70M total, need 30M
     return findMinimumDeleteSize(spaceNeeded, top);

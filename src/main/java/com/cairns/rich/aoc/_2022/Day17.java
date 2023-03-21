@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -20,7 +20,7 @@ class Day17 extends Base2022 {
   private static final Shape[] shapes = EnumUtils.enumValues(Shape.class);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     String jets = loader.sl();
     List<Integer> maxHeights = new ArrayList<>();
     maxHeights.add(0);
@@ -29,7 +29,7 @@ class Day17 extends Base2022 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String jets = loader.sl();
     List<Integer> maxHeights = new ArrayList<>();
     maxHeights.add(0);

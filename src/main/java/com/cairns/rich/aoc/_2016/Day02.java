@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -53,12 +53,12 @@ class Day02 extends Base2016 {
   }
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getCode(imagineButts, loader.ml(), '5');
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getCode(actualButts, loader.ml(), '5');
   }
 

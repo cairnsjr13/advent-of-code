@@ -1,12 +1,12 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import java.util.List;
 
 class Day12 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Inst> insts = loader.ml(Inst::new);
     MutablePoint ship = MutablePoint.origin();
     MutablePoint delta = new MutablePoint(1, 0);
@@ -14,7 +14,7 @@ class Day12 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Inst> insts = loader.ml(Inst::new);
     MutablePoint ship = MutablePoint.origin();
     MutablePoint way = new MutablePoint(10, 1);

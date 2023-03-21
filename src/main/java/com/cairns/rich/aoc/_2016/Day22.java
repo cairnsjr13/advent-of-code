@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +9,7 @@ class Day22 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^/dev/grid/node-x(\\d+)-y(\\d+) +\\d+T +(\\d+)T +(\\d+)T +\\d+%$");
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     short[][] grid = getGrid(loader.ml(), 37, 25);
     int numPairs = 0;
     for (int x1 = 0; x1 < grid.length; ++x1) {
@@ -31,7 +31,7 @@ class Day22 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     short[][] grid = getGrid(loader.ml(), 37, 25);
     int encodedLocationOfEmptyNode = getEncodedLocationOfEmptyNode(grid);
     int xOfEmpty = (encodedLocationOfEmptyNode >> 0) & 0xff;

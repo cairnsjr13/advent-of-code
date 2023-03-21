@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 /**
  * This api makes reading puzzle input from a file less verbose.  File handling and parsing are done at this level.
  */
-public class Loader2 extends QuietCapable {
+public class Loader extends QuietCapable {
   public final String file;
   private final Map<String, String> configRawStrings = new HashMap<>();
   private final Map<ConfigToken<?>, Object> configValues = new HashMap<>();
 
-  public Loader2(String file, ConfigBinding... bindings) {
+  public Loader(String file, ConfigBinding... bindings) {
     this.file = file; // TODO: create config section at top of test files (use delimiter that is unlikely)
     Arrays.stream(bindings).forEach((binding) -> configValues.put(binding.token, binding.value));
   }

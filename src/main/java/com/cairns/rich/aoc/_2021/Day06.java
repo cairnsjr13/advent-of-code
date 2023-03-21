@@ -1,20 +1,20 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 
 class Day06 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getNumFishAfter(loader, 80);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getNumFishAfter(loader, 256);
   }
 
-  private long getNumFishAfter(Loader2 loader, int days) {
+  private long getNumFishAfter(Loader loader, int days) {
     long[] fishByAge = new long[9];
     loader.sl(",", Integer::parseInt).forEach((age) -> ++fishByAge[age]);
     for (int day = 0; day < days; ++day) {

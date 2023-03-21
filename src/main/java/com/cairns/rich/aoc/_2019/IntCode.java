@@ -2,7 +2,7 @@ package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.Base.HasId;
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.QuietCapable;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +24,7 @@ final class IntCode extends QuietCapable {
 
   private IntCode() { }
 
-  static List<Long> parseProgram(Loader2 loader) {
+  static List<Long> parseProgram(Loader loader) {
     return loader.sl(",", Long::parseLong);
   }
 

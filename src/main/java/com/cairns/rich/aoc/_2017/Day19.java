@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.List;
@@ -15,16 +15,16 @@ class Day19 extends Base2017 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return doSteps(loader, (state) -> state.seen);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return doSteps(loader, (state) -> state.steps);
   }
 
-  private <T> T doSteps(Loader2 loader, Function<State, T> toAnswer) {
+  private <T> T doSteps(Loader loader, Function<State, T> toAnswer) {
     List<List<Integer>> grid = loader.ml((line) -> line.chars().boxed().collect(Collectors.toList()));
     MutablePoint location = new MutablePoint(grid.get(0).indexOf((int) '|'), 0);
     State state = new State();

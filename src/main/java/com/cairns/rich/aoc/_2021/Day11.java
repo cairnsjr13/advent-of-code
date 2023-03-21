@@ -1,21 +1,21 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 class Day11 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runSteps(loader, true);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runSteps(loader, false);
   }
 
-  private int runSteps(Loader2 loader, boolean stopAfter100) {
+  private int runSteps(Loader loader, boolean stopAfter100) {
     int[][] grid = loader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
 
     int totalFlashes = 0;

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2016.AssemBunny.Inst;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +13,7 @@ class Day25 extends Base2016 {
   private static final List<Integer> expectedSeed = List.of(0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Inst> insts = loader.ml(Inst::new);
     for (int init = 0; true; ++init) {
       AtomicBoolean killer = new AtomicBoolean();

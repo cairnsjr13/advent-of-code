@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.TreeMultimap;
 import java.util.Comparator;
@@ -14,12 +14,12 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day10 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findStationAndVisibleAsts(loader, (station, visibleAsteriods) -> visibleAsteriods.size());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findStationAndVisibleAsts(loader, (station, visibleAsteroids) -> {
       TreeMultimap<String, Pair<ImmutablePoint, Double>> quadrantsToAsteroidsAndSlopes =
           TreeMultimap.create(Comparator.naturalOrder(), Comparator.comparing(Pair::getRight));
@@ -37,7 +37,7 @@ class Day10 extends Base2019 {
     });
   }
 
-  private int findStationAndVisibleAsts(Loader2 loader, BiFunction<ImmutablePoint, Set<ImmutablePoint>, Integer> toAnswer) {
+  private int findStationAndVisibleAsts(Loader loader, BiFunction<ImmutablePoint, Set<ImmutablePoint>, Integer> toAnswer) {
     Set<ImmutablePoint> asteroids = findAsteroids(loader.ml());
     ImmutablePoint station = null;
     Set<ImmutablePoint> visibleAsteroids = Set.of();

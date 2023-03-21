@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -23,12 +23,12 @@ class Day24 extends Base2021 {
   };
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return verifyAndGetResult(new int[] { 7, 4, 9, 2, 9, 9, 9, 5, 9, 9, 9, 3, 8, 9 });
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return verifyAndGetResult(new int[] { 1, 1, 1, 1, 8, 1, 5, 1, 6, 3, 7, 1, 1, 2 });
   }
 

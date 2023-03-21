@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -8,12 +8,12 @@ import java.util.function.IntPredicate;
 
 class Day24 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getBestQe(loader, 3, this::getBestQe3);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getBestQe(loader, 4, (pkgs, correctSize) -> getBestQe(
         pkgs,
         correctSize,
@@ -21,7 +21,7 @@ class Day24 extends Base2015 {
     ));
   }
 
-  private Object getBestQe(Loader2 loader, int numGroups, BiFunction<List<Integer>, Integer, Long> compute) {
+  private Object getBestQe(Loader loader, int numGroups, BiFunction<List<Integer>, Integer, Long> compute) {
     List<Integer> pkgs = loader.ml(Integer::parseInt);
     int totalSum = pkgs.stream().mapToInt(Integer::intValue).sum();
     return compute.apply(pkgs, totalSum / numGroups);

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 
 class Day12 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Moon> moons = loader.ml(Moon::new);
     for (int t = 0; t < 1000; ++t) {
       tick(moons);
@@ -25,7 +25,7 @@ class Day12 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Moon> moons = loader.ml(Moon::new);
     List<ToIntFunction<Xyz>> toCoords = List.of((xyz) -> xyz.x, (xyz) -> xyz.y, (xyz) -> xyz.z);
     Map<ToIntFunction<Xyz>, Set<List<Integer>>> toCoordToStatesSeen = toCoords.stream().collect(Collectors.toMap(

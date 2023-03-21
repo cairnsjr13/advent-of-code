@@ -1,16 +1,16 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.stream.IntStream;
 
 class Day05 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return lengthWhenIgnore(loader.sl(), '#');
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String input = loader.sl();
     return IntStream.range('a', 'z' + 1).map((ignore) -> lengthWhenIgnore(input, (char) ignore)).min().getAsInt();
   }

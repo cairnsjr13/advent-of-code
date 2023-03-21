@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 class Day14 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int recipeCount = Integer.parseInt(loader.sl());
     List<Integer> scores = runWhile((s) -> s.size() < recipeCount + 10);
     return scores.subList(scores.size() - 10, scores.size()).stream()
@@ -16,7 +16,7 @@ class Day14 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     String suffix = loader.sl();
     List<Integer> scores = runWhile((s) -> {
       if (s.size() < suffix.length()) {

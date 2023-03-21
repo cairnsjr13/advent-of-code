@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.google.common.collect.Range;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day19 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     LongBinaryOperator isAffected = generateIsAffected(loader);
     long maxReach = 50;
     long numAffected = 0;
@@ -23,7 +23,7 @@ class Day19 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     LongBinaryOperator isAffected = generateIsAffected(loader);
     int size = 100;
     LinkedList<Pair<Long, Range<Long>>> yAndXRanges = new LinkedList<>();
@@ -46,7 +46,7 @@ class Day19 extends Base2019 {
     }
   }
 
-  private LongBinaryOperator generateIsAffected(Loader2 loader) {
+  private LongBinaryOperator generateIsAffected(Loader loader) {
     List<Long> program = IntCode.parseProgram(loader);
     return (x, y) -> {
       State state = IntCode.run(program);

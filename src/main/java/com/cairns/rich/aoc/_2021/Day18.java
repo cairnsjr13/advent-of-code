@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 
 class Day18 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getSumAllMagnitude(loader.ml());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<String> inputs = loader.ml();
     long maxSumMagnitude = -1;
     for (int i = 0; i < inputs.size(); ++i) {

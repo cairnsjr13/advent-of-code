@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import java.util.HashSet;
@@ -15,16 +15,16 @@ class Day01 extends Base2016 {
   private static final ToIntFunction<ImmutablePoint> distance = (location) -> Math.abs(location.x()) + Math.abs(location.y());
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getPart(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getPart(loader, true);
   }
 
-  private int getPart(Loader2 loader, boolean part2) {
+  private int getPart(Loader loader, boolean part2) {
     List<String> instructions = loader.sl(", ");
     Set<ImmutablePoint> seen = new HashSet<>();
 

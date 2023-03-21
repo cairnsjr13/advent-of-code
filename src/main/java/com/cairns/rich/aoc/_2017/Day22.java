@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.HashMap;
@@ -25,18 +25,18 @@ class Day22 extends Base2017 {
       (jump) -> (before) -> safeGet(EnumUtils.enumValues(Status.class), before.ordinal() + jump);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getNumInfectionsAfterBursts(10_000, loader, simpleTurnLookup, statusLookupFactory.apply(2));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getNumInfectionsAfterBursts(10_000_000, loader, complexTurnLookup, statusLookupFactory.apply(1));
   }
 
   private int getNumInfectionsAfterBursts(
       int numBursts,
-      Loader2 loader,
+      Loader loader,
       Map<Status, Function<ReadDir, ReadDir>> turnLookup,
       Function<Status, Status> statusLookup
   ) {

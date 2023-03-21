@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day04 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Action> actions = loader.ml(Action::new);  // already sorted
     Map<Integer, Multiset<Integer>> guardToMinutesAsleep = buildGuardToMinutesAsleep(actions);
     int maxGuard = getMax(guardToMinutesAsleep.keySet(), (guard) -> guardToMinutesAsleep.get(guard).size());
@@ -25,7 +25,7 @@ class Day04 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Action> actions = loader.ml(Action::new);  // already sorted
     Map<Integer, Multiset<Integer>> guardToMinutesAsleep = buildGuardToMinutesAsleep(actions);
     Stream<Pair<Integer, Integer>> guardAndMinutes = guardToMinutesAsleep.keySet().stream()

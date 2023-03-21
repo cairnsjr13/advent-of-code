@@ -1,18 +1,18 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Range;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day04 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(ElfPair::new).stream().filter(ElfPair::hasRedundant).count();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.ml(ElfPair::new).stream().filter(ElfPair::hasOverlap).count();
   }
 

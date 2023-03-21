@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.function.Consumer;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day13 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int seed = Integer.parseInt(loader.sl());
     Spec spec = new Spec(seed, 31, 39);
     return bfs(
@@ -21,7 +21,7 @@ class Day13 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int seed = Integer.parseInt(loader.sl());
     Spec spec = new Spec(seed, -1, -1);
     MutableInt numLocations = new MutableInt(0);

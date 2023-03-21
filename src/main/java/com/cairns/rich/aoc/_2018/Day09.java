@@ -1,20 +1,20 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.stream.LongStream;
 
 class Day09 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getHighestScore(loader, 1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getHighestScore(loader, 100);
   }
 
-  private long getHighestScore(Loader2 loader, int lastMarbleFactor) {
+  private long getHighestScore(Loader loader, int lastMarbleFactor) {
     String[] input = loader.sl().split(" ");
     long[] elves = new long[Integer.parseInt(input[0])];
     int lastMarble = Integer.parseInt(input[6]) * lastMarbleFactor;

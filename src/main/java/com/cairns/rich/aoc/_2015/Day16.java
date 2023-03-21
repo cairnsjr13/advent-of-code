@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -17,13 +17,13 @@ class Day16 extends Base2015 {
   ));
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<EnumMap<Att, Integer>> sues = loader.ml(this::parseLine);
     return filter(sues, buildFilters());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<EnumMap<Att, Integer>> sues = loader.ml(this::parseLine);
     Map<Att, IntPredicate> filters = buildFilters();
     filters.put(Att.Cats, (v) -> v > 7);

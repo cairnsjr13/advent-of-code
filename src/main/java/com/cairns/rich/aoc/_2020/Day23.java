@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 class Day23 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     String input = loader.sl();
     StringBuilder out = new StringBuilder();
     Map<Integer, Node> lookup = runGame(input, 100, input.length());
@@ -20,7 +20,7 @@ class Day23 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Node curCup = runGame(loader.sl(), 10_000_000, 1_000_000).get(1);
     return ((long) curCup.cw.label) * ((long) curCup.cw.cw.label);
   }

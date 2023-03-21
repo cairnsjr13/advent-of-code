@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.google.common.collect.Table;
@@ -21,19 +21,19 @@ class Day13 extends Base2019 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return setupGameStateAndGetAnswer(loader, (state, gameState) -> gameState.getNumBlocks());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return setupGameStateAndGetAnswer(loader, (state, gameState) -> {
       playGame(state, gameState, false);
       return gameState.getScore();
     });
   }
 
-  private long setupGameStateAndGetAnswer(Loader2 loader, BiFunction<State, GameState, Long> toAnswer) {
+  private long setupGameStateAndGetAnswer(Loader loader, BiFunction<State, GameState, Long> toAnswer) {
     List<Long> program = IntCode.parseProgram(loader);
     program.set(0, 2L);
     State state = IntCode.run(program);

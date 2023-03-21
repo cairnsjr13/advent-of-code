@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -12,16 +12,16 @@ class Day08 extends Base2016 {
   private static final int NUM_COLS = 50;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return screen(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return screen(loader, true);
   }
 
-  private Object screen(Loader2 loader, boolean returnScreen) {
+  private Object screen(Loader loader, boolean returnScreen) {
     List<Consumer<boolean[][]>> insts = loader.ml(InstType::generateInstruction);
     boolean[][] grid = new boolean[NUM_ROWS][NUM_COLS];
     insts.stream().forEach((inst) -> inst.accept(grid));

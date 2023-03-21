@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,12 +11,12 @@ import java.util.function.Function;
 
 class Day09 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findFirstIncorrect(loader.ml(Long::parseLong));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Long> nums = loader.ml(Long::parseLong);
     long target = findFirstIncorrect(nums);
     List<Long> sumTo = new ArrayList<>();

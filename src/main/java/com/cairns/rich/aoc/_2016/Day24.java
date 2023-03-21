@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.Table;
@@ -14,16 +14,16 @@ import java.util.Map;
 
 class Day24 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findMinSteps(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findMinSteps(loader, true);
   }
 
-  private long findMinSteps(Loader2 loader, boolean withReturn) {
+  private long findMinSteps(Loader loader, boolean withReturn) {
     State state = new State(loader.ml());
     Table<Integer, Integer, Long> minStepsFromTo = calculateMinStepsFromTo(state);
     List<Integer> marksToBePlaced = new ArrayList<>(minStepsFromTo.columnKeySet());

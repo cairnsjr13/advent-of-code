@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,16 +10,16 @@ import java.util.stream.Collectors;
 
 class Day21 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findReg0Value(loader, (state) -> state.firstSeen);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findReg0Value(loader, (state) -> state.lastSeen);
   }
 
-  private long findReg0Value(Loader2 loader, ToLongFunction<State> toAnswer) {
+  private long findReg0Value(Loader loader, ToLongFunction<State> toAnswer) {
     State state = new State(loader);
     Set<Long> seen = new HashSet<>();
     OpProgram.run(state.instructionRegister, state.instructions, (instructionPtr, registers) -> {
@@ -43,7 +43,7 @@ class Day21 extends Base2018 {
     private long firstSeen = -1L;
     private long lastSeen = -1L;
 
-    private State(Loader2 loader) {
+    private State(Loader loader) {
       List<String> lines = loader.ml();
       this.instructionRegister = safeCharAt(lines.get(0), -1) - '0';
       this.instructions = lines.subList(1, lines.size()).stream().map(OpProgram::parse).collect(Collectors.toList());

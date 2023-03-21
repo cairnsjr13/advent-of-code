@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,16 +8,16 @@ import java.util.Set;
 
 class Day17 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runSimulation(loader, 3);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runSimulation(loader, 4);
   }
 
-  private int runSimulation(Loader2 loader, int dimensions) {
+  private int runSimulation(Loader loader, int dimensions) {
     Set<Point> grid = parseGrid(loader.ml(), dimensions);
     for (int i = 0; i < 6; ++i) {
       grid = nextStep(grid, dimensions);

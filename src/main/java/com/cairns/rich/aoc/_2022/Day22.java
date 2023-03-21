@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.Point;
 import com.cairns.rich.aoc.grid.ReadDir;
@@ -22,17 +22,17 @@ class Day22 extends Base2022 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getPassword(loader, this::wirePart1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getPassword(loader, (graph, map) -> wirePart2Full(graph));
   }
 
   private int getPassword(
-      Loader2 loader,
+      Loader loader,
       BiConsumer<Table<ImmutablePoint, ReadDir, Pair<ImmutablePoint, ReadDir>>, char[][]> wire
   ) {
     List<String> input = loader.ml();

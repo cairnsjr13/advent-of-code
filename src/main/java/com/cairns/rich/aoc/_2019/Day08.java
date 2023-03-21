@@ -1,20 +1,20 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.function.Function;
 
 class Day08 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return parseAndFind(loader, this::computeChecksum);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return parseAndFind(loader, this::printImage);
   }
 
-  private <T> T parseAndFind(Loader2 loader, Function<int[][][], T> toAnswer) {
+  private <T> T parseAndFind(Loader loader, Function<int[][][], T> toAnswer) {
     int[][][] image = parseLayerRowCol(loader.sl(), 25, 6);
     return toAnswer.apply(image);
   }

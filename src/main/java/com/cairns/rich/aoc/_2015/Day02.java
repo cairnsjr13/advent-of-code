@@ -1,18 +1,18 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class Day02 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Pkg::new).stream().mapToInt(Pkg::getPaperRequired).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.ml(Pkg::new).stream().mapToInt(Pkg::getRibbonRequired).sum();
   }
 

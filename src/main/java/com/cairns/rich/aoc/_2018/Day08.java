@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +9,16 @@ import java.util.function.ToIntFunction;
 
 class Day08 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return computeAnswer(loader, Node::getRecursiveMetadataSum);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return computeAnswer(loader, Node::getValue);
   }
 
-  private int computeAnswer(Loader2 loader, ToIntFunction<Node> toAnswer) {
+  private int computeAnswer(Loader loader, ToIntFunction<Node> toAnswer) {
     Queue<Integer> inputs = new ArrayDeque<>(loader.sl(" +", Integer::parseInt));
     return toAnswer.applyAsInt(new Node(inputs));
   }

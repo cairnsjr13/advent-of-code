@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 
 class Day25 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     char[][] current = loadInitial(loader.ml());
     char[][] next = new char[current.length][current[0].length];
     int steps = 1;

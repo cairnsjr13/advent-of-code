@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 
 class Day25 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Star> stars = loader.ml(Star::new);
     List<List<Star>> constellations = new LinkedList<>();
     for (Star star : stars) {

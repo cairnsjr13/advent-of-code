@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.BitSet;
@@ -8,16 +8,16 @@ import java.util.List;
 
 class Day20 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getLitPixelsAfter(loader, 2);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getLitPixelsAfter(loader, 50);
   }
 
-  private int getLitPixelsAfter(Loader2 loader, int numSteps) {
+  private int getLitPixelsAfter(Loader loader, int numSteps) {
     List<String> input = loader.ml();
     BitSet algorithm = parseAlgorithm(input.get(0));
     Image image = parseInitialImage(input.subList(2, input.size()));

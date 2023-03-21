@@ -1,16 +1,16 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
 class Day13 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(Scanner::new).stream().filter((s) -> s.atTopAtTime(s.layer)).mapToInt((s) -> s.depth * s.layer).sum();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Scanner> scanners = loader.ml(Scanner::new);
     for (int d = 0; true; ++d) {
       int delay = d;

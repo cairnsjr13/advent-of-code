@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import java.util.function.BiConsumer;
@@ -10,7 +10,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 class Day17 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return simulateVelocities(
         loader,
         (highestMaxHeight, maxHeight) -> highestMaxHeight.setValue(Math.max(highestMaxHeight.getValue(), maxHeight))
@@ -18,14 +18,14 @@ class Day17 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return simulateVelocities(
         loader,
         (numValidVelocities, maxHeight) -> numValidVelocities.increment()
     );
   }
 
-  private int simulateVelocities(Loader2 loader, BiConsumer<MutableInt, Integer> positiveMaxHeightAction) {
+  private int simulateVelocities(Loader loader, BiConsumer<MutableInt, Integer> positiveMaxHeightAction) {
     TargetArea targetArea = new TargetArea(loader.sl());
 
     MutableInt positiveMaxHeightTracker = new MutableInt(0);

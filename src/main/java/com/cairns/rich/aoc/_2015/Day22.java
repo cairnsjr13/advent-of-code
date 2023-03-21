@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import java.util.HashSet;
@@ -13,16 +13,16 @@ class Day22 extends Base2015 {
   private static final Spell[] spells = Spell.values();
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runSimulation(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runSimulation(loader, true);
   }
 
-  private int runSimulation(Loader2 loader, boolean hardMode) {
+  private int runSimulation(Loader loader, boolean hardMode) {
     List<String> bossLines = loader.ml();
     Stats player = new Stats(50, 0, 500);
     Stats boss = new Stats(bossLines);

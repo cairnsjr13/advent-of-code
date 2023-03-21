@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 
 class Day22 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getScoreOfWinner(loader.gDelim("", this::parseCards), this::getWinnerOfSimpleGame);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getScoreOfWinner(loader.gDelim("", this::parseCards), this::getWinnerOfComplexGame);
   }
 

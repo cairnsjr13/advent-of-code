@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Test class for {@link Loader2}.
+ * Test class for {@link Loader}.
  */
 public class TestLoader {
   private static final int NUM_ELEMS = 6;
@@ -19,7 +19,7 @@ public class TestLoader {
    */
   @Test
   public void testMl() {
-    Loader2 loader = new Loader2("loader-ml.txt");
+    Loader loader = new Loader("loader-ml.txt");
     Assert.assertEquals(strExp, loader.ml());
     Assert.assertEquals(intExp, loader.ml(Integer::parseInt));
   }
@@ -29,7 +29,7 @@ public class TestLoader {
    */
   @Test
   public void testSl() {
-    Loader2 loader = new Loader2("loader-sl.txt");
+    Loader loader = new Loader("loader-sl.txt");
     Assert.assertEquals(strExp.stream().collect(Collectors.joining(",")), loader.sl());
     Assert.assertEquals(strExp, loader.sl(","));
     Assert.assertEquals(intExp, loader.sl(",", Integer::parseInt));

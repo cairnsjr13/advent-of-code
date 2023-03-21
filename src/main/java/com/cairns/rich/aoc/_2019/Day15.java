@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
@@ -22,7 +22,7 @@ class Day15 extends Base2019 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getAnswer(
         loader,
         (state, oxygenSystem) -> getMinStepsToOxygenSystem(state, oxygenSystem, new HashMap<>(), ImmutablePoint.origin, 0)
@@ -30,7 +30,7 @@ class Day15 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getAnswer(
         loader,
         (state, oxygenSystem) -> {
@@ -41,7 +41,7 @@ class Day15 extends Base2019 {
     );
   }
 
-  private int getAnswer(Loader2 loader, BiFunction<State, MutableObject<ImmutablePoint>, Integer> toAnswer) {
+  private int getAnswer(Loader loader, BiFunction<State, MutableObject<ImmutablePoint>, Integer> toAnswer) {
     List<Long> program = IntCode.parseProgram(loader);
     return toAnswer.apply(IntCode.run(program), new MutableObject<>());
   }

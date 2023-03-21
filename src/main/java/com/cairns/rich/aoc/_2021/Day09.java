@@ -1,14 +1,14 @@
 package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.RelDir;
 import java.util.PriorityQueue;
 import java.util.function.ToIntFunction;
 
 class Day09 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getAnswer(loader, (heights) -> {
       int totalRisks = 0;
       for (int r = 0; r < heights.length; ++r) {
@@ -23,7 +23,7 @@ class Day09 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getAnswer(loader, (heights) -> {
       boolean[][] visited = new boolean[heights.length + 2][heights[0].length + 2];
       PriorityQueue<Integer> largestBasinSizes = new PriorityQueue<>();
@@ -41,7 +41,7 @@ class Day09 extends Base2021 {
     });
   }
 
-  private int getAnswer(Loader2 loader, ToIntFunction<int[][]> toAnswer) {
+  private int getAnswer(Loader loader, ToIntFunction<int[][]> toAnswer) {
     return toAnswer.applyAsInt(loader.ml((line) -> line.chars().map((c) -> c - '0').toArray()).stream().toArray(int[][]::new));
   }
 

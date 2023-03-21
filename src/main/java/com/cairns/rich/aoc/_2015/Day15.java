@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +12,13 @@ import java.util.regex.Pattern;
 
 class Day15 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Ingredient> ingredients = loader.ml(Ingredient::new);
     return findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> 1);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Ingredient> ingredients = loader.ml(Ingredient::new);
     return findBestDistribution(100, 0, ingredients, new HashMap<>(), (c) -> (c == 500) ? 1 : 0);
   }

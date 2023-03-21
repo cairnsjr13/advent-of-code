@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 
 class Day04 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     State state = new State(loader);
     for (int calledNumber : state.calledNumbers) {
       for (int[][] board : state.boards) {
@@ -27,7 +27,7 @@ class Day04 extends Base2021 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     State state = new State(loader);
     for (int calledNumber : state.calledNumbers) {
       Iterator<int[][]> itr = state.boards.iterator();
@@ -73,7 +73,7 @@ class Day04 extends Base2021 {
     private final List<Integer> calledNumbers;
     private final Set<int[][]> boards = new HashSet<>();
 
-    private State(Loader2 loader) { // TODO: multi group candidate
+    private State(Loader loader) { // TODO: multi group candidate
       List<String> lines = loader.ml();
       this.calledNumbers = Arrays.stream(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
       for (int i = 2; i < lines.size(); i += 6) {

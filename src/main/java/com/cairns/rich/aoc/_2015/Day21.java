@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +35,17 @@ class Day21 extends Base2015 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return computeCost(loader, Integer.MAX_VALUE, true, (l, r) -> l < r);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return computeCost(loader, 0, false, (l, r) -> l > r);
   }
 
   private int computeCost(
-      Loader2 loader,
+      Loader loader,
       int seed,
       boolean desiredResult,
       BiPredicate<Integer, Integer> cmp

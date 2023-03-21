@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 class Day14 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Reindeer> reindeers = loader.ml(Reindeer::new);
     return getDistanceTravelledByWinner(reindeers, 2503);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Reindeer> reindeers = loader.ml(Reindeer::new);
     return getMaxPoints(reindeers, 2503);
   }

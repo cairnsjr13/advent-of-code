@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,16 +11,16 @@ import java.util.function.LongUnaryOperator;
 
 class Day11 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getMonkeyBusiness(loader, 20, 3);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getMonkeyBusiness(loader, 10_000, 1);
   }
 
-  private long getMonkeyBusiness(Loader2 loader, int numRounds, int relief) {
+  private long getMonkeyBusiness(Loader loader, int numRounds, int relief) {
     List<Monkey> monkeys = loader.gDelim("", Monkey::new);
     long reduceMod = monkeys.stream().mapToLong((m) -> m.testFactor).reduce(Math::multiplyExact).getAsLong();
     for (int round = 0; round < numRounds; ++round) {

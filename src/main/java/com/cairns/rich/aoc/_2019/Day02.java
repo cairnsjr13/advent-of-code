@@ -1,17 +1,17 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import java.util.List;
 
 class Day02 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getResultOf(IntCode.parseProgram(loader), 12, 2);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Long> program = IntCode.parseProgram(loader);
     int target = 19690720;
     for (int noun = 0; noun < 100; ++noun) {

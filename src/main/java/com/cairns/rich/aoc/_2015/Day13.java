@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 class Day13 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
     loader.ml(Line::new).forEach((line) -> impacts.put(line.impacted, line.neighbor, line.value));
     List<String> people = new ArrayList<>(impacts.rowKeySet());
@@ -18,7 +18,7 @@ class Day13 extends Base2015 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
     loader.ml(Line::new).forEach((line) -> impacts.put(line.impacted, line.neighbor, line.value));
     List<String> people = new ArrayList<>(impacts.rowKeySet());

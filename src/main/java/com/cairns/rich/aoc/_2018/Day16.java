@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2018.OpProgram.Op;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -15,16 +15,16 @@ import org.apache.commons.lang3.mutable.MutableLong;
 
 class Day16 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runProgram(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runProgram(loader, true);
   }
 
-  private long runProgram(Loader2 loader, boolean returnProgramOutput) {
+  private long runProgram(Loader loader, boolean returnProgramOutput) {
     List<String> lines = loader.ml();
     List<Spec> specs = new ArrayList<>();
     for (int startIndex = 0; !lines.get(startIndex).isEmpty(); startIndex += 4) {

@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
-import com.cairns.rich.aoc.Loader2.ConfigToken;
+import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.Loader.ConfigToken;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -22,7 +22,7 @@ class Day15 extends Base2022 {
   }
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Sensor> sensors = loader.ml(Sensor::new);
     int y = loader.getConfig(inspectY);
     Set<Point<?>> allSensorsAndBeacons =
@@ -41,7 +41,7 @@ class Day15 extends Base2022 {
   }
 
   @Override
-  protected Object part2(Loader2 loader)  {
+  protected Object part2(Loader loader)  {
     List<Sensor> sensors = loader.ml(Sensor::new);
     int maxX = loader.getConfig(maxXY);
     int maxY = loader.getConfig(maxXY);

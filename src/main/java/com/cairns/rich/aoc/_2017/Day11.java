@@ -1,23 +1,23 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.SHexDir;
 import java.util.function.ToIntFunction;
 
 class Day11 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return doAllSteps(loader, State::stepsBackToMiddle);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return doAllSteps(loader, (state) -> state.maxDistance);
   }
 
-  private int doAllSteps(Loader2 loader, ToIntFunction<State> toAnswer) {
+  private int doAllSteps(Loader loader, ToIntFunction<State> toAnswer) {
     State state = new State();
     loader.sl(",", EnumUtils.getLookup(SHexDir.class)::get).forEach(state::move);
     return toAnswer.applyAsInt(state);

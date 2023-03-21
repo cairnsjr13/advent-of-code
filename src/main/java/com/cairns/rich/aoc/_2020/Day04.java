@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +26,12 @@ class Day04 extends Base2020 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.gDelim("", Passport::new).stream().filter(Passport::hasAllRequired).count();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return loader.gDelim("", Passport::new).stream().filter(Passport::hasAllRequiredAndAllValid).count();
   }
 

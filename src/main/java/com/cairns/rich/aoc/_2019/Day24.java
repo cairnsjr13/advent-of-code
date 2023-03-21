@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ class Day24 extends Base2019 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     State state = new State(loader.ml());
     Set<State> seenStates = new HashSet<>();
     seenStates.add(state);
@@ -36,7 +36,7 @@ class Day24 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int numMinutes = 200;
     State state = new State(loader.ml());
     for (int i = 0; i < numMinutes; ++i) {

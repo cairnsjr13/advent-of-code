@@ -1,19 +1,19 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
 class Day18 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     boolean[][] lights = parseLights(loader::ml);
     return countOn(runSteps(copy(lights), 100, false));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     boolean[][] lights = parseLights(loader::ml);
     return countOn(runSteps(copy(lights), 100, true));
   }

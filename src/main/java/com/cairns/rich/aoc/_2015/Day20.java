@@ -1,21 +1,21 @@
 package com.cairns.rich.aoc._2015;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.Arrays;
 
 // TODO: Exponential search up, binary search down?  The 1_000_000 is a hack
 class Day20 extends Base2015 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runSimulation(loader, 1_000_000, 10, Integer.MAX_VALUE);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runSimulation(loader, 1_000_000, 11, 50);
   }
 
-  private int runSimulation(Loader2 loader, int numHouses, int elfMultiplier, int stopAfter) {
+  private int runSimulation(Loader loader, int numHouses, int elfMultiplier, int stopAfter) {
     int targetPresents = Integer.parseInt(loader.sl());
     int[] houses = getHouses(numHouses, elfMultiplier, stopAfter);
     for (int i = 1; i < houses.length; ++i) {

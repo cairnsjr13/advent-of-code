@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.TreeMultimap;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day07 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     Multimap<Character, Character> stepDependsOn = buildDeps(loader.ml());
     TreeSet<Character> steps = new TreeSet<>();
     steps.addAll(stepDependsOn.keySet());
@@ -29,7 +29,7 @@ class Day07 extends Base2018 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Multimap<Character, Character> stepDependsOn = buildDeps(loader.ml());
     TreeSet<Character> stepsLeft = new TreeSet<>();
     stepsLeft.addAll(stepDependsOn.keySet());

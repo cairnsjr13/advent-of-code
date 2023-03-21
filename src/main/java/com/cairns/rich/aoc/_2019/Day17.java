@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.IO;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
@@ -19,7 +19,7 @@ class Day17 extends Base2019 {
       Map.of('^', ReadDir.Up, '>', ReadDir.Right, 'v', ReadDir.Down, '<', ReadDir.Left);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return runAndGetAnswer(loader, (state, mapState) -> {
       StringBuilder path = new StringBuilder();
       int sumAlignmentParams = 0;
@@ -54,7 +54,7 @@ class Day17 extends Base2019 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return runAndGetAnswer(loader, (state, mapState) -> {
       Consumer<String> giveInstructions = (inst) -> inst.chars().forEach(state.programInput::put);
       giveInstructions.accept("A,B,A,B,C,B,C,A,B,C\n"); // Main
@@ -72,7 +72,7 @@ class Day17 extends Base2019 {
     });
   }
 
-  private <T> T runAndGetAnswer(Loader2 loader, BiFunction<State, MapState, T> toAnswer) {
+  private <T> T runAndGetAnswer(Loader loader, BiFunction<State, MapState, T> toAnswer) {
     List<Long> program = IntCode.parseProgram(loader);
     program.set(0, 2L);
     State state = IntCode.run(program);

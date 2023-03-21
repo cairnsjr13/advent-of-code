@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.List;
@@ -13,14 +13,14 @@ class Day23 extends Base2018 {
   private static final int INIT_SHIFT = 23;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Bot> bots = loader.ml(Bot::new);
     Bot strongest = getMax(bots, (bot) -> bot.r);
     return bots.stream().filter((bot) -> manhattan(0, strongest, bot.x, bot.y, bot.z) <= strongest.r).count();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Bot> bots = loader.ml(Bot::new);
     Table<Character, StatType, Integer> stats = initStats(bots);
     for (int shift = INIT_SHIFT; shift >= 0; --shift) {

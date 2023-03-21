@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ import java.util.function.BiConsumer;
 
 class Day25 extends Base2017 {  // TODO: candidate for multi group parsing
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<String> lines = loader.ml();
     int numSteps = Integer.parseInt(lines.get(1).split(" ")[5]);
     Table<Character, Boolean, Action> machine = parseMachine(lines.subList(3, lines.size()));

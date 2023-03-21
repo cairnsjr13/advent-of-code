@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -20,16 +20,16 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day20 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getMinSteps(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getMinSteps(loader, true);
   }
 
-  private long getMinSteps(Loader2 loader, boolean recursive) {
+  private long getMinSteps(Loader loader, boolean recursive) {
     State state = buildState(loader.ml(String::toCharArray).toArray(char[][]::new));
     WalkDesc init = new WalkDesc(0, state.start, 0);
     PriorityQueue<WalkDesc> candidates = new PriorityQueue<>(Comparator.comparing((ws) -> ws.numSteps));

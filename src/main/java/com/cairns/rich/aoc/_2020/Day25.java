@@ -1,13 +1,13 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
 class Day25 extends Base2020 {
   private static final int SUBJECT = 7;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Long> input = loader.ml(Long::parseLong);
     long cardPublic = input.get(0);
     long doorPublic = input.get(1);

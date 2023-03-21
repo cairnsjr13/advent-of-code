@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.TreeMultimap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,16 +19,16 @@ class Day10 extends Base2016 {
   private static final Pattern botPattern = Pattern.compile("^(bot \\d+) gives low to ((bot|output) \\d+) and high to ((bot|output) \\d+)$");
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return simulate(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return simulate(loader, true);
   }
 
-  private Object simulate(Loader2 loader, boolean fullSimulation) {
+  private Object simulate(Loader loader, boolean fullSimulation) {
     List<String> lines = loader.ml();
     TreeMultimap<String, Integer> holdings = TreeMultimap.create();
     List<Runnable> inits = new ArrayList<>();

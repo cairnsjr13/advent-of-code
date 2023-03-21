@@ -1,22 +1,22 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.ToLongFunction;
 
 class Day18 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getEvalSum(loader, this::collapseWithoutPrecedence);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getEvalSum(loader, this::collapseWithPrecedence);
   }
 
-  private long getEvalSum(Loader2 loader, ToLongFunction<List<Long>> collapse) {
+  private long getEvalSum(Loader loader, ToLongFunction<List<Long>> collapse) {
     return loader.ml().stream().mapToLong((line) -> eval(line, collapse)).sum();
   }
 

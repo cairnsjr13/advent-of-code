@@ -1,16 +1,16 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
 class Day05 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return loader.ml(this::parseSeatId).stream().mapToInt(Integer::intValue).max().getAsInt();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Integer> seatIds = loader.ml(this::parseSeatId);
     seatIds.sort(Integer::compare);
     for (int i = 0; i < seatIds.size(); ++i) {

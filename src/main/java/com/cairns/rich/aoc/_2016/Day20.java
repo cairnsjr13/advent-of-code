@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,14 +9,14 @@ import java.util.List;
 
 class Day20 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Range<Long>> blacklist = loader.ml(this::parse);
     List<Range<Long>> disjointBlacklist = getDisjointBlacklists(blacklist);
     return disjointBlacklist.get(0).upperEndpoint() + 1;
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Range<Long>> blacklist = loader.ml(this::parse);
     List<Range<Long>> disjointBlacklist = getDisjointBlacklists(blacklist);
     long numAllowed = 0;

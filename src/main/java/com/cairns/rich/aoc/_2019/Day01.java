@@ -1,19 +1,19 @@
 package com.cairns.rich.aoc._2019;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day01 extends Base2019 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getFuelReq(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getFuelReq(loader, true);
   }
 
-  private int getFuelReq(Loader2 loader, boolean recursive) {
+  private int getFuelReq(Loader loader, boolean recursive) {
     return loader.ml(Integer::parseInt).stream().mapToInt((m) -> fuelReq(m, recursive)).sum();
   }
 

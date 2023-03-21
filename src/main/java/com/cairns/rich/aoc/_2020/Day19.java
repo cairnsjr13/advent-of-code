@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Arrays;
@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 
 class Day19 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return countMatches(loader, (expansionRules) -> { });
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return countMatches(loader, (expansionRules) -> {
       expansionRules.put(8, new Rule(8, List.of(42, 8)));
       expansionRules.put(11, new Rule(11, List.of(42, 11, 31)));
@@ -26,7 +26,7 @@ class Day19 extends Base2020 {
   }
 
   private long countMatches(
-      Loader2 loader,
+      Loader loader,
       Consumer<Multimap<Integer, Rule>> registerExtras
   ) {
     List<String> lines = loader.ml();   // TODO: multi-group?

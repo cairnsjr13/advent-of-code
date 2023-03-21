@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2020;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.UHexDir;
@@ -21,12 +21,12 @@ class Day24 extends Base2020 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getInitialBlackTiles(loader.ml(this::parse)).size();
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<List<UHexDir>> tileSpecs = loader.ml(this::parse);
     Set<ImmutablePoint> blackTiles = getInitialBlackTiles(tileSpecs);
     Set<ImmutablePoint> temp = new HashSet<>();

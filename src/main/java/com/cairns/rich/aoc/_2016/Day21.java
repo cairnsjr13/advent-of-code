@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -18,7 +18,7 @@ class Day21 extends Base2016 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart1);
     StringBuilder state = new StringBuilder("abcdefgh");
     insts.forEach((inst) -> inst.accept(state));
@@ -26,7 +26,7 @@ class Day21 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     List<Consumer<StringBuilder>> insts = loader.ml(this::parsePart2);
     StringBuilder state = new StringBuilder("fbgdceah");
     for (int i = insts.size() - 1; i >= 0; --i) {

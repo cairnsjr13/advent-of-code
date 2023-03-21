@@ -1,19 +1,19 @@
 package com.cairns.rich.aoc._2018;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 class Day11 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int[][] cells = buildCells(Integer.parseInt(loader.sl()));
     return findIdOfLargest(cells, List.of(3), false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int[][] cells = buildCells(Integer.parseInt(loader.sl()));
     return findIdOfLargest(cells, IntStream.range(1, 301).boxed().collect(Collectors.toList()), true);
   }

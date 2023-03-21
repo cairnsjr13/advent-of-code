@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
@@ -31,12 +31,12 @@ class Day20 extends Base2020 {
   );
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return fail("Why does part 2 fail if this is implemented :-(  something is dependent on itr order.  static state?");
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     Map<Long, Tile> tiles = parseTiles(loader.ml());
     Set<Connection> cornerConnections = findCornerConnections(tiles);
     System.out.println(productOfCorners(cornerConnections));

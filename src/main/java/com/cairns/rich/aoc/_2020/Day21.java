@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 class Day21 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     State state = new State(loader);
     Set<String> totallySafeIngredients = Sets.difference(state.allIngredients, state.ingredientsThatCouldHaveAllergen);
     return totallySafeIngredients.stream()
@@ -26,7 +26,7 @@ class Day21 extends Base2020 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     State state = new State(loader);
     Map<String, String> discovered = new TreeMap<>();
     while (!state.allergensToIngredientOptions.isEmpty()) {
@@ -67,7 +67,7 @@ class Day21 extends Base2020 {
     private final Multimap<String, String> allergensToIngredientOptions = HashMultimap.create();
     private final Set<String> ingredientsThatCouldHaveAllergen = new HashSet<>();
 
-    private State(Loader2 loader) {
+    private State(Loader loader) {
       this.foods = loader.ml(Food::new);
       this.allIngredients = toFieldSet(foods, (food) -> food.ingredients);
       getAllergensToIngredientOptions();

@@ -1,21 +1,21 @@
 package com.cairns.rich.aoc._2020;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.function.ToLongFunction;
 
 class Day03 extends Base2020 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getAnswer(loader, (trees) -> trees.get(1));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getAnswer(loader, (trees) -> trees.stream().reduce(1L, Math::multiplyExact));
   }
 
-  private long getAnswer(Loader2 loader, ToLongFunction<List<Long>> toAnswer) {
+  private long getAnswer(Loader loader, ToLongFunction<List<Long>> toAnswer) {
     List<String> lines = loader.ml();
     return toAnswer.applyAsLong(List.of(
         countTrees(lines, 1, 1),

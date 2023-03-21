@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2022;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -17,16 +17,16 @@ class Day18 extends Base2022 {
   private static final int WATER = 2;
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return totalSurfaceArea(loader, (s) -> s != LAVA);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return totalSurfaceArea(loader, (s) -> s == WATER);
   }
 
-  private int totalSurfaceArea(Loader2 loader, IntPredicate test) {
+  private int totalSurfaceArea(Loader loader, IntPredicate test) {
     List<int[]> droplets = loader.ml((l) -> Arrays.stream(l.split(",")).mapToInt(Integer::parseInt).toArray());
     Grid grid = new Grid(droplets);
     fillWater(grid);

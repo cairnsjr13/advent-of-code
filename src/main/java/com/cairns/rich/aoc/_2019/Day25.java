@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2019.IntCode.State;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.google.common.base.Preconditions;
@@ -28,7 +28,7 @@ class Day25 extends Base2019 {
       Set.of("molten lava", "infinite loop", "giant electromagnet", "escape pod", "photons");
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<Long> program = IntCode.parseProgram(loader);
     State state = IntCode.run(program);
     List<CardDir> pathToSecurityCheckpoint = takeAllSafe(state);

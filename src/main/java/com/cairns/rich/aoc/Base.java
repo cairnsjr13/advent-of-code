@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc.Loader2.ConfigBinding;
+import com.cairns.rich.aoc.Loader.ConfigBinding;
 import com.cairns.rich.aoc._2022.Base2022;
 import com.google.common.base.Strings;
 import java.security.MessageDigest;
@@ -40,17 +40,17 @@ public abstract class Base extends SafeAccessor {
     Base2022.day.run();
   }
 
-  protected final Loader2 testLoader;
-  protected final Loader2 fullLoader;
+  protected final Loader testLoader;
+  protected final Loader fullLoader;
 
   protected Base(ConfigBinding... fullLoaderConfigBindings) {
     String pkgPrefix = "/" + getClass().getPackageName().replace('.', '/') + "/";
-    this.testLoader = new Loader2(pkgPrefix + "test.txt");
-    this.fullLoader = new Loader2(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt", fullLoaderConfigBindings);
+    this.testLoader = new Loader(pkgPrefix + "test.txt");
+    this.fullLoader = new Loader(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt", fullLoaderConfigBindings);
   }
 
   protected void run() throws Throwable {
-    Loader2 loader = testLoader;
+    Loader loader = testLoader;
 
     long mark = System.currentTimeMillis();
     Object part1Answer = part1(loader);
@@ -66,9 +66,9 @@ public abstract class Base extends SafeAccessor {
     }
   }
 
-  protected abstract Object part1(Loader2 loader) throws Throwable;
+  protected abstract Object part1(Loader loader) throws Throwable;
 
-  protected Object part2(Loader2 loader) throws Throwable {
+  protected Object part2(Loader loader) throws Throwable {
     throw new NotImplementedException();
   }
 

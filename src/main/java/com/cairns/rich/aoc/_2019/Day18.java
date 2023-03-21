@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -25,16 +25,16 @@ class Day18 extends Base2019 {
   private static ReadDir[] dirs = EnumUtils.enumValues(ReadDir.class);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getFastestSteps(loader, (state) -> state.pathsByRobot);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getFastestSteps(loader, (state) -> computePaths(split(state.grid)));
   }
 
-  private long getFastestSteps(Loader2 loader, Function<State, List<Table<Character, Character, PathDesc>>> toPaths) {
+  private long getFastestSteps(Loader loader, Function<State, List<Table<Character, Character, PathDesc>>> toPaths) {
     State state = new State(loader);
     List<Table<Character, Character, PathDesc>> paths = toPaths.apply(state);
     return getFastestPathSteps(
@@ -157,7 +157,7 @@ class Day18 extends Base2019 {
     private final char[][] grid;
     private final List<Table<Character, Character, PathDesc>> pathsByRobot;
 
-    private State(Loader2 loader) {
+    private State(Loader loader) {
       this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
       this.pathsByRobot = computePaths(grid);
     }

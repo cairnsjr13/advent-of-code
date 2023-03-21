@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import java.util.HashMap;
@@ -9,14 +9,14 @@ import java.util.Map;
 
 class Day03 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int target = Integer.parseInt(loader.sl());
     ImmutablePoint location = computeLocationOfIndex(target);
     return Math.abs(location.x()) + Math.abs(location.y());
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int target = Integer.parseInt(loader.sl());
     Map<ImmutablePoint, Integer> cache = new HashMap<>();
     ImmutablePoint location = ImmutablePoint.origin;

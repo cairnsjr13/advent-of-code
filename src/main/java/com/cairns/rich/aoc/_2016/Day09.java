@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,12 +8,12 @@ class Day09 extends Base2016 {
   private static final Pattern pattern = Pattern.compile("^(\\((\\d+)x(\\d+)\\)).*$");
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getDecompressedLength(loader.sl(), false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getDecompressedLength(loader.sl(), true);
   }
 

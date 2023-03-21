@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2021;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multimap;
@@ -9,16 +9,16 @@ import java.util.List;
 
 class Day12 extends Base2021 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return numPathsFrom(loader, false);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return numPathsFrom(loader, true);
   }
 
-  private int numPathsFrom(Loader2 loader, boolean allowRevisit) {
+  private int numPathsFrom(Loader loader, boolean allowRevisit) {
     List<String[]> inputs = loader.ml((line) -> line.split("-"));
     Multimap<String, String> edges = HashMultimap.create();
     for (String[] input : inputs) {

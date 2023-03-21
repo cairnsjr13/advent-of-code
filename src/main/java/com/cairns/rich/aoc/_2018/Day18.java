@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.RelDir;
 import com.google.common.collect.EnumMultiset;
 import com.google.common.collect.HashMultiset;
@@ -17,19 +17,19 @@ import org.apache.commons.lang3.tuple.Pair;
 
 class Day18 extends Base2018 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return getTotalResourceValue(loader, (firstSeenGen, secondSeenGen) -> 10);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return getTotalResourceValue(
         loader,
         (firstSeenGen, secondSeenGen) -> firstSeenGen + ((1_000_000_000 - firstSeenGen) % (secondSeenGen - firstSeenGen))
     );
   }
 
-  private int getTotalResourceValue(Loader2 loader, IntBinaryOperator computeGenToScoreLookupKey) {
+  private int getTotalResourceValue(Loader loader, IntBinaryOperator computeGenToScoreLookupKey) {
     State[][] map = loadInit(loader.ml());
     Pair<Map<Integer, Integer>, TreeMultimap<Integer, Integer>> results = getScoresUntil3Repeat(map);
     Map<Integer, Integer> genToScore = results.getLeft();

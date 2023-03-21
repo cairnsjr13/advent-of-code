@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.HashMultimap;
@@ -20,16 +20,16 @@ class Day20 extends Base2018 {
   private static final Map<Character, CardDir> dirLookup = EnumUtils.getLookup(CardDir.class);
 
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return findAnswerFromMinDists(loader, (minDists) -> getMax(minDists.values(), Function.identity()));
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return findAnswerFromMinDists(loader, (minDists) -> minDists.values().stream().filter((dist) -> dist >= 1000).count());
   }
 
-  private long findAnswerFromMinDists(Loader2 loader, Function<Map<ImmutablePoint, Long>, Long> toAnswer) {
+  private long findAnswerFromMinDists(Loader loader, Function<Map<ImmutablePoint, Long>, Long> toAnswer) {
     AndPiece topLevelPiece = parse(loader.sl());
     ImmutablePoint origin = ImmutablePoint.origin;
     Multimap<ImmutablePoint, ImmutablePoint> doors = HashMultimap.create();

@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc._2017;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc._2017.TabletCode.State;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.function.ToIntFunction;
 
 class Day18 extends Base2017 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
     State state = new State(true);
     state.otherState = state;
@@ -21,7 +21,7 @@ class Day18 extends Base2017 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) throws InterruptedException, ExecutionException {
+  protected Object part2(Loader loader) throws InterruptedException, ExecutionException {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
     Lock rcvWaitingLock = new ReentrantLock();
     State state0 = new State(rcvWaitingLock, Map.of('p', 0));

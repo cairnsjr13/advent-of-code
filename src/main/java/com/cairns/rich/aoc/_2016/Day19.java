@@ -1,10 +1,10 @@
 package com.cairns.rich.aoc._2016;
 
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 
 class Day19 extends Base2016 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     int numElfs = Integer.parseInt(loader.sl());
     Elf current = createElfChain(numElfs);
     while (current.next != current) {
@@ -14,7 +14,7 @@ class Day19 extends Base2016 {
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     int numElfs = Integer.parseInt(loader.sl());
     Elf current = createElfChain(numElfs);
     Elf remove = current.next;

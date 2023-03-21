@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
-import com.cairns.rich.aoc.Loader2;
+import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.RelDir;
 import java.util.HashSet;
@@ -13,16 +13,16 @@ import java.util.stream.IntStream;
 
 class Day09 extends Base2022 {
   @Override
-  protected Object part1(Loader2 loader) {
+  protected Object part1(Loader loader) {
     return numTailVists(loader, 2);
   }
 
   @Override
-  protected Object part2(Loader2 loader) {
+  protected Object part2(Loader loader) {
     return numTailVists(loader, 10);
   }
 
-  private int numTailVists(Loader2 loader, int numKnots) {
+  private int numTailVists(Loader loader, int numKnots) {
     Set<ImmutablePoint> tailVisited = new HashSet<>();
     List<ImmutablePoint> knots =
         IntStream.range(0, numKnots).mapToObj((i) -> ImmutablePoint.origin).collect(Collectors.toList());
