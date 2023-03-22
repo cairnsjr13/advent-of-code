@@ -1,0 +1,4 @@
+1216
+-------AdventOfCodeTestDelimiter-------
+Hit Points: 51
+Damage: 9

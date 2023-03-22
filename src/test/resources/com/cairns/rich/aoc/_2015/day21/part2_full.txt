@@ -1,0 +1,5 @@
+158
+-------AdventOfCodeTestDelimiter-------
+Hit Points: 100
+Damage: 8
+Armor: 2
