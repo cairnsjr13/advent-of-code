@@ -1,7 +1,5 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc.Loader.ConfigBinding;
-import com.cairns.rich.aoc._2022.Base2022;
 import com.google.common.base.Strings;
 import java.security.MessageDigest;
 import java.util.Collection;
@@ -35,36 +33,6 @@ public abstract class Base extends SafeAccessor {
   });
   private static final ThreadLocal<MessageDigest> md5Cache =
       ThreadLocal.withInitial(() -> quietly(() -> MessageDigest.getInstance("MD5")));
-
-  public static void main(String[] args) throws Throwable {
-    Base2022.day.run();
-  }
-
-  protected final Loader testLoader;
-  protected final Loader fullLoader;
-
-  protected Base(ConfigBinding... fullLoaderConfigBindings) {
-    String pkgPrefix = "/" + getClass().getPackageName().replace('.', '/') + "/";
-    this.testLoader = new Loader(pkgPrefix + "test.txt");
-    this.fullLoader = new Loader(pkgPrefix + getClass().getSimpleName().toLowerCase() + ".txt", fullLoaderConfigBindings);
-  }
-
-  protected void run() throws Throwable {
-    Loader loader = testLoader;
-
-    long mark = System.currentTimeMillis();
-    Object part1Answer = part1(loader);
-    System.out.println("part1: '" + part1Answer + "' - " + (System.currentTimeMillis() - mark) + "ms");
-
-    try {
-      mark = System.currentTimeMillis();
-      Object part2Answer = part2(loader);
-      System.out.println("part2: '" + part2Answer + "' - " + (System.currentTimeMillis() - mark) + "ms");
-    }
-    catch (NotImplementedException e) {
-      System.out.println("part2 NOT IMPLEMENTED");
-    }
-  }
 
   protected abstract Object part1(Loader loader) throws Throwable;
 

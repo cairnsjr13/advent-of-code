@@ -17,10 +17,6 @@ class Day15 extends Base2022 {
   private static final ConfigToken<Integer> inspectY = ConfigToken.of("inspectY", Integer::parseInt);
   private static final ConfigToken<Integer> maxXY = ConfigToken.of("maxXY", Integer::parseInt);
 
-  public Day15() {
-    super(inspectY.binding(2_000_000), maxXY.binding(4_000_000));
-  }
-
   @Override
   protected Object part1(Loader loader) {
     List<Sensor> sensors = loader.ml(Sensor::new);

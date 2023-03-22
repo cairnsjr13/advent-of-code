@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,13 +14,44 @@ import java.util.stream.Collectors;
  * This api makes reading puzzle input from a file less verbose.  File handling and parsing are done at this level.
  */
 public class Loader extends QuietCapable {
-  public final String file;
-  private final Map<String, String> configRawStrings = new HashMap<>();
-  private final Map<ConfigToken<?>, Object> configValues = new HashMap<>();
+  private static final String DELIM = "-------AdventOfCodeTestDelimiter-------";
 
-  public Loader(String file, ConfigBinding... bindings) {
-    this.file = file; // TODO: create config section at top of test files (use delimiter that is unlikely)
-    Arrays.stream(bindings).forEach((binding) -> configValues.put(binding.token, binding.value));
+  final String expected;
+  private final Map<String, String> configRawStrings = new HashMap<>();
+  private final List<String> lines;
+
+  /**
+   * Pre-loads the given path at construction time (load once instead of each usage).
+   * The file given should contain 3 sections separated by a single {@link #DELIM} line:
+   *   1) optional expected value
+   *   2) optional {@link ConfigToken} bindings (key=value)
+   *   3) required input lines
+   */
+  public Loader(Path path) {
+    List<String> lines = quietly(() -> Files.readAllLines(path));
+    int indexOfDelim = lines.indexOf(DELIM);
+    if (indexOfDelim == -1) {
+      this.expected = null;
+      this.lines = lines;
+    }
+    else {
+      this.expected = lines.subList(0, indexOfDelim).stream().collect(Collectors.joining("\n"));
+      int indexOfLastDelim = lines.lastIndexOf(DELIM);
+      if (indexOfDelim != indexOfLastDelim) {
+        lines.subList(indexOfDelim + 1, indexOfLastDelim).stream()
+            .map((line) -> line.split("=", 2))
+            .forEach((part) -> configRawStrings.put(part[0], part[1]));
+      }
+      this.lines = lines.subList(indexOfLastDelim + 1, lines.size());
+    }
+  }
+
+  /**
+   * Returns the config value associated with the given token.
+   * Will parse each time.
+   */
+  public <T> T getConfig(ConfigToken<T> token) {
+    return token.parser.apply(configRawStrings.get(token.key));
   }
 
   /**
@@ -34,7 +65,7 @@ public class Loader extends QuietCapable {
    * Multi-line parser that transforms each line using the given map fn.
    */
   public <T> List<T> ml(Function<String, T> map) {
-    return load(map);
+    return lines.stream().map(map).collect(Collectors.toList());
   }
 
   /**
@@ -88,29 +119,6 @@ public class Loader extends QuietCapable {
     });
   }
 
-  @SuppressWarnings("unchecked")  // The only way it can get in the map is type safe
-  public <T> T getConfig(ConfigToken<T> token) {
-    return (T) configValues.computeIfAbsent(token, (t) -> token.parser.apply(configRawStrings.get(token.key)));
-  }
-
-  /**
-   * Helper method that reads the entire file, transforms each line using the given map fn, and returns them in a list.
-   */
-  private <T> List<T> load(Function<String, T> map) {
-    return quietly(() -> {
-      try (BufferedReader in = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(file)))) {
-        List<T> input = new ArrayList<>();
-        while (true) {
-          String line = in.readLine();
-          if (line == null) {
-            return input;
-          }
-          input.add(map.apply(line));
-        }
-      }
-    });
-  }
-
   public static class GroupParserData {
     private final List<String> lines;
     private int position = 0;
@@ -128,6 +136,10 @@ public class Loader extends QuietCapable {
     }
   }
 
+  /**
+   * Represents a strongly typed configuration value for a given day/part.
+   * This is necessary because sometimes examples have different parameters that are not necessarily part of the input.
+   */
   public static class ConfigToken<T> {
     private final String key;
     private final Function<String, T> parser;
@@ -137,22 +149,11 @@ public class Loader extends QuietCapable {
       this.parser = parser;
     }
 
+    /**
+     * Convenience factory method to make creation simpler.
+     */
     public static <T> ConfigToken<T> of(String key, Function<String, T> parser) {
       return new ConfigToken<>(key, parser);
-    }
-
-    public ConfigBinding binding(T value) {
-      return new ConfigBinding(this, value);
-    }
-  }
-
-  public static class ConfigBinding {
-    private final ConfigToken<?> token;
-    private final Object value;
-
-    private <T> ConfigBinding(ConfigToken<T> token, T value) {
-      this.token = token;
-      this.value = value;
     }
   }
 }
