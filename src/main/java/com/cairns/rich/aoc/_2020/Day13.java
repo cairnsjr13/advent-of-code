@@ -26,7 +26,7 @@ class Day13 extends Base2020 {
         minBus = bus;
       }
     }
-    return minBus * (min - earliest);
+    return (int) (minBus * (min - earliest));
   }
 
   @Override
