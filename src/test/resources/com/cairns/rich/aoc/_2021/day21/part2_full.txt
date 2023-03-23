@@ -1,0 +1,4 @@
+346642902541848
+-------AdventOfCodeTestDelimiter-------
+Player 1 starting position: 8
+Player 2 starting position: 9

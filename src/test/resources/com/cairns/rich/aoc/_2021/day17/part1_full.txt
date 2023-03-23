@@ -1,0 +1,3 @@
+17766
+-------AdventOfCodeTestDelimiter-------
+target area: x=48..70, y=-189..-148
