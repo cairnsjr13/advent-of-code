@@ -16,7 +16,11 @@ public class TestBasePart2s extends DayTestBase {
    */
   @Parameters(name = "{0}")
   public static Iterable<PartTestSpec> getTestData() throws IOException {
-    return getPartTestSpecs(acceptAll, acceptAll, (p) -> p.getFileName().toString().startsWith("part2"));
+    return getPartTestSpecs(
+        acceptAll,
+        acceptAll,
+        (p) -> p.getFileName().toString().startsWith("part2")
+    );
   }
 
   public TestBasePart2s(PartTestSpec spec) {

@@ -5,6 +5,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.Stack;
 
+// TODO: Part2 is nondeterministic
 class Day24 extends Base2017 {
   @Override
   protected Object part1(Loader loader) {
