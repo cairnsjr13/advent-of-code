@@ -2,8 +2,8 @@ package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.Loader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +32,7 @@ class Day12 extends Base2019 {
         Function.identity(),
         (i) -> new HashSet<>()
     ));
-    Map<ToIntFunction<Xyz>, Integer> repetitionAt = new HashMap<>();
+    Map<ToIntFunction<Xyz>, Integer> repetitionAt = new LinkedHashMap<>();  // Only needed for lcm output order for tests
     for (int t = 0; repetitionAt.size() < 3; ++t) {
       tick(moons);
       for (ToIntFunction<Xyz> toCoord : toCoords) {
