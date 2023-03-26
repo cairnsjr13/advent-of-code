@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for all {@link Dir} implementations.
@@ -73,8 +73,8 @@ public class TestDir {
     dirClasses.forEach((dirClass) -> Arrays.stream(dirClass.getEnumConstants()).map(toType).forEach((dir) -> {
       D turn = toTurn.apply(dir);
       D back = toBack.apply(turn);
-      Assert.assertNotEquals(dir, turn);
-      Assert.assertEquals(dir, back);
+      Assertions.assertNotEquals(dir, turn);
+      Assertions.assertEquals(dir, back);
     }));
   }
 }

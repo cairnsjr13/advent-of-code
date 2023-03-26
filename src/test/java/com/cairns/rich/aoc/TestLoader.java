@@ -3,8 +3,8 @@ package com.cairns.rich.aoc;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link Loader}.
@@ -20,8 +20,8 @@ public class TestLoader extends AocTestBase {
   @Test
   public void testMl() {
     Loader loader = new Loader(getResourcePath("loader-ml.txt"));
-    Assert.assertEquals(strExp, loader.ml());
-    Assert.assertEquals(intExp, loader.ml(Integer::parseInt));
+    Assertions.assertEquals(strExp, loader.ml());
+    Assertions.assertEquals(intExp, loader.ml(Integer::parseInt));
   }
 
   /**
@@ -30,8 +30,8 @@ public class TestLoader extends AocTestBase {
   @Test
   public void testSl() {
     Loader loader = new Loader(getResourcePath("loader-sl.txt"));
-    Assert.assertEquals(strExp.stream().collect(Collectors.joining(",")), loader.sl());
-    Assert.assertEquals(strExp, loader.sl(","));
-    Assert.assertEquals(intExp, loader.sl(",", Integer::parseInt));
+    Assertions.assertEquals(strExp.stream().collect(Collectors.joining(",")), loader.sl());
+    Assertions.assertEquals(strExp, loader.sl(","));
+    Assertions.assertEquals(intExp, loader.sl(",", Integer::parseInt));
   }
 }

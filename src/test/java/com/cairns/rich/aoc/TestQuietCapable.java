@@ -5,8 +5,8 @@ import com.cairns.rich.aoc.QuietCapable.LoudSupplier;
 import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link QuietCapable}.
@@ -23,7 +23,7 @@ public class TestQuietCapable {
 
     String expectedValue = "This is an expected value.";
     String actualValue = QuietCapable.quietly(() -> expectedValue);   // LoudSupplier test
-    Assert.assertEquals(expectedValue, actualValue);
+    Assertions.assertEquals(expectedValue, actualValue);
   }
 
   /**
@@ -55,12 +55,12 @@ public class TestQuietCapable {
   ) {
     try {
       quietly.accept(toAction.apply(throwableType.getConstructor(String.class).newInstance(expectedExMessage)));
-      Assert.fail("The above should have thrown an exception");
+      Assertions.fail("The above should have thrown an exception");
     }
     catch (Throwable t) {
       Throwable inspect = toInspect.apply(t);
-      Assert.assertEquals(throwableType, inspect.getClass());
-      Assert.assertEquals(expectedExMessage, inspect.getMessage());
+      Assertions.assertEquals(throwableType, inspect.getClass());
+      Assertions.assertEquals(expectedExMessage, inspect.getMessage());
     }
   }
 }

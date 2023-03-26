@@ -5,8 +5,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.apache.commons.lang3.tuple.Pair;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Base class for tests of {@link Point} implementations.
@@ -34,8 +34,8 @@ abstract class TestPoint<P extends Point<P>> {
   @Test
   public final void testOriginLocation() {
     P origin = originSup.get();
-    Assert.assertEquals(0, origin.x());
-    Assert.assertEquals(0, origin.y());
+    Assertions.assertEquals(0, origin.x());
+    Assertions.assertEquals(0, origin.y());
   }
 
   /**
@@ -45,8 +45,8 @@ abstract class TestPoint<P extends Point<P>> {
   public final void testCtor() {
     testPoints.forEach((spec) -> {
       P point = fromSpec.apply(spec);
-      Assert.assertEquals(spec.getLeft().intValue(), point.x());
-      Assert.assertEquals(spec.getRight().intValue(), point.y());
+      Assertions.assertEquals(spec.getLeft().intValue(), point.x());
+      Assertions.assertEquals(spec.getRight().intValue(), point.y());
     });
   }
 
@@ -58,15 +58,15 @@ abstract class TestPoint<P extends Point<P>> {
     testPoints.forEach((spec) -> {
       P point = fromSpec.apply(spec);
       P same = fromSpec.apply(spec);
-      Assert.assertEquals(point, same);
-      Assert.assertEquals(point.hashCode(), same.hashCode());
+      Assertions.assertEquals(point, same);
+      Assertions.assertEquals(point.hashCode(), same.hashCode());
 
       P diff = ctor.apply(spec.getLeft() - 13, spec.getRight() + 22);
-      Assert.assertNotEquals(point, diff);
+      Assertions.assertNotEquals(point, diff);
 
       P moveBack = point.move(RelDir.Down).move(RelDir.Up);
-      Assert.assertEquals(point, moveBack);
-      Assert.assertEquals(point.hashCode(), moveBack.hashCode());
+      Assertions.assertEquals(point, moveBack);
+      Assertions.assertEquals(point.hashCode(), moveBack.hashCode());
     });
   }
 
@@ -78,8 +78,8 @@ abstract class TestPoint<P extends Point<P>> {
     testPoints.forEach((spec) -> {
       P point = fromSpec.apply(spec);
       String toString = point.toString();
-      Assert.assertNotEquals(-1, toString.indexOf(Integer.toString(point.x())));
-      Assert.assertNotEquals(-1, toString.indexOf(Integer.toString(point.y())));
+      Assertions.assertNotEquals(-1, toString.indexOf(Integer.toString(point.x())));
+      Assertions.assertNotEquals(-1, toString.indexOf(Integer.toString(point.y())));
     });
   }
 
@@ -91,8 +91,8 @@ abstract class TestPoint<P extends Point<P>> {
     int factor = 13;
     P move = ctor.apply(0, 0).move(RelDir.Up, factor).move(RelDir.Right, factor);
 
-    Assert.assertEquals(factor, move.x());
-    Assert.assertEquals(factor, move.y());
+    Assertions.assertEquals(factor, move.x());
+    Assertions.assertEquals(factor, move.y());
   }
 
   /**

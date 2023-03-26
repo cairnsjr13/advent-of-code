@@ -2,14 +2,14 @@ package com.cairns.rich.aoc;
 
 import com.cairns.rich.aoc.Base.HasId;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Utility class for Enums.
  */
 public class EnumUtils {
-  private static final Map<Class<?>, Object[]> enumValuesCache = new HashMap<>();
+  private static final Map<Class<?>, Object[]> enumValuesCache = new ConcurrentHashMap<>();
 
   /**
    * Acts as a replacement for Enum.values().  The issue with this method is that it returns a new

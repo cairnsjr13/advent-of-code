@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link SafeAccessor}.
@@ -67,18 +67,18 @@ public class TestSafeAccessor {
       BiFunction<A, Long, T> safeGet
   ) {
     for (int i = 0; i < length; ++i) {
-      Assert.assertEquals("Index " + i, get.apply(arrList, i), safeGet.apply(arrList, (long) i));
+      Assertions.assertEquals(get.apply(arrList, i), safeGet.apply(arrList, (long) i), "Index " + i);
     }
     for (int i = -1; i >= -length; --i) {
-      Assert.assertEquals("Index " + i, get.apply(arrList, length + i), safeGet.apply(arrList, (long) i));
+      Assertions.assertEquals(get.apply(arrList, length + i), safeGet.apply(arrList, (long) i), "Index " + i);
     }
     T firstElem = get.apply(arrList, 0);
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length));
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 2));
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 1322));
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length));
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 2));
-    Assert.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 1322));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) length));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 2));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) length * 1322));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) -length));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 2));
+    Assertions.assertEquals(firstElem, safeGet.apply(arrList, (long) -length * 1322));
   }
 
   /**
@@ -96,14 +96,14 @@ public class TestSafeAccessor {
     for (int i = 0; i < length; ++i) {
       T expectedElem = get.apply(elems, i);
       safeSet.set(arrList, i, expectedElem);
-      Assert.assertEquals("Index " + i, expectedElem, get.apply(arrList, i));
+      Assertions.assertEquals(expectedElem, get.apply(arrList, i), "Index " + i);
     }
 
     arrList = newArrList.get();
     for (int i = -1; i >= -length; --i) {
       T expectedElem = get.apply(elems, length + i);
       safeSet.set(arrList, i, expectedElem);
-      Assert.assertEquals("Index " + i, expectedElem, get.apply(arrList, length + i));
+      Assertions.assertEquals(expectedElem, get.apply(arrList, length + i), "Index " + i);
     }
 
     arrList = newArrList.get();
@@ -111,7 +111,7 @@ public class TestSafeAccessor {
     for (int i = 0; i < indexes.length; ++i) {
       T expectedElem = get.apply(elems, i);
       safeSet.set(arrList, indexes[i], expectedElem);
-      Assert.assertEquals("Index " + i, expectedElem, get.apply(arrList, 0));
+      Assertions.assertEquals(expectedElem, get.apply(arrList, 0), "Index " + i);
     }
   }
 

@@ -2,8 +2,8 @@ package com.cairns.rich.aoc;
 
 import com.cairns.rich.aoc.grid.CardDir;
 import com.cairns.rich.aoc.grid.ReadDir;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link EnumUtils}.
@@ -23,8 +23,8 @@ public class TestEnumUtils {
     CardDir[] cardDirs2 = EnumUtils.enumValues(CardDir.class);
     ReadDir[] readDirs1 = EnumUtils.enumValues(ReadDir.class);
 
-    Assert.assertSame(cardDirs0, cardDirs1);
-    Assert.assertSame(cardDirs0, cardDirs2);
-    Assert.assertSame(readDirs0, readDirs1);
+    Assertions.assertSame(cardDirs0, cardDirs1);
+    Assertions.assertSame(cardDirs0, cardDirs2);
+    Assertions.assertSame(readDirs0, readDirs1);
   }
 }

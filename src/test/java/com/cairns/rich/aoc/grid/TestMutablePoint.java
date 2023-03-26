@@ -1,7 +1,7 @@
 package com.cairns.rich.aoc.grid;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * Test class for {@link MutablePoint}.
@@ -16,7 +16,7 @@ public class TestMutablePoint extends TestPoint<MutablePoint> {
    */
   @Test
   public void testOriginNotSameness() {
-    Assert.assertNotSame(MutablePoint.origin(), MutablePoint.origin());
+    Assertions.assertNotSame(MutablePoint.origin(), MutablePoint.origin());
   }
 
   /**
@@ -30,11 +30,11 @@ public class TestMutablePoint extends TestPoint<MutablePoint> {
       MutablePoint point = new MutablePoint(spec.getLeft(), spec.getRight());
       MutablePoint move = point.move(dir);
 
-      Assert.assertSame(point, move);
-      Assert.assertEquals(point, move);
+      Assertions.assertSame(point, move);
+      Assertions.assertEquals(point, move);
 
-      Assert.assertEquals(spec.getLeft() + dir.dx(), move.x());
-      Assert.assertEquals(spec.getRight() + dir.dy(), move.y());
+      Assertions.assertEquals(spec.getLeft() + dir.dx(), move.x());
+      Assertions.assertEquals(spec.getRight() + dir.dy(), move.y());
     });
   }
 }
