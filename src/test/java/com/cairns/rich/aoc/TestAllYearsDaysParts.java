@@ -9,11 +9,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicNode;
 import org.junit.jupiter.api.DynamicTest;
@@ -26,16 +29,21 @@ import org.junit.jupiter.api.TestFactory;
 public class TestAllYearsDaysParts extends AocTestBase {
   private static final Class<?>[] partParams = { Loader.class };
 
+  private static final Predicate<Path> yearFilter = (yearPath) -> true;
+  private static final Predicate<Path> dayFilter = (dayPath) -> true;
+  private static final Predicate<String> partFilter = (part) -> true;
+  private static final Predicate<Path> fileFilter = (file) -> true;
+  private static final Predicate<Speed> speedFilter = (speed) -> speed.ordinal() <= Speed.Fast.ordinal();
+
   /**
    * {@link TestFactory} method that generates a container for each year under the base package.
    * Will exclude a year if it has no tests.
    */
   @TestFactory
   public Stream<DynamicContainer> testYears() {
-    Speed slowestAcceptable = Speed.Ouch;
-    return getGroupContainer(getResourceRoot(getClass()), (yearPath) -> {
+    return getGroupContainer(getResourceRoot(getClass()), yearFilter, (yearPath) -> {
       String year = yearPath.getFileName().toString();
-      return getGroupContainer(yearPath, (dayPath) -> testsForADay(slowestAcceptable, year, dayPath));
+      return getGroupContainer(yearPath, dayFilter, (dayPath) -> testsForADay(year, dayPath));
     }).stream();
   }
 
@@ -44,7 +52,7 @@ public class TestAllYearsDaysParts extends AocTestBase {
    * There will be a container for each part that has tests under it.
    * Tests can be disqualified based on their {@link Speed} suffix or {@link Broken} status.
    */
-  private List<DynamicContainer> testsForADay(Speed slowestAcceptable, String year, Path dayPath) {
+  private List<DynamicContainer> testsForADay(String year, Path dayPath) {
     List<DynamicContainer> partTests = new ArrayList<>();
     Base dayImpl = quietly(() -> createDayImpl(year, dayPath.getFileName().toString()));
     BiConsumer<String, LoudPart> addPartIfApplicable = (part, loudPart) -> {
@@ -52,8 +60,8 @@ public class TestAllYearsDaysParts extends AocTestBase {
           (method) -> part.equals(method.getName())
                    && Arrays.equals(partParams, method.getParameterTypes())
       ).findFirst();
-      if (partMethodOpt.isPresent() && (!partMethodOpt.get().isAnnotationPresent(Broken.class))) {
-        addContainerIfHasAny(partTests, part, testsForAPart(slowestAcceptable, dayImpl, dayPath, part, loudPart));
+      if (partFilter.test(part) && partMethodOpt.isPresent() && (!partMethodOpt.get().isAnnotationPresent(Broken.class))) {
+        addContainerIfHasAny(partTests, part, testsForAPart(dayImpl, dayPath, part, loudPart));
       }
     };
     addPartIfApplicable.accept("part1", Base::part1);
@@ -66,14 +74,28 @@ public class TestAllYearsDaysParts extends AocTestBase {
    * There will be a test for each file under the given day's path that contains given part name.
    * Tests can be disqualified based on their {@link Speed} suffix.
    */
-  private List<DynamicTest> testsForAPart(Speed slowestAcceptable, Base dayImpl, Path dayPath, String part, LoudPart partImpl) {
+  private List<DynamicTest> testsForAPart(Base dayImpl, Path dayPath, String part, LoudPart partImpl) {
     return quietly(() -> Files.list(dayPath))
         .filter((testPath) -> testPath.getFileName().toString().contains(part))
-        .filter((testPath) -> getTestSpeed(testPath).ordinal() <= slowestAcceptable.ordinal())
-        .map((testPath) -> DynamicTest.dynamicTest(
-            testPath.getFileName().toString(),
-            () -> partImpl.run(dayImpl, new Loader(testPath))
-        )).collect(Collectors.toList());
+        .filter((testPath) -> fileFilter.test(testPath))
+        .filter((testPath) -> speedFilter.test(getTestSpeed(testPath)))
+        .map((testPath) -> buildTest(testPath, partImpl, dayImpl))
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Generates a test for the given path for the given part of the given day.
+   * Will pull the expected result from the loader on the test path.
+   */
+  private DynamicTest buildTest(Path testPath, LoudPart partImpl, Base dayImpl) {
+    return DynamicTest.dynamicTest(
+        testPath.getFileName().toString(),
+        () -> {
+          Loader loader = new Loader(testPath);
+          String actual = Objects.toString(partImpl.run(dayImpl, loader));
+          Assertions.assertEquals(loader.expected, actual);
+        }
+    );
   }
 
   /**
@@ -100,10 +122,15 @@ public class TestAllYearsDaysParts extends AocTestBase {
    * Returns a list of non empty {@link DynamicContainer}s that are created with the
    * given subGroupTests function from the directories under the given root group path.
    */
-  private List<DynamicContainer> getGroupContainer(Path path, Function<Path, List<DynamicContainer>> subGroupTests) {
+  private List<DynamicContainer> getGroupContainer(
+      Path path,
+      Predicate<Path> subGroupPathFilter,
+      Function<Path, List<DynamicContainer>> subGroupTests
+  ) {
     List<DynamicContainer> groupTests = new ArrayList<>();
     quietly(() -> Files.list(path))
         .filter(Files::isDirectory)
+        .filter(subGroupPathFilter)
         .forEach((subPath) -> addContainerIfHasAny(groupTests, subPath.getFileName().toString(), subGroupTests.apply(subPath)));
     return groupTests;
   }
