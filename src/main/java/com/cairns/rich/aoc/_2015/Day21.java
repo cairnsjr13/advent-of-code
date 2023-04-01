@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+/**
+ * Santa got someone an rpg game.  It uses swords and shields.  We are going to simulate it.
+ */
 class Day21 extends Base2015 {
   private static final List<Item> weapons = Arrays.asList(
       new Item("Dagger", 8, 4, 0),
@@ -34,16 +37,30 @@ class Day21 extends Base2015 {
       new Item("No Ring 2", 0, 0, 0)
   );
 
+  /**
+   * Returns the lowest amount of gold a player can spend while still winning the fight.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
     return computeCost(loader, Integer.MAX_VALUE, true, (l, r) -> l < r);
   }
 
+  /**
+   * Returns the highest amount of gold a player can spend while still losing the fight.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part2(Loader loader) {
     return computeCost(loader, 0, false, (l, r) -> l > r);
   }
 
+  /**
+   * Computes an extreme cost using the given seed and compare function of all fights that result in the given outcome.
+   * We do this by iterating through all possible valid combinations of weapons/armors/rings.
+   */
   private int computeCost(
       Loader loader,
       int seed,
@@ -69,6 +86,10 @@ class Day21 extends Base2015 {
     return bestCost;
   }
 
+  /**
+   * Simulates the fight between the player and boss and returns true if the player wins.
+   * The player attacks first each round.
+   */
   private boolean doesPlayerWins(Stats player, Stats boss) {
     int playerHp = 100;
     int bossHp = 100;
@@ -84,6 +105,9 @@ class Day21 extends Base2015 {
     }
   }
 
+  /**
+   * Represents a fighter's combat stats (hp is not tracked at this level).
+   */
   private static class Stats {
     private final int damage;
     private final int armor;
@@ -112,6 +136,9 @@ class Day21 extends Base2015 {
     }
   }
 
+  /**
+   * Represents an item that a player can buy and thus wear.  Each item has various stats impacting the fight.
+   */
   private static class Item {
     private final String name;
     private final int cost;

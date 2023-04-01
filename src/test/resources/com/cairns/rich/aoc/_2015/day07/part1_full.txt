@@ -1,5 +1,7 @@
 46065
 -------AdventOfCodeTestDelimiter-------
+returnWire=a
+-------AdventOfCodeTestDelimiter-------
 bn RSHIFT 2 -> bo
 lf RSHIFT 1 -> ly
 fo RSHIFT 3 -> fq

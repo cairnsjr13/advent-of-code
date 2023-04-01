@@ -1,0 +1,10 @@
+8
+-------AdventOfCodeTestDelimiter-------
+numSteps=2
+-------AdventOfCodeTestDelimiter-------
+.#.#.#
+...##.
+#....#
+..#...
+#.#..#
+####..

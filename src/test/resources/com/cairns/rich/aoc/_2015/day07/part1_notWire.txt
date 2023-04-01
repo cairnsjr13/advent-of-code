@@ -1,0 +1,6 @@
+65520
+-------AdventOfCodeTestDelimiter-------
+returnWire=b
+-------AdventOfCodeTestDelimiter-------
+15 -> a
+NOT a -> b

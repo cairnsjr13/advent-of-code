@@ -1,0 +1,6 @@
+12
+-------AdventOfCodeTestDelimiter-------
+returnWire=a
+-------AdventOfCodeTestDelimiter-------
+60 -> b
+b AND 15 -> a

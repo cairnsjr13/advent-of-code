@@ -1,0 +1,3 @@
+43
+-------AdventOfCodeTestDelimiter-------
+1x1x10

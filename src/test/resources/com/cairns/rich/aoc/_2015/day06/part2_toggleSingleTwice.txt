@@ -1,0 +1,4 @@
+4
+-------AdventOfCodeTestDelimiter-------
+toggle 500,500 through 500,500
+toggle 500,500 through 500,500

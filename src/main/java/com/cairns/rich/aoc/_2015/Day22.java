@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc._2015;
 
+import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -9,46 +10,69 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Santa got someone an rpg game.  It uses magic.  We are going to simulate it.
+ */
 class Day22 extends Base2015 {
-  private static final Spell[] spells = Spell.values();
-
+  /**
+   * Returns the minimum amount of mana a player can use and still defeat the boss.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
-    return runSimulation(loader, false);
+    return runSimulation(loader, 0);
   }
 
+  /**
+   * Returns the minimum amount of mana a player can use and still defeat the boss when they are forced to lose 1 hp each turn.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part2(Loader loader) {
-    return runSimulation(loader, true);
+    return runSimulation(loader, 1);
   }
 
-  private int runSimulation(Loader loader, boolean hardMode) {
+  /**
+   * Returns the minimum amount of mana a player can use and still
+   * defeat the boss when they lose the given number of hp each turn.
+   */
+  private int runSimulation(Loader loader, int playerTurnPenalty) {
     List<String> bossLines = loader.ml();
     Stats player = new Stats(50, 0, 500);
     Stats boss = new Stats(bossLines);
-    State state = new State(player, boss, hardMode);
+    State state = new State(player, boss, playerTurnPenalty);
     playerTurn(state);
     return state.bestManaSoFar;
   }
 
+  /**
+   * Inflicts turn penalties on the players hp and then runs the logic for a player's turn.
+   * A player's turn consists of trying each of the spells available to it.
+   * As this is a recursive method, any changes will be undone when it completes.
+   */
   private static void playerTurn(State state) {
-    state.player.hp -= state.playerPenalty;
+    state.player.hp -= state.playerTurnPenalty;
     try {
       if (state.player.hp > 0) {
         tickEffects(state, () -> {
-          if (state.player.mana >= 53) {
-            for (Spell spell : spells) {
-              spell.tryCast(state);
-            }
+          for (Spell spell : EnumUtils.enumValues(Spell.class)) {
+            spell.tryCast(state);
           }
         });
       }
     }
     finally {
-      state.player.hp += state.playerPenalty;
+      state.player.hp += state.playerTurnPenalty;
     }
   }
 
+  /**
+   * Inflicts damage to the player based on current stats.
+   * If the player is still alive, will trigger the {@link #playerTurn(State)}.
+   * As this is a recursive method, any changes will be undone when it completes.
+   */
   private static void bossTurn(State state) {
     tickEffects(state, () -> {
       int damage = Math.max(1, state.boss.damage - state.playerArmor());
@@ -64,6 +88,12 @@ class Day22 extends Base2015 {
     });
   }
 
+  /**
+   * Helper method to inflict (and eventually undo) any active spell effects around the given turn logic.
+   * Part of the process is decrementing the turns remaining for each active spell (represented in the multimap).
+   * Will short circuit if the current state has used more mana than our best so far.
+   * As this is a recursive method, any changes will be undone when it completes.
+   */
   private static void tickEffects(State state, Runnable turnWithEffects) {
     if (state.used >= state.bestManaSoFar) {
       return;
@@ -92,26 +122,36 @@ class Day22 extends Base2015 {
     }
   }
 
+  /**
+   * Container object that holds the fighter stats as well as any active effects.
+   * This will make simulating a fight easier as we dont have to pass around a ton of mutable state.
+   */
   private static class State {
     private final Stats player;
     private final Stats boss;
     private final Multiset<Spell> activeEffects = HashMultiset.create();
-    private final int playerPenalty;
+    private final int playerTurnPenalty;
 
     private int bestManaSoFar = Integer.MAX_VALUE;
     private int used = 0;
 
-    private State(Stats player, Stats boss, boolean hardMode) {
+    private State(Stats player, Stats boss, int playerTurnPenalty) {
       this.player = player;
       this.boss = boss;
-      this.playerPenalty = (hardMode) ? 1 : 0;
+      this.playerTurnPenalty = playerTurnPenalty;
     }
 
+    /**
+     * Returns the armor stats for the player given the currently active spells.
+     */
     private int playerArmor() {
       return (activeEffects.contains(Spell.Shield)) ? 7 : 0;
     }
   }
 
+  /**
+   * Container object to encapsulate the stats for a fighter.
+   */
   private static class Stats {
     private int hp;
     private final int damage;
@@ -132,6 +172,9 @@ class Day22 extends Base2015 {
     }
   }
 
+  /**
+   * The various spells a player can cast along with the various stats for each.
+   */
   private enum Spell {
     Missile(53, -4, 0, 0),
     Drain(73, -2, 2, 0),
@@ -151,6 +194,12 @@ class Day22 extends Base2015 {
       this.timerOnCast = timerOnCast;
     }
 
+    /**
+     * Attempts to case this spell on the given state.  Will only do this if the player has enough mana
+     * and the spell is not already active.  The impact of the spell is immediately registered and then
+     * a {@link Day22#bossTurn(State)} will be triggered.
+     * As this is a recursive method, any changes will be undone when it completes.
+     */
     private void tryCast(State state) {
       if (state.player.mana >= cost) {
         if (!state.activeEffects.contains(this)) {

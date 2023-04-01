@@ -1,0 +1,6 @@
+52
+-------AdventOfCodeTestDelimiter-------
+returnWire=a
+-------AdventOfCodeTestDelimiter-------
+2 -> b
+13 LSHIFT b -> a

@@ -1,0 +1,7 @@
+4
+-------AdventOfCodeTestDelimiter-------
+H => HO
+H => OH
+O => HH
+
+HOH

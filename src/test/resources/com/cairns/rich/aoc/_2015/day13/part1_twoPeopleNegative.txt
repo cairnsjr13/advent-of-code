@@ -1,0 +1,4 @@
+-142
+-------AdventOfCodeTestDelimiter-------
+Alice would lose 57 happiness units by sitting next to Bob.
+Bob would lose 14 happiness units by sitting next to Alice.

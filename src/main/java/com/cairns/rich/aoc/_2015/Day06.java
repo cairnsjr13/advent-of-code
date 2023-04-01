@@ -11,6 +11,10 @@ import java.util.function.IntUnaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * We are going to be turning lights on and off in a grid to display a decoration.
+ * After applying all of the instructions from santa, we can return the total brightness.
+ */
 class Day06 extends Base2015 {
   private static final Map<Type, IntUnaryOperator> simple = Map.of(
       Type.On, (orig) -> 1,
@@ -23,16 +27,37 @@ class Day06 extends Base2015 {
       Type.Toggle, (orig) -> orig + 2
   );
 
+  /**
+   * Sums the total brightness in the grid using the simple rules.
+   *   on means turn the lights on
+   *   off means turn the lights off
+   *   toggle means flip the light from on/off
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
     return countLightsOn(loader.ml(Instruction::new), simple);
   }
 
+  /**
+   * Sums the total brightness in the grid using the complex rules.
+   *   on means increase brightness by 1
+   *   off means decrease brightness by 1 (minimum 0)
+   *   toggle means increase brightness by 2
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part2(Loader loader) {
     return countLightsOn(loader.ml(Instruction::new), complex);
   }
 
+  /**
+   * Sums up all of the final brightness values for each bulb after all of the instructions.
+   * We brute force it here with O(w*h*n) where w is the width, h is the height, and n is the number of instructions.
+   * Each bulb will have all of the instructions that it falls into applied and then summed to the total.
+   */
   private final int countLightsOn(List<Instruction> instructions, Map<Type, IntUnaryOperator> rules) {
     int lightsOn = 0;
     MutablePoint light = MutablePoint.origin();
@@ -50,6 +75,9 @@ class Day06 extends Base2015 {
     return lightsOn;
   }
 
+  /**
+   * Input class that specifies the type of instruction and the range (top left corner to bottom right corner inclusive).
+   */
   private static class Instruction {
     private static final Pattern pattern = Pattern.compile("^(.+) (\\d+),(\\d+) through (\\d+),(\\d+)$");
     private static final Map<String, Type> types = EnumUtils.getLookup(Type.class);
@@ -64,6 +92,9 @@ class Day06 extends Base2015 {
     }
   }
 
+  /**
+   * The various instruction types we need to implement for instructions.
+   */
   private enum Type implements HasId<String> {
     On("turn on"),
     Off("turn off"),
@@ -81,6 +112,9 @@ class Day06 extends Base2015 {
     }
   }
 
+  /**
+   * Rectangle range class that is specified by its top-left and bottom right corners inclusive.
+   */
   private static class Range {
     private final ImmutablePoint tl;
     private final ImmutablePoint br;

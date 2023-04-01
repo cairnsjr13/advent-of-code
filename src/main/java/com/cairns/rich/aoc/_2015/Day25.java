@@ -3,7 +3,15 @@ package com.cairns.rich.aoc._2015;
 import com.cairns.rich.aoc.Loader;
 import java.util.List;
 
+/**
+ * We need to boot up the weather machine.  Lets do a code generation simulation to get it going.
+ */
 class Day25 extends Base2015 {
+  /**
+   * Computes the code by converting a row/col pair into a squence number and then applying an iterative code gen.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
     List<Integer> input = loader.sl(" ", Integer::parseInt);
@@ -13,6 +21,9 @@ class Day25 extends Base2015 {
     return computeCode(sequenceNumber);
   }
 
+  /**
+   * Converts a col/row pair into a sequential number that can then be used to compute a code.
+   */
   private int computeSequenceNumber(int targetRow, int targetCol) {
     int sequenceNumber = 1;
     for (int col = 1; col < targetCol; ++col) {
@@ -24,6 +35,9 @@ class Day25 extends Base2015 {
     return sequenceNumber;
   }
 
+  /**
+   * Iteratively computes the code in the given sequenceNumber position.
+   */
   private long computeCode(int sequenceNumber) {
     long code = 20_151_125;
     for (int i = 1; i < sequenceNumber; ++i) {

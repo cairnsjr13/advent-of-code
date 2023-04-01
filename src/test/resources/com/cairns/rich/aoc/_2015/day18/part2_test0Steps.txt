@@ -1,0 +1,10 @@
+17
+-------AdventOfCodeTestDelimiter-------
+numSteps=0
+-------AdventOfCodeTestDelimiter-------
+##.#.#
+...##.
+#....#
+..#...
+#.#..#
+####.#

@@ -1,5 +1,7 @@
 307
 -------AdventOfCodeTestDelimiter-------
+returnRegister=b
+-------AdventOfCodeTestDelimiter-------
 jio a, +18
 inc a
 tpl a

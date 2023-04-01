@@ -1,0 +1,5 @@
+13
+-------AdventOfCodeTestDelimiter-------
+returnWire=a
+-------AdventOfCodeTestDelimiter-------
+13 -> a

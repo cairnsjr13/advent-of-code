@@ -1,0 +1,6 @@
+22
+-------AdventOfCodeTestDelimiter-------
+returnWire=a
+-------AdventOfCodeTestDelimiter-------
+22 -> b
+b -> a

@@ -1,0 +1,9 @@
+3
+-------AdventOfCodeTestDelimiter-------
+numLiters=25
+-------AdventOfCodeTestDelimiter-------
+20
+15
+10
+5
+5

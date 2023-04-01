@@ -8,7 +8,16 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * While waiting for Santa we need to eat.  We know how happy/sad everyone will be stting
+ * next to everyone else.  Let's find the optimal seating arrangements to keep it smooth.
+ */
 class Day13 extends Base2015 {
+  /**
+   * Finds the total change in happiness of the optimal seating arrangement of the people in the input description.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
@@ -17,6 +26,12 @@ class Day13 extends Base2015 {
     return computeBest(impacts, people, new ArrayList<>());
   }
 
+  /**
+   * Finds the total change in happiness of the optimal seating arrangement of the
+   * people in the input description, including a new, universally ambivalent person.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part2(Loader loader) {
     Table<String, String, Integer> impacts = HashBasedTable.create();
@@ -30,11 +45,17 @@ class Day13 extends Base2015 {
     return computeBest(impacts, people, new ArrayList<>());
   }
 
+  /**
+   * Recursive ordering algorithm to compute the best possible placement given placements that have already happened.
+   *
+   * @implNote There is an inherant assumption that all people are mentioned in the input, even if they are ambivalent
+   * @implNote There is a bit of inefficiency here given the table is a circle.  Some layouts are equivalent.
+   */
   private int computeBest(Table<String, String, Integer> impacts, List<String> peopleLeft, List<String> order) {
     if (peopleLeft.isEmpty()) {
       return computeScore(impacts, order);
     }
-    int best = 0;
+    int best = Integer.MIN_VALUE;
     for (int i = 0; i < peopleLeft.size(); ++i) {
       order.add(peopleLeft.remove(i));
       int option = computeBest(impacts, peopleLeft, order);
@@ -46,6 +67,10 @@ class Day13 extends Base2015 {
     return best;
   }
 
+  /**
+   * The score of a seating arrangement is simply the sum of all peoples' change
+   * in happiness where each person considers both of their neighbors independently.
+   */
   private int computeScore(Table<String, String, Integer> impacts, List<String> order) {
     int score = 0;
     for (int i = 0; i < order.size(); ++i) {
@@ -55,6 +80,9 @@ class Day13 extends Base2015 {
     return score;
   }
 
+  /**
+   * Input class that describes how a person will react to sitting next to another person.
+   */
   private static class Line {
     private static final Pattern pattern =
         Pattern.compile("^(.+) would (gain|lose) (\\d+) happiness units by sitting next to (.+)\\.$");

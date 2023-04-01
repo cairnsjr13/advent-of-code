@@ -1,5 +1,7 @@
 2640
 -------AdventOfCodeTestDelimiter-------
+raceLength=2503
+-------AdventOfCodeTestDelimiter-------
 Dancer can fly 27 km/s for 5 seconds, but then must rest for 132 seconds.
 Cupid can fly 22 km/s for 2 seconds, but then must rest for 41 seconds.
 Rudolph can fly 11 km/s for 5 seconds, but then must rest for 48 seconds.

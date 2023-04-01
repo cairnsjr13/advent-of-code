@@ -1,0 +1,7 @@
+6
+-------AdventOfCodeTestDelimiter-------
+returnRegister=a
+-------AdventOfCodeTestDelimiter-------
+inc a
+inc a
+tpl a

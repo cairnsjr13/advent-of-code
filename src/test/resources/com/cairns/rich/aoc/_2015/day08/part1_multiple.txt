@@ -1,0 +1,6 @@
+12
+-------AdventOfCodeTestDelimiter-------
+""
+"abc"
+"aaa\"aaa"
+"\x27"

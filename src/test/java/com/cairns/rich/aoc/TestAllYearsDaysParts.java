@@ -33,7 +33,7 @@ public class TestAllYearsDaysParts extends AocTestBase {
   private static final Predicate<Path> dayFilter = (dayPath) -> true;
   private static final Predicate<String> partFilter = (part) -> true;
   private static final Predicate<Path> fileFilter = (file) -> true;
-  private static final Predicate<Speed> speedFilter = (speed) -> speed.ordinal() <= Speed.Fast.ordinal();
+  private static final Predicate<Speed> speedFilter = (speed) -> speed.ordinal() <= Speed.Ouch.ordinal();
 
   /**
    * {@link TestFactory} method that generates a container for each year under the base package.

@@ -1,0 +1,4 @@
+142
+-------AdventOfCodeTestDelimiter-------
+Alice would gain 57 happiness units by sitting next to Bob.
+Bob would gain 14 happiness units by sitting next to Alice.

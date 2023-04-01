@@ -1,27 +1,31 @@
 package com.cairns.rich.aoc._2015;
 
 import com.cairns.rich.aoc.Loader;
-import java.util.HashSet;
+import com.cairns.rich.aoc.Loader.ConfigToken;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Reindeer olympics with bursty reindeer flying!  Let's figure out who wins based on the different scoring styles.
+ */
 class Day14 extends Base2015 {
+  private static final ConfigToken<Integer> raceLength = ConfigToken.of("raceLength", Integer::parseInt);
+
+  /**
+   * Computes the distance traveled by the winning reindeer after the configured number of seconds.
+   * We can compute how far a reindeer travels by computing the number of "time block"s they will (at least partially)
+   * go through during the race.  A time block consists of flying and resting.  We can compute the amount of time flying
+   * (and thus distance traveled) by looking at whole time blocks and any time spent flying in the last partial time block.
+   *
+   * {@inheritDoc}
+   */
   @Override
   protected Object part1(Loader loader) {
     List<Reindeer> reindeers = loader.ml(Reindeer::new);
-    return getDistanceTravelledByWinner(reindeers, 2503);
-  }
-
-  @Override
-  protected Object part2(Loader loader) {
-    List<Reindeer> reindeers = loader.ml(Reindeer::new);
-    return getMaxPoints(reindeers, 2503);
-  }
-
-  private int getDistanceTravelledByWinner(List<Reindeer> reindeers, int totalSeconds) {
+    int totalSeconds = loader.getConfig(raceLength);
     int maxDistance = 0;
     for (Reindeer reindeer : reindeers) {
       int timeBlock = reindeer.stamina + reindeer.rest;
@@ -34,55 +38,38 @@ class Day14 extends Base2015 {
     return maxDistance;
   }
 
-  private int getMaxPoints(List<Reindeer> reindeers, int totalSeconds) {
-    List<State> states = reindeers.stream().map(State::new).collect(Collectors.toList());
+  /**
+   * Computes the maximum number of points earned by any reindeer during the configured number of seconds.
+   * A reindeer earns a point by being in the lead at the end of each second (ties allowed).
+   * We can compute which reindeer is winning (and thus gets a point) by ticking each reindeer each second
+   * and then inspecting who is in the lead.  A tick comprises of moving the reindeer forward (if flying),
+   * or reducing the rest time left (if resting).
+   *
+   * {@inheritDoc}
+   */
+  @Override
+  protected Object part2(Loader loader) {
+    List<Reindeer> reindeers = loader.ml(Reindeer::new);
+    int totalSeconds = loader.getConfig(raceLength);
     for (int second = 0; second < totalSeconds; ++second) {
-      states.forEach(State::tick);
-      findLeader(states).forEach((state) -> ++state.points);
+      reindeers.forEach(Reindeer::tick);
+      findLeader(reindeers).forEach((reindeer) -> ++reindeer.points);
     }
-    return states.stream().mapToInt((s) -> s.points).max().getAsInt();
+    return reindeers.stream().mapToInt((s) -> s.points).max().getAsInt();
   }
 
-  private Set<State> findLeader(List<State> states) {
-    int leadingDistance = 0;
-    Set<State> leaders = new HashSet<>();
-    for (State state : states) {
-      if (leadingDistance == state.distance) {
-        leaders.add(state);
-      }
-      else if (leadingDistance < state.distance) {
-        leadingDistance = state.distance;
-        leaders.clear();
-        leaders.add(state);
-      }
-    }
-    return leaders;
+  /**
+   * Finds the reindeers who are currently in the lead in the race.  Any reindeer with the max distance are considered leading.
+   */
+  private Set<Reindeer> findLeader(List<Reindeer> reindeers) {
+    int maxDistance = getMax(reindeers, (r) -> r.distance).distance;
+    return reindeers.stream().filter((r) -> r.distance == maxDistance).collect(Collectors.toSet());
   }
 
-  private static class State {
-    private final Reindeer reindeer;
-    private int points = 0;
-    private int distance = 0;
-    private boolean flying = true;
-    private int secondsLeft;
 
-    private State(Reindeer reindeer) {
-      this.reindeer = reindeer;
-      this.secondsLeft = reindeer.stamina;
-    }
-
-    private void tick() {
-      if (flying) {
-        distance += reindeer.speed;
-      }
-      --secondsLeft;
-      if (secondsLeft == 0) {
-        secondsLeft = (flying) ? reindeer.rest : reindeer.stamina;
-        flying = !flying;
-      }
-    }
-  }
-
+  /**
+   * Input class that describes how fast a reindeer is, how long it can go without resting, and how long it must rest.
+   */
   private static class Reindeer {
     private static final Pattern pattern = Pattern.compile("^[^\\d]+[^\\d]*(\\d+)[^\\d]*(\\d+)[^\\d]*(\\d+).*$");
 
@@ -90,11 +77,35 @@ class Day14 extends Base2015 {
     private final int stamina;
     private final int rest;
 
+    private int points = 0;
+    private int distance = 0;
+    private boolean flying = true;
+    private int secondsLeft;
+
     private Reindeer(String spec) {
       Matcher matcher = matcher(pattern, spec);
       this.speed = Integer.parseInt(matcher.group(1));
       this.stamina = Integer.parseInt(matcher.group(2));
       this.rest = Integer.parseInt(matcher.group(3));
+
+      this.secondsLeft = stamina;
+    }
+
+    /**
+     * Updates this reindeer's status based on its current flying/resting state.
+     *   - Flying will result in distance increasing by speed
+     *   - A second is removed from time left in current status
+     *   - Becoming fully rested will result in status changing and time reset
+     */
+    private void tick() {
+      if (flying) {
+        distance += speed;
+      }
+      --secondsLeft;
+      if (secondsLeft == 0) {
+        secondsLeft = (flying) ? rest : stamina;
+        flying = !flying;
+      }
     }
   }
 }

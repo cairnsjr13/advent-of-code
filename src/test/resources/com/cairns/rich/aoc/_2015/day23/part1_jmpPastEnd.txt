@@ -1,0 +1,6 @@
+0
+-------AdventOfCodeTestDelimiter-------
+returnRegister=a
+-------AdventOfCodeTestDelimiter-------
+jmp +4
+inc a
