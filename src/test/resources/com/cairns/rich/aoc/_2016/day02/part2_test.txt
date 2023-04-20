@@ -1,0 +1,6 @@
+5DB3
+-------AdventOfCodeTestDelimiter-------
+ULL
+RRDDD
+LURDL
+UUUUD

@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * We need to get into the bathroom.  Quickly.  Various keypads and instructions will result in the code.
+ */
 class Day02 extends Base2016 {
   private static final String moves = "UDLR";
 
@@ -45,6 +48,11 @@ class Day02 extends Base2016 {
       "D-BDDD"
   );
 
+  /**
+   * Helper method to convert the above button spec strings into a lookup map.
+   * Specs should be of the form "c-udlr" where c is the phone character and the following
+   * four characters are the direction when moving Up, Down, Left, and Right.
+   */
   private static Map<Character, char[]> buildButtons(String... specs) {
     return Arrays.stream(specs).collect(Collectors.toMap(
         (spec) -> spec.charAt(0),
@@ -52,20 +60,33 @@ class Day02 extends Base2016 {
     ));
   }
 
+  /**
+   * Computes the bathroom code assuming a standard rectangle grid.
+   */
   @Override
   protected Object part1(Loader loader) {
-    return getCode(imagineButts, loader.ml(), '5');
+    return getCode(loader, imagineButts);
   }
 
+  /**
+   * Computes the bathroom code assuming a modified diamond grid.
+   */
   @Override
   protected Object part2(Loader loader) {
-    return getCode(actualButts, loader.ml(), '5');
+    return getCode(loader, actualButts);
   }
 
-  private String getCode(Map<Character, char[]> buttons, List<String> specs, char current) {
+  /**
+   * Uses the given button lookup to compute the code described in the input.
+   * The char[]s in the mapping correspond to the direction we need to move,
+   * based on the index of the char move in the {@link #moves}.
+   */
+  private String getCode(Loader loader, Map<Character, char[]> buttons) {
+    List<char[]> specs = loader.ml(String::toCharArray);
+    char current = '5';
     StringBuilder code = new StringBuilder();
-    for (String spec : specs) {
-      for (char move : spec.toCharArray()) {
+    for (char[] spec : specs) {
+      for (char move : spec) {
         current = buttons.get(current)[moves.indexOf(move)];
       }
       code.append(current);

@@ -1,0 +1,6 @@
+1985
+-------AdventOfCodeTestDelimiter-------
+ULL
+RRDDD
+LURDL
+UUUUD
