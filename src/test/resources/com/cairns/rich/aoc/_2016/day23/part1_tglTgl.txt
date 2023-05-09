@@ -1,0 +1,7 @@
+1
+-------AdventOfCodeTestDelimiter-------
+comment=A toggle of a toggle should result in an increment.  Will produce 0 on failure.
+-------AdventOfCodeTestDelimiter-------
+cpy 0 a
+tgl 1
+tgl a

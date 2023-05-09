@@ -1,0 +1,5 @@
+habcdefg
+-------AdventOfCodeTestDelimiter-------
+password=abcdefgh
+-------AdventOfCodeTestDelimiter-------
+rotate based on position of letter a

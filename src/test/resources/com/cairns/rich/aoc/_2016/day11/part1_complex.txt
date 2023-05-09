@@ -1,0 +1,4 @@
+11
+-------AdventOfCodeTestDelimiter-------
+gen=1 chip=0
+gen=2 chip=0

@@ -1,0 +1,7 @@
+-1
+-------AdventOfCodeTestDelimiter-------
+comment=Toggling an increment statement should turn it into a decrement.
+-------AdventOfCodeTestDelimiter-------
+cpy 0 a
+tgl 1
+inc a

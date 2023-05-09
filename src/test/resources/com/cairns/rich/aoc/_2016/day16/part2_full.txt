@@ -1,3 +1,5 @@
 01010001101011001
 -------AdventOfCodeTestDelimiter-------
+diskSize=35651584
+-------AdventOfCodeTestDelimiter-------
 11100010111110100

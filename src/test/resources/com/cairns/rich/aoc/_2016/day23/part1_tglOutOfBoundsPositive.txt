@@ -1,0 +1,7 @@
+1
+-------AdventOfCodeTestDelimiter-------
+comment=A toggle past the end of the instruction should not fail/term.  Will produce 0 on term.
+-------AdventOfCodeTestDelimiter-------
+cpy 0 a
+tgl 100
+inc a

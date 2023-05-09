@@ -1,0 +1,5 @@
+01100
+-------AdventOfCodeTestDelimiter-------
+diskSize=20
+-------AdventOfCodeTestDelimiter-------
+10000

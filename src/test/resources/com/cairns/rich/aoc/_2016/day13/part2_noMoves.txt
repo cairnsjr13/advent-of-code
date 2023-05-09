@@ -1,0 +1,5 @@
+1
+-------AdventOfCodeTestDelimiter-------
+numMoves=0
+-------AdventOfCodeTestDelimiter-------
+10

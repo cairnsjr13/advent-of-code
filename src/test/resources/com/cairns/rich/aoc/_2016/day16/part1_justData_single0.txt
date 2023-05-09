@@ -1,0 +1,5 @@
+001
+-------AdventOfCodeTestDelimiter-------
+diskSize=3
+-------AdventOfCodeTestDelimiter-------
+0

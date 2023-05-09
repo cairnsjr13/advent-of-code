@@ -1,0 +1,5 @@
+abcdef
+-------AdventOfCodeTestDelimiter-------
+password=defabc
+-------AdventOfCodeTestDelimiter-------
+rotate based on position of letter c

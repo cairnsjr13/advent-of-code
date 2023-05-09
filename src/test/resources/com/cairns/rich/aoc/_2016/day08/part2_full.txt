@@ -7,6 +7,9 @@
 ████ █    ████   █  █  █ █    █  █ █     ███  ██  
 
 -------AdventOfCodeTestDelimiter-------
+numRows=6
+numCols=50
+-------AdventOfCodeTestDelimiter-------
 rect 1x1
 rotate row y=0 by 5
 rect 1x1

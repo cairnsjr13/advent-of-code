@@ -1,0 +1,5 @@
+abcdef
+-------AdventOfCodeTestDelimiter-------
+password=abcdef
+-------AdventOfCodeTestDelimiter-------
+rotate right 6 steps

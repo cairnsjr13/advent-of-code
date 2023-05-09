@@ -1,5 +1,8 @@
 86
 -------AdventOfCodeTestDelimiter-------
+sigLo=17
+sigHi=61
+-------AdventOfCodeTestDelimiter-------
 bot 123 gives low to bot 191 and high to bot 162
 bot 191 gives low to output 9 and high to bot 192
 bot 182 gives low to bot 175 and high to bot 196

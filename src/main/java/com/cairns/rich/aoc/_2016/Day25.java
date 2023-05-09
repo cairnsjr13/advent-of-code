@@ -9,9 +9,18 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+/**
+ * We need to use the antenna on top of the building to transmit a signal.  We need to find the
+ * appropriate initial value for register a such that the signal is correct.  This involves
+ * adding an "out" command to {@link AssemBunny} that transmits a signal.
+ */
 class Day25 extends Base2016 {
   private static final List<Integer> expectedSeed = List.of(0, 1, 0, 1, 0, 1, 0, 1, 0, 1);
 
+  /**
+   * Returns the minimum initial value of register a that will result in 010101 being repeated forever.
+   * We assume that {@link #expectedSeed} holds enough values to be considered "forever".
+   */
   @Override
   protected Object part1(Loader loader) {
     List<Inst> insts = loader.ml(Inst::new);
@@ -31,7 +40,7 @@ class Day25 extends Base2016 {
               }
             }
             killer.set(true);
-            while (output.take() != Integer.MIN_VALUE) ;
+            AssemBunny.ignore.accept(output);
           })
       );
       if (success.get()) {

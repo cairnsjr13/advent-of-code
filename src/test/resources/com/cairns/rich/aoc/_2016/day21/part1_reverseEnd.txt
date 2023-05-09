@@ -1,0 +1,5 @@
+abcfed
+-------AdventOfCodeTestDelimiter-------
+password=abcdef
+-------AdventOfCodeTestDelimiter-------
+reverse positions 3 through 5

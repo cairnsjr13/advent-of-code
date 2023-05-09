@@ -1,0 +1,5 @@
+abcdef
+-------AdventOfCodeTestDelimiter-------
+password=fedcba
+-------AdventOfCodeTestDelimiter-------
+reverse positions 0 through 5

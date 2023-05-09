@@ -2,7 +2,14 @@ package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.Loader;
 
+/**
+ * The elves are playing are playing incorrect versions of white elephant.
+ * Let's help them figure out who is going to end up with all of the presents.
+ */
 class Day19 extends Base2016 {
+  /**
+   * Returns the index of the elf that ends up with all of the presents when presents are stolen from the immediate next.
+   */
   @Override
   protected Object part1(Loader loader) {
     int numElfs = Integer.parseInt(loader.sl());
@@ -13,6 +20,9 @@ class Day19 extends Base2016 {
     return current.index;
   }
 
+  /**
+   * Returns the index of the elf that ends up with all of the presents when presents are stolen from the elf across.
+   */
   @Override
   protected Object part2(Loader loader) {
     int numElfs = Integer.parseInt(loader.sl());
@@ -34,6 +44,9 @@ class Day19 extends Base2016 {
     return current.index;
   }
 
+  /**
+   * Creates a circular linked list of elves where elf 1 is pointed to by the last elf.
+   */
   private Elf createElfChain(int numElfs) {
     Elf first = new Elf(1);
     Elf last = first;
@@ -43,6 +56,9 @@ class Day19 extends Base2016 {
     return last.next = first;
   }
 
+  /**
+   * This is effectively a linked list node that has an index and a next pointer.
+   */
   private static class Elf {
     private final int index;
     private Elf next = null;

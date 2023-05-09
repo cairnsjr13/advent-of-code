@@ -1,0 +1,4 @@
+12
+-------AdventOfCodeTestDelimiter-------
+comment=The 'a' register should start with an initial value of 12 for part2.
+-------AdventOfCodeTestDelimiter-------

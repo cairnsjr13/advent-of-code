@@ -1,0 +1,5 @@
+2
+-------AdventOfCodeTestDelimiter-------
+inc b
+inc b
+cpy b a

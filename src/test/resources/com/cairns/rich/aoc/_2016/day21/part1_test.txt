@@ -1,0 +1,12 @@
+hebacfgd
+-------AdventOfCodeTestDelimiter-------
+password=abcdefgh
+-------AdventOfCodeTestDelimiter-------
+swap position 1 with position 5
+swap letter a with letter g
+rotate left 3 steps
+rotate right 5 steps
+rotate based on position of letter f
+rotate based on position of letter a
+reverse positions 3 through 6
+move position 6 to position 0

@@ -1,0 +1,5 @@
+38
+-------AdventOfCodeTestDelimiter-------
+numRows=10
+-------AdventOfCodeTestDelimiter-------
+.^^.^.^^^^

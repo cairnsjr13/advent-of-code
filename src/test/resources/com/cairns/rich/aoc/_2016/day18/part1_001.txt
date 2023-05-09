@@ -1,0 +1,5 @@
+4
+-------AdventOfCodeTestDelimiter-------
+numRows=2
+-------AdventOfCodeTestDelimiter-------
+..^

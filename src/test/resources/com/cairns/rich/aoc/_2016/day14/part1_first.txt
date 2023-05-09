@@ -1,0 +1,5 @@
+39
+-------AdventOfCodeTestDelimiter-------
+targetKeyNum=1
+-------AdventOfCodeTestDelimiter-------
+abc

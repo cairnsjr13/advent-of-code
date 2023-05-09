@@ -1,0 +1,5 @@
+abcdefgh
+-------AdventOfCodeTestDelimiter-------
+password=efghabcd
+-------AdventOfCodeTestDelimiter-------
+rotate based on position of letter d

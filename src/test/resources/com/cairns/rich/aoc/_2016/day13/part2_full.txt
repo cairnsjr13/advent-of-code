@@ -1,3 +1,5 @@
 124
 -------AdventOfCodeTestDelimiter-------
+numMoves=50
+-------AdventOfCodeTestDelimiter-------
 1350

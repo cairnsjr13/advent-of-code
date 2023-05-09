@@ -1,0 +1,9 @@
+1
+-------AdventOfCodeTestDelimiter-------
+comment=Toggling a copy instruction should result in a jnz instruction.  This test will jump since a is 1.  Will produce 2 on failure.
+-------AdventOfCodeTestDelimiter-------
+cpy 1 a
+cpy 2 b
+tgl 1
+cpy a b
+inc a

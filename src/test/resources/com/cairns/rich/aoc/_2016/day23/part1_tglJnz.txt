@@ -1,0 +1,8 @@
+2
+-------AdventOfCodeTestDelimiter-------
+comment=A toggle of a jnz should become a cpy.  Will produce 1 on failure.
+-------AdventOfCodeTestDelimiter-------
+cpy 1 a
+cpy 2 b
+tgl 1
+jnz b a

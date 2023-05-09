@@ -1,3 +1,5 @@
 22423
 -------AdventOfCodeTestDelimiter-------
+targetKeyNum=64
+-------AdventOfCodeTestDelimiter-------
 zpqevtbw

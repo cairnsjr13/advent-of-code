@@ -1,0 +1,5 @@
+adcbef
+-------AdventOfCodeTestDelimiter-------
+password=abcdef
+-------AdventOfCodeTestDelimiter-------
+swap letter b with letter d

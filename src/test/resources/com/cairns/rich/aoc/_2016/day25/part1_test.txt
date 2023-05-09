@@ -1,0 +1,14 @@
+2
+-------AdventOfCodeTestDelimiter-------
+comment=Ensures we iterate candidate solutions by one until we find one.  This will output 2 (invalid) for a = 0 and 1.  Then infinitely output 01 for a = 2.
+-------AdventOfCodeTestDelimiter-------
+cpy a b
+cpy 1 c
+dec b
+dec b
+jnz b 4
+out 0
+out 1
+jnz c -2
+out 2
+jnz c -1

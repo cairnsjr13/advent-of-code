@@ -1,0 +1,5 @@
+22728
+-------AdventOfCodeTestDelimiter-------
+targetKeyNum=64
+-------AdventOfCodeTestDelimiter-------
+abc

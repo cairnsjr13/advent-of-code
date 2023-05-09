@@ -1,5 +1,7 @@
 dhaegfbc
 -------AdventOfCodeTestDelimiter-------
+password=fbgdceah
+-------AdventOfCodeTestDelimiter-------
 reverse positions 1 through 6
 rotate based on position of letter a
 swap position 4 with position 1

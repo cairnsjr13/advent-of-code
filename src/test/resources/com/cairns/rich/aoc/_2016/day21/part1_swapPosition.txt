@@ -1,0 +1,5 @@
+ebcdaf
+-------AdventOfCodeTestDelimiter-------
+password=abcdef
+-------AdventOfCodeTestDelimiter-------
+swap position 4 with position 0

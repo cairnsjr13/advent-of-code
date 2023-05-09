@@ -1,0 +1,3 @@
+18f47a30
+-------AdventOfCodeTestDelimiter-------
+abc

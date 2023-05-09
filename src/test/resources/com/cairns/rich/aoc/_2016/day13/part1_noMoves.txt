@@ -1,0 +1,6 @@
+11
+-------AdventOfCodeTestDelimiter-------
+targetX=7
+targetY=4
+-------AdventOfCodeTestDelimiter-------
+10

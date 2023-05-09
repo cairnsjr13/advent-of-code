@@ -1,0 +1,4 @@
+1
+-------AdventOfCodeTestDelimiter-------
+jnz b 2
+inc a

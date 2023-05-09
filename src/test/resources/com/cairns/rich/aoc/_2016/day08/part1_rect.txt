@@ -1,0 +1,6 @@
+6
+-------AdventOfCodeTestDelimiter-------
+numRows=3
+numCols=7
+-------AdventOfCodeTestDelimiter-------
+rect 3x2
