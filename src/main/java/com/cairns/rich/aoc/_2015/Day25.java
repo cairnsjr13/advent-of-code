@@ -8,9 +8,7 @@ import java.util.List;
  */
 class Day25 extends Base2015 {
   /**
-   * Computes the code by converting a row/col pair into a squence number and then applying an iterative code gen.
-   *
-   * {@inheritDoc}
+   * Computes the code by converting a row/col pair into a sequence number and then applying an iterative code gen.
    */
   @Override
   protected Object part1(Loader loader) {

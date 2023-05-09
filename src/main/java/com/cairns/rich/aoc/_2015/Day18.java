@@ -13,8 +13,6 @@ class Day18 extends Base2015 {
 
   /**
    * Counts the number of lights on after the configured number of steps for the initial grid in the input.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -24,8 +22,6 @@ class Day18 extends Base2015 {
   /**
    * Counts the number of lights on after the configured number of steps for the initial
    * grid in the input when the corner lights are always stuck in the on position.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

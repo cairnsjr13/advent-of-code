@@ -24,8 +24,6 @@ class Day07 extends Base2015 {
 
   /**
    * Emulates the input circuit and returns the configured wire's value.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -38,8 +36,6 @@ class Day07 extends Base2015 {
   /**
    * Emulates the input circuit to retrieve the configured wire's value.  Then overrides wire
    * b with that value, resets the circuit values and recomputes the configured wire's value.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

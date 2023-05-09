@@ -11,8 +11,6 @@ import java.util.regex.Pattern;
 class Day02 extends Base2015 {
   /**
    * We need to figure out the total amount of paper needed, which is just the sum of each package.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -21,8 +19,6 @@ class Day02 extends Base2015 {
 
   /**
    * We need to figure out the total amount of ribbon needed, which is just the sum of each package.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -21,8 +21,6 @@ class Day16 extends Base2015 {
 
   /**
    * Finds the correct Sue with filters enforcing equivalence to targets.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -32,8 +30,6 @@ class Day16 extends Base2015 {
   /**
    * Finds the correct Sue with filters that enforce equivalence to targets,
    * but overriding certain ones to be range filters (again against targets).
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

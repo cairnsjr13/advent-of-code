@@ -19,8 +19,6 @@ class Day15 extends Base2015 {
 
   /**
    * Finds the score of the best recipe with no calorie restrictions.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -29,8 +27,6 @@ class Day15 extends Base2015 {
 
   /**
    * Finds the score of the best recipe with exactly 500 calories.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 class Day22 extends Base2015 {
   /**
    * Returns the minimum amount of mana a player can use and still defeat the boss.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -26,8 +24,6 @@ class Day22 extends Base2015 {
 
   /**
    * Returns the minimum amount of mana a player can use and still defeat the boss when they are forced to lose 1 hp each turn.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

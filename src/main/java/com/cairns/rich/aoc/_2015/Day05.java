@@ -16,8 +16,6 @@ class Day05 extends Base2015 {
 
   /**
    * The number of nice strings with the original rules.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -26,8 +24,6 @@ class Day05 extends Base2015 {
 
   /**
    * The number of nice strings with the new rules.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

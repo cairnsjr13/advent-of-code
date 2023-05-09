@@ -16,8 +16,6 @@ import java.util.function.IntPredicate;
 class Day24 extends Base2015 {
   /**
    * Returns the smallest quantum entanglement of the passenger compartment of an ideal 3 compartment loading scheme.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -26,8 +24,6 @@ class Day24 extends Base2015 {
 
   /**
    * Returns the smallest quantum entanglement of the passenger compartment of an ideal 4 compartment loading scheme.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

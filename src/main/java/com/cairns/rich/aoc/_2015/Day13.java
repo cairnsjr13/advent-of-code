@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 class Day13 extends Base2015 {
   /**
    * Finds the total change in happiness of the optimal seating arrangement of the people in the input description.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -29,8 +27,6 @@ class Day13 extends Base2015 {
   /**
    * Finds the total change in happiness of the optimal seating arrangement of the
    * people in the input description, including a new, universally ambivalent person.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

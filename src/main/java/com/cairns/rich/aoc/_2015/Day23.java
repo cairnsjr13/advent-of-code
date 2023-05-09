@@ -18,8 +18,6 @@ class Day23 extends Base2015 {
 
   /**
    * Returns the configured register's value after executing the input program.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -28,8 +26,6 @@ class Day23 extends Base2015 {
 
   /**
    * Returns the configured register's value after executing the input program with an initial a value of 1.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

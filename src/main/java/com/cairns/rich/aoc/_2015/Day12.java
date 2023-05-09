@@ -12,8 +12,6 @@ import org.json.simple.parser.JSONParser;
 class Day12 extends Base2015 {
   /**
    * Sums up all number nodes in the nested json object.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) throws Throwable {
@@ -23,8 +21,6 @@ class Day12 extends Base2015 {
 
   /**
    * Sums up all number nodes in the nested json object, excluding the ones on or descendants of objects containing "red".
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) throws Throwable {

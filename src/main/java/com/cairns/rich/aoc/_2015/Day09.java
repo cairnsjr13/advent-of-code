@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 class Day09 extends Base2015 {
   /**
    * Finds the shortest full path.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -25,8 +23,6 @@ class Day09 extends Base2015 {
 
   /**
    * Finds the longest full path.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

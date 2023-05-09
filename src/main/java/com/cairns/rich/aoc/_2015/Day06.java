@@ -32,8 +32,6 @@ class Day06 extends Base2015 {
    *   on means turn the lights on
    *   off means turn the lights off
    *   toggle means flip the light from on/off
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -45,8 +43,6 @@ class Day06 extends Base2015 {
    *   on means increase brightness by 1
    *   off means decrease brightness by 1 (minimum 0)
    *   toggle means increase brightness by 2
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

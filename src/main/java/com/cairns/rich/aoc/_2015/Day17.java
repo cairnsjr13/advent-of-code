@@ -15,8 +15,6 @@ class Day17 extends Base2015 {
 
   /**
    * Calculates the number of different combinations of containers that perfectly contain the number of liters configured.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -30,8 +28,6 @@ class Day17 extends Base2015 {
    *
    * For example: If there are combinations using 2, 3, 2, 5, and 2: the minimum number would be 2, of which there are 3.
    *              So 3 would be the answer.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

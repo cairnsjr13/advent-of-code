@@ -16,8 +16,6 @@ class Day10 extends Base2015 {
 
   /**
    * The length of the sequence after the configured number of iterations.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -28,7 +26,6 @@ class Day10 extends Base2015 {
    * The length of the sequence after the configured number of iterations.
    *
    * @implNote - because of the config system, this ends up being the same as {@link #part1(Loader)}.
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -19,8 +19,6 @@ class Day14 extends Base2015 {
    * We can compute how far a reindeer travels by computing the number of "time block"s they will (at least partially)
    * go through during the race.  A time block consists of flying and resting.  We can compute the amount of time flying
    * (and thus distance traveled) by looking at whole time blocks and any time spent flying in the last partial time block.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -44,8 +42,6 @@ class Day14 extends Base2015 {
    * We can compute which reindeer is winning (and thus gets a point) by ticking each reindeer each second
    * and then inspecting who is in the lead.  A tick comprises of moving the reindeer forward (if flying),
    * or reducing the rest time left (if resting).
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -8,8 +8,6 @@ import com.cairns.rich.aoc.Loader;
 class Day08 extends Base2015 {
   /**
    * Finds the sum of each line's bytes for code string literals minus the sum of each line's memory usage.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -18,8 +16,6 @@ class Day08 extends Base2015 {
 
   /**
    * Finds the sum of each lines
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

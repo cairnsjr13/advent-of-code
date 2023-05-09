@@ -18,8 +18,6 @@ import org.apache.commons.lang3.tuple.Pair;
 class Day19 extends Base2015 {
   /**
    * Returns the number of distinct molecules that we can generate from one replacement.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -47,8 +45,6 @@ class Day19 extends Base2015 {
    * picking a random replacement from the options at each step.  While this is not academically
    * guaranteed to return an answer, we can loop until we find one.  The randomization options
    * are not so expansive that the runtime explodes to an unreasonable level.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

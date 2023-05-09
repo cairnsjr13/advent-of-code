@@ -9,8 +9,6 @@ import com.cairns.rich.aoc.Loader;
 class Day04 extends Base2015 {
   /**
    * Finds the lowest number that results in a hash with 5 leading 0s.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -19,8 +17,6 @@ class Day04 extends Base2015 {
 
   /**
    * Finds the lowest number that results in a hash with 6 leading 0s.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -39,8 +39,6 @@ class Day21 extends Base2015 {
 
   /**
    * Returns the lowest amount of gold a player can spend while still winning the fight.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -49,8 +47,6 @@ class Day21 extends Base2015 {
 
   /**
    * Returns the highest amount of gold a player can spend while still losing the fight.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

@@ -12,8 +12,6 @@ class Day20 extends Base2015 {
   /**
    * Computes the lowest house number that receives at least the number of presents in the input.
    * Each elf delivers 10 presents each to an infinite number of houses.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -23,8 +21,6 @@ class Day20 extends Base2015 {
   /**
    * Computes the lowest house number that receives at least the number of presents in the input.
    * Each elf delivers 11 presents each to a maximum of 50 houses.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

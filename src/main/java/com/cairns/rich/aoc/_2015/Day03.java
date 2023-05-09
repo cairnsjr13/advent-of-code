@@ -25,8 +25,6 @@ class Day03 extends Base2015 {
 
   /**
    * With one santa, how many houses get at least one present?
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -35,8 +33,6 @@ class Day03 extends Base2015 {
 
   /**
    * With two santas, how many houses get at least one present?
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {

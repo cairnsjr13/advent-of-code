@@ -14,8 +14,6 @@ class Day11 extends Base2015 {
 
   /**
    * Finds the first valid password after the puzzle input.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part1(Loader loader) {
@@ -24,8 +22,6 @@ class Day11 extends Base2015 {
 
   /**
    * Finds the second valid password after the puzzle input.
-   *
-   * {@inheritDoc}
    */
   @Override
   protected Object part2(Loader loader) {
