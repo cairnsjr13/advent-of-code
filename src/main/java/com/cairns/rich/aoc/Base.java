@@ -22,6 +22,7 @@ import java.util.function.ToLongFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.commons.lang3.NotImplementedException;
 
 public abstract class Base extends SafeAccessor {
@@ -70,6 +71,30 @@ public abstract class Base extends SafeAccessor {
       }
       return hex.toString();
     });
+  }
+
+  protected static long gcd(long first, long second) {
+    while ((first != 0) && (second != 0)) {
+      if (first < second) {
+        second = second % first;
+      }
+      else {
+        first = first % second;
+      }
+    }
+    return Math.max(first, second);
+  }
+
+  protected static long gcd(Stream<? extends Number> nums) {
+    return nums.mapToLong(Number::longValue).reduce(Base::gcd).getAsLong();
+  }
+
+  protected static long lcm(long first, long second) {
+    return Math.abs(first) * (Math.abs(second) / gcd(first, second));
+  }
+
+  protected static long lcm(Stream<? extends Number> nums) {
+    return nums.mapToLong(Number::longValue).reduce(Base::lcm).getAsLong();
   }
 
   protected static Future<?> startDaemon(Runnable action) {

@@ -43,8 +43,7 @@ class Day12 extends Base2019 {
         }
       }
     }
-    // TODO: Probably should impl lcm at some point, just google a calc.  The sort is only there for order comparison in test
-    return "LCM" + repetitionAt.values().stream().sorted().collect(Collectors.toList());
+    return lcm(repetitionAt.values().stream());
   }
 
   private void tick(List<Moon> moons) {
