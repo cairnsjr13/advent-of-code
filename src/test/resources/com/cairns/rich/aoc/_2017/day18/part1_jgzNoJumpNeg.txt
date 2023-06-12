@@ -1,0 +1,8 @@
+35
+-------AdventOfCodeTestDelimiter-------
+set a -1
+jgz a 2
+add b 13
+add b 22
+snd b
+rcv c

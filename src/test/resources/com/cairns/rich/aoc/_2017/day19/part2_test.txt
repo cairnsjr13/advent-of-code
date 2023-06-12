@@ -1,0 +1,8 @@
+38
+-------AdventOfCodeTestDelimiter-------
+     |          
+     |  +--+    
+     A  |  C    
+ F---|----E|--+ 
+     |  |  |  D 
+     +B-+  +--+ 

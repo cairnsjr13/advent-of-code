@@ -1,26 +1,38 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.Loader;
-import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
+/**
+ * We need to pass a captcha to get started.  This captcha involves
+ * a circular list of digits and counting matches that we find.
+ */
 class Day01 extends Base2017 {
+  /**
+   * Returns the captcha sum by comparing a digit to the immediate next.
+   */
   @Override
   protected Object part1(Loader loader) {
-    return getSumOfMatches(loader.sl(), (i) -> i + 1);
+    return getSumOfMatches(loader, (input) -> 1);
   }
 
+  /**
+   * Returns the captcha sum by comparing a digit to the one directly across (half way) the circular list.
+   */
   @Override
   protected Object part2(Loader loader) {
-    String input = loader.sl();
-    return getSumOfMatches(input, (i) -> i + input.length() / 2);
+    return getSumOfMatches(loader, (input) -> input.length() / 2);
   }
 
-  private int getSumOfMatches(String input, Function<Integer, Integer> nextIFn) {
+  /**
+   * Uses a two pointer approach to compare characters for a single loop and sums matches up.
+   */
+  private int getSumOfMatches(Loader loader, ToIntFunction<String> initialCompareI) {
     int sum = 0;
-    for (int i = 0; i < input.length(); ++i) {
-      char ch = input.charAt(i);
-      int nextI = nextIFn.apply(i);
-      if (ch == safeCharAt(input, nextI)) {
+    String input = loader.sl();
+    for (int ii = 0, ci = initialCompareI.applyAsInt(input); ii < input.length(); ++ii, ++ci) {
+      char ch = input.charAt(ii);
+      if (ch == safeCharAt(input, ci)) {
         sum += (ch - '0');
       }
     }

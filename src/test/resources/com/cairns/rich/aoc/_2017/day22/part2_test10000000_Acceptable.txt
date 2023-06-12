@@ -1,0 +1,7 @@
+2511944
+-------AdventOfCodeTestDelimiter-------
+bursts=10000000
+-------AdventOfCodeTestDelimiter-------
+..#
+#..
+...

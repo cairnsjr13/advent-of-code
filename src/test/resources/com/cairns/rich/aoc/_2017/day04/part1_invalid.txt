@@ -1,0 +1,3 @@
+0
+-------AdventOfCodeTestDelimiter-------
+aa bb cc dd aa

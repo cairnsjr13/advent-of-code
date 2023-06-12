@@ -1,0 +1,3 @@
+1
+-------AdventOfCodeTestDelimiter-------
+a ab abc abd abf abj

@@ -7,7 +7,14 @@ import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
+/**
+ * We need to do another {@link TabletCode} simulation.  Only this one is quite a bit more inefficient than the last.
+ * We are counting the number of composites and we will need an optimized version of the code for part two.
+ */
 class Day23 extends Base2017 {
+  /**
+   * Returns the number of mul instructions run in the input program.
+   */
   @Override
   protected Object part1(Loader loader) {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
@@ -16,6 +23,11 @@ class Day23 extends Base2017 {
     return state.instCalls.count("mul");
   }
 
+  /**
+   * Returns the number of composite integers found between min/max using a given step.
+   * The program as given in the input is extremely slow and needs to be optimized.  We
+   * run an optimized version of the code and verify that it matches java implementation.
+   */
   @Override
   protected Object part2(Loader loader) {  // TODO: parse out min/max/step from input
     long fromJava = numCompositesBetweenInclusive(109300, 126300, 17);
@@ -26,6 +38,9 @@ class Day23 extends Base2017 {
     return fromJava;
   }
 
+  /**
+   * Computes the number of composite integers between and including the given min/max stepping the given amount each time.
+   */
   private long numCompositesBetweenInclusive(int min, int max, int step) {
     long numComposites = 0;
     for (int target = min; target <= max; target += step) {
@@ -39,6 +54,9 @@ class Day23 extends Base2017 {
     return numComposites;
   }
 
+  /**
+   * Runs an optimized version of the input program to calculate the number of composite integers.
+   */
   private long numCompositesWithTabletCode(int min, int max, int step) {
     List<ToIntFunction<State>> insts = Arrays.asList(
         "set a " + min,

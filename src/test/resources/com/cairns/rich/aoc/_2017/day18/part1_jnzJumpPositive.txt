@@ -1,0 +1,8 @@
+22
+-------AdventOfCodeTestDelimiter-------
+set a 4
+jnz a 2
+add b 13
+add b 22
+snd b
+rcv c

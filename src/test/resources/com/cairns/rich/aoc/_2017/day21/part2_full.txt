@@ -1,5 +1,7 @@
 1911767
 -------AdventOfCodeTestDelimiter-------
+numIterations=18
+-------AdventOfCodeTestDelimiter-------
 ../.. => ..#/##./#..
 #./.. => #../.#./...
 ##/.. => ##./#../##.

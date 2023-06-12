@@ -1,0 +1,7 @@
+2
+-------AdventOfCodeTestDelimiter-------
+comment=This test verifies that each part returns a sum of all valids
+-------AdventOfCodeTestDelimiter-------
+aa bb cc dd ee
+aa bb cc dd aa
+aa bb cc dd aaa

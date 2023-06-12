@@ -1,0 +1,5 @@
+3
+-------AdventOfCodeTestDelimiter-------
+comment=The furthest is the end point in this test. 
+-------AdventOfCodeTestDelimiter-------
+ne,ne,ne

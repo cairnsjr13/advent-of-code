@@ -1,0 +1,5 @@
+2
+-------AdventOfCodeTestDelimiter-------
+comment=The first and second indexs' values (1) should not be returned as they are equal (but not greater) than the target.  The third index's value should be returned (2).
+-------AdventOfCodeTestDelimiter-------
+1

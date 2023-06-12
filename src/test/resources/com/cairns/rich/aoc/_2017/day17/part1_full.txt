@@ -1,3 +1,5 @@
 204
 -------AdventOfCodeTestDelimiter-------
+numInserts=2017
+-------AdventOfCodeTestDelimiter-------
 380

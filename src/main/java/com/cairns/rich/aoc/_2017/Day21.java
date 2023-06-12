@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2017;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.Loader.ConfigToken;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,19 +10,35 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+/**
+ * We need to run an image enhancement program for an art program.  Depending on the size
+ * and pixels in an image we need to flip/rotate sections of it to generate the next version.
+ */
 public class Day21 extends Base2017 {
+  private static final ConfigToken<Integer> numIterations = ConfigToken.of("numIterations", Integer::parseInt);
+
+  /**
+   * Computes the number of pixels set after the configured number of iterations.
+   */
   @Override
   protected Object part1(Loader loader) {
-    return getNumSetAfter(loader, 5);
+    return getNumSetAfter(loader);
   }
 
+  /**
+   * Computes the number of pixels set after the configured number of iterations.
+   */
   @Override
   protected Object part2(Loader loader) {
-    return getNumSetAfter(loader, 18);
+    return getNumSetAfter(loader);
   }
 
-  private int getNumSetAfter(Loader loader, int iterations) {
+  /**
+   * Returns the number of pixels set after the configured number of iterations with the given input transformations.
+   */
+  private int getNumSetAfter(Loader loader) {
     Map<State, State> rules = rulesLookup(loader.ml(Rule::new));
+    int iterations = loader.getConfig(numIterations);
     State state = new State(".#./..#/###");
     for (int i = 0; i < iterations; ++i) {
       state = iterate(rules, state);
@@ -29,6 +46,11 @@ public class Day21 extends Base2017 {
     return state.grid.cardinality();
   }
 
+  /**
+   * Performs one translation on the given input state according to the given rules.
+   * This is done by chunking the grid appropriately (based on odd/even size) and looking
+   * up each chunk's corresponding output.  These are pieced together in the returned state.
+   */
   private State iterate(Map<State, State> rules, State state) {
     int chunkSize = (state.size % 2 == 0) ? 2 : 3;
     int numChunks = state.size / chunkSize;
@@ -43,6 +65,9 @@ public class Day21 extends Base2017 {
     return next;
   }
 
+  /**
+   * Fetches the corresponding subchunk from the given large picture state.
+   */
   private State chunk(State state, int chunkSize, int chunkRow, int chunkCol) {
     State subState = new State(chunkSize, new BitSet());
     for (int relRow = 0; relRow < chunkSize; ++relRow) {
@@ -55,6 +80,9 @@ public class Day21 extends Base2017 {
     return subState;
   }
 
+  /**
+   * Places the given subchunk into the given large picture state.
+   */
   private void put(State output, int chunkRow, int chunkCol, State chunk) {
     for (int relRow = 0; relRow < chunk.size; ++relRow) {
       for (int relCol = 0; relCol < chunk.size; ++relCol) {
@@ -65,16 +93,27 @@ public class Day21 extends Base2017 {
     }
   }
 
+  /**
+   * Converts the row/col information into a {@link BitSet} index for a grid of the given size.
+   */
   private static int toI(int size, int row, int col) {
     return row * size + col;
   }
 
+  /**
+   * Consolidates all of the given {@link Rule}s into a common lookup map where ALL
+   * input states (required to be distinct) are mapped to their output states.
+   */
   private static Map<State, State> rulesLookup(List<Rule> rules) {
     Map<State, State> lookup = new HashMap<>();
     rules.forEach((rule) -> rule.inputs.forEach((input) -> lookup.put(input, rule.output)));
     return lookup;
   }
 
+  /**
+   * A container class describing a given input or output state.  This is specified
+   * by an edge size (squares) and the state of each pixel in the grid.
+   */
   private static class State {
     private final int size;
     private final BitSet grid;
@@ -109,6 +148,9 @@ public class Day21 extends Base2017 {
     }
   }
 
+  /**
+   * A container class describing all of the possible input states that map to a given output state.
+   */
   private static class Rule {
     private final Set<State> inputs = new HashSet<>();
     private final State output;
@@ -119,6 +161,11 @@ public class Day21 extends Base2017 {
       this.output = new State(spec.substring(indexOfArrow + " => ".length()));
     }
 
+    /**
+     * Precomputes and adds all potential inputs for the given spec.  This is done
+     * by adding the described input state and then rotating it 3 times, flipping it,
+     * and rotating it three more times to find all possible inputs.
+     */
     private void addAllInputs(String spec) {
       State state = new State(spec);
       inputs.add(state);
@@ -131,12 +178,19 @@ public class Day21 extends Base2017 {
       state = transformAddAndGet(state, this::rotate);
     }
 
+    /**
+     * Applies the given transformation to the current state, adds it to the
+     * inputs, and returns the newly created state for further transformation.
+     */
     private State transformAddAndGet(State cur, Function<State, State> transform) {
       cur = transform.apply(cur);
       inputs.add(cur);
       return cur;
     }
 
+    /**
+     * Returns a new state that is the given input state rotated by 90 degrees.
+     */
     private State rotate(State input) {
       State output = new State(input.size, new BitSet());
       for (int row = 0; row < input.size; ++row) {
@@ -149,6 +203,9 @@ public class Day21 extends Base2017 {
       return output;
     }
 
+    /**
+     * Returns a new state that is the given input state flipped horizontally.
+     */
     private State flip(State input) {
       State output = new State(input.size, new BitSet());
       for (int row = 0; row < input.size; ++row) {

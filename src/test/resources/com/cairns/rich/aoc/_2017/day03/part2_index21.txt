@@ -1,0 +1,5 @@
+362
+-------AdventOfCodeTestDelimiter-------
+comment=Index 21's value is first larger than the target.
+-------AdventOfCodeTestDelimiter-------
+360

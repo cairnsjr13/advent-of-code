@@ -1,0 +1,5 @@
+25
+-------AdventOfCodeTestDelimiter-------
+comment=Index 9's value is first larger than the target.
+-------AdventOfCodeTestDelimiter-------
+24

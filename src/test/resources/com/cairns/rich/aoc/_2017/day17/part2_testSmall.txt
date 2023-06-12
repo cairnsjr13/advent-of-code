@@ -1,0 +1,5 @@
+1226
+-------AdventOfCodeTestDelimiter-------
+numInserts=2017
+-------AdventOfCodeTestDelimiter-------
+3

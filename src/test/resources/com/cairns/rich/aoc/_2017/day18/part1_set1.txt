@@ -1,0 +1,6 @@
+1
+-------AdventOfCodeTestDelimiter-------
+set a 1
+set b 2
+snd a
+rcv c

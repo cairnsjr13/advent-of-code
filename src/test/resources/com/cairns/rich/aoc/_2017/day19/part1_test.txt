@@ -1,0 +1,8 @@
+ABCDEF
+-------AdventOfCodeTestDelimiter-------
+     |          
+     |  +--+    
+     A  |  C    
+ F---|----E|--+ 
+     |  |  |  D 
+     +B-+  +--+ 

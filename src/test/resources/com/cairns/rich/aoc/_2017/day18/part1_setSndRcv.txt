@@ -1,0 +1,7 @@
+1
+-------AdventOfCodeTestDelimiter-------
+comment=If this test fails, most of the other tests will probably also fail.  Being able to set/snd/rcv signals is a base requirement.
+-------AdventOfCodeTestDelimiter-------
+set a 1
+snd a
+rcv b

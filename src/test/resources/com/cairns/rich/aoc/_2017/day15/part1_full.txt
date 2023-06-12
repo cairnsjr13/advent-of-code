@@ -1,4 +1,6 @@
 573
 -------AdventOfCodeTestDelimiter-------
+numTests=40000000
+-------AdventOfCodeTestDelimiter-------
 634
 301

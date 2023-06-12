@@ -1,0 +1,3 @@
+3
+-------AdventOfCodeTestDelimiter-------
+se,sw,se,sw,sw

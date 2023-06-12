@@ -1,0 +1,6 @@
+286
+-------AdventOfCodeTestDelimiter-------
+set a 13
+mul a 22
+snd a
+rcv b

@@ -1,5 +1,7 @@
 5223
 -------AdventOfCodeTestDelimiter-------
+bursts=10000
+-------AdventOfCodeTestDelimiter-------
 #.##.###.#.#.##.###.##.##
 .##.#.#.#..####.###.....#
 ...##.....#..###.#..#.##.

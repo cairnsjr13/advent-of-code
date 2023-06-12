@@ -1,0 +1,5 @@
+2
+-------AdventOfCodeTestDelimiter-------
+comment=This test returns to the origin, but was far away.
+-------AdventOfCodeTestDelimiter-------
+ne,ne,sw,sw

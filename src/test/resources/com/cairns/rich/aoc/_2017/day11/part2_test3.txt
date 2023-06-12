@@ -1,0 +1,5 @@
+3
+-------AdventOfCodeTestDelimiter-------
+comment=In this test we go out an extra step and immediately come back.
+-------AdventOfCodeTestDelimiter-------
+ne,ne,s,s,s,n

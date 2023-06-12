@@ -1,0 +1,12 @@
+4
+-------AdventOfCodeTestDelimiter-------
+set b 1
+set c 3
+set z 999
+jnz z 3
+snd b
+rcv y
+add c -1
+add b 1
+jnz c -2
+jnz z -5

@@ -1,0 +1,7 @@
+abcde
+-------AdventOfCodeTestDelimiter-------
+init=abcde
+dances=40
+comment=The repeat loop for these dance moves is 4.  Let's make sure we come back to initial.
+-------AdventOfCodeTestDelimiter-------
+s1,x3/4,pe/b

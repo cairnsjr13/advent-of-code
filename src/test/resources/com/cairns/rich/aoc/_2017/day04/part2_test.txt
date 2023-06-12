@@ -1,0 +1,9 @@
+3
+-------AdventOfCodeTestDelimiter-------
+comment=This test verifies that each part returns a sum of all valids
+-------AdventOfCodeTestDelimiter-------
+abcde fghij
+abcde xyz ecdab
+a ab abc abd abf abj
+iiii oiii ooii oooi oooo
+oiii ioii iioi iiio

@@ -1,0 +1,5 @@
+806
+-------AdventOfCodeTestDelimiter-------
+comment=Index 23's value is first larger than the target.
+-------AdventOfCodeTestDelimiter-------
+800

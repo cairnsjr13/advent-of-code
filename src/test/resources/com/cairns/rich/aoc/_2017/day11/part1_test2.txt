@@ -1,0 +1,3 @@
+0
+-------AdventOfCodeTestDelimiter-------
+ne,ne,sw,sw

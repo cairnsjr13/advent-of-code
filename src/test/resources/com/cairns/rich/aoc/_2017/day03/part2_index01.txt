@@ -1,0 +1,5 @@
+1
+-------AdventOfCodeTestDelimiter-------
+comment=The first index's value (1) should be returned as it is larger than 0.  Incidentally, there is no way to trigger the second index to be used since it is equal to the first.
+-------AdventOfCodeTestDelimiter-------
+0

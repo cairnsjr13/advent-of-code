@@ -1,0 +1,5 @@
+12
+-------AdventOfCodeTestDelimiter-------
+size=5
+-------AdventOfCodeTestDelimiter-------
+3,4,1,5

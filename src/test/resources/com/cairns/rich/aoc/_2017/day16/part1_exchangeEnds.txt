@@ -1,0 +1,5 @@
+ebcda
+-------AdventOfCodeTestDelimiter-------
+init=abcde
+-------AdventOfCodeTestDelimiter-------
+x0/4

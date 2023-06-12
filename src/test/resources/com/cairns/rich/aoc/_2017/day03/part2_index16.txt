@@ -1,0 +1,5 @@
+142
+-------AdventOfCodeTestDelimiter-------
+comment=Index 16's value is first larger than the target.
+-------AdventOfCodeTestDelimiter-------
+140

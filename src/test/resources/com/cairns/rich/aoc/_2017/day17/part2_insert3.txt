@@ -1,0 +1,5 @@
+2
+-------AdventOfCodeTestDelimiter-------
+numInserts=3
+-------AdventOfCodeTestDelimiter-------
+3

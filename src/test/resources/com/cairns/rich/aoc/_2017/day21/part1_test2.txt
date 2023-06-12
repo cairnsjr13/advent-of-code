@@ -1,0 +1,6 @@
+12
+-------AdventOfCodeTestDelimiter-------
+numIterations=2
+-------AdventOfCodeTestDelimiter-------
+../.# => ##./#../...
+.#./..#/### => #..#/..../..../#..#

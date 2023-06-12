@@ -1,0 +1,6 @@
+a2582a3a0e66e6e86e3812dcb672a272
+-------AdventOfCodeTestDelimiter-------
+size=256
+comment=The empty string is a valid input.
+-------AdventOfCodeTestDelimiter-------
+

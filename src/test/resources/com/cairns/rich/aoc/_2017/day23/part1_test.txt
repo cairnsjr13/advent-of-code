@@ -1,0 +1,7 @@
+3
+-------AdventOfCodeTestDelimiter-------
+set a 1
+set b 2
+mul a b
+mul a b
+mul a b

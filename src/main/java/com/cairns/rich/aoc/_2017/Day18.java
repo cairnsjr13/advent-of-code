@@ -10,7 +10,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.ToIntFunction;
 
+/**
+ * We have another assembly language simulation problem.  We can use {@link TabletCode} to do this.
+ */
 class Day18 extends Base2017 {
+  /**
+   * Returns the first non-zero value passed to the rcv instruction.
+   */
   @Override
   protected Object part1(Loader loader) {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);
@@ -20,6 +26,9 @@ class Day18 extends Base2017 {
     return state.recv.pollLast();
   }
 
+  /**
+   * Returns the number of time program 1 (0 and 1) sends (snd) a value after both have terminated.
+   */
   @Override
   protected Object part2(Loader loader) throws InterruptedException, ExecutionException {
     List<ToIntFunction<State>> insts = loader.ml(TabletCode::parse);

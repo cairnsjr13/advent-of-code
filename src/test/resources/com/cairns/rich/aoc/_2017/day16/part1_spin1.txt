@@ -1,0 +1,5 @@
+eabcd
+-------AdventOfCodeTestDelimiter-------
+init=abcde
+-------AdventOfCodeTestDelimiter-------
+s1

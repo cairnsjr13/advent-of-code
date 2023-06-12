@@ -1,0 +1,6 @@
+0
+-------AdventOfCodeTestDelimiter-------
+numTests=5
+-------AdventOfCodeTestDelimiter-------
+65
+8921

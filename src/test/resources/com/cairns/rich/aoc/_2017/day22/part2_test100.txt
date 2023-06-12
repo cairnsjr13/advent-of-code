@@ -1,0 +1,7 @@
+26
+-------AdventOfCodeTestDelimiter-------
+bursts=100
+-------AdventOfCodeTestDelimiter-------
+..#
+#..
+...

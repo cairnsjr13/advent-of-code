@@ -1,4 +1,6 @@
-294
+9
 -------AdventOfCodeTestDelimiter-------
-634
-301
+set a 22
+mod a 13
+snd a
+rcv b

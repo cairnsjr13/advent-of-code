@@ -1,0 +1,5 @@
+abcde
+-------AdventOfCodeTestDelimiter-------
+init=abcde
+-------AdventOfCodeTestDelimiter-------
+x1/3,x3/1

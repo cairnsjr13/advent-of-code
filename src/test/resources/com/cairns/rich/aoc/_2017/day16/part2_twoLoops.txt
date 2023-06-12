@@ -1,0 +1,6 @@
+ceadb
+-------AdventOfCodeTestDelimiter-------
+init=abcde
+dances=2
+-------AdventOfCodeTestDelimiter-------
+s1,x3/4,pe/b

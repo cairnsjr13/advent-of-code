@@ -1,0 +1,6 @@
+9
+-------AdventOfCodeTestDelimiter-------
+set a 22
+sub a 13
+snd a
+rcv a
