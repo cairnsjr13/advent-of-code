@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc._2022.Base2022;
+import com.cairns.rich.aoc._2023.Base2023;
 import java.nio.file.Path;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -15,11 +15,12 @@ final class Runner {
   private Runner() { }
 
   public static void main(String[] args) throws Throwable {
-    Base day = Base2022.day.get();
+    Base day = Base2023.day.get();
     Loader loader = new Loader(resourceFolderPath.resolve("full.txt"));
 
     long mark = System.currentTimeMillis();
-    Object part1Answer = day.part1(loader);
+    Object part1Answer = "NOT RUN";
+    part1Answer = day.part1(loader);  // comment this line out to skip part 1
     System.out.println("part1: '" + part1Answer + "' - " + (System.currentTimeMillis() - mark) + "ms");
 
     try {
