@@ -1,0 +1,4 @@
+0
+-------AdventOfCodeTestDelimiter-------
++1
+-1
