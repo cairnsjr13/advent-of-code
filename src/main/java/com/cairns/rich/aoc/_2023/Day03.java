@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * We have a schematic of parts and gears to fix and then compute information.
  */
-public class Day03 extends Base2023 {
+class Day03 extends Base2023 {
   /**
    * Computes the sum of all part numbers of parts that touch a symbol (non '.' or digit).
    */
