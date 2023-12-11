@@ -17,7 +17,7 @@ final class Runner {
   public static void main(String[] args) throws Throwable {
     Base day = Base2023.day.get();
     Loader loader = new Loader(resourceFolderPath.resolve("full.txt"));
-    //Loader loader = new Loader(resourceFolderPath.resolve("test.txt"));
+    //loader = new Loader(resourceFolderPath.resolve("test.txt"));
 
     long mark = System.currentTimeMillis();
     Object part1Answer = "NOT RUN";

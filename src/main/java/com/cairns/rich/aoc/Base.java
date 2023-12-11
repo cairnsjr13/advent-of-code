@@ -61,6 +61,10 @@ public abstract class Base extends SafeAccessor {
     return Integer.parseInt(matcher.group(group));
   }
 
+  protected static long lnum(Matcher matcher, int group) {
+    return Long.parseLong(matcher.group(group));
+  }
+
   protected static String md5(String seed) {
     return quietly(() -> {
       MessageDigest md5 = md5Cache.get();
