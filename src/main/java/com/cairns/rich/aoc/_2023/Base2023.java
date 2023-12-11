@@ -8,5 +8,5 @@ import java.util.function.Supplier;
  * Because all of the actual days are package protected, the {@link #day} variable can be used to run explicit puzzles.
  */
 public abstract class Base2023 extends Base {
-  public static final Supplier<Base> day = () -> new Day05();
+  public static final Supplier<Base> day = () -> new Day06();
 }
