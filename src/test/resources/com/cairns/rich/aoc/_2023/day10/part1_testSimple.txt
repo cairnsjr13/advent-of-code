@@ -1,0 +1,7 @@
+4
+-------AdventOfCodeTestDelimiter-------
+.....
+.S-7.
+.|.|.
+.L-J.
+.....
