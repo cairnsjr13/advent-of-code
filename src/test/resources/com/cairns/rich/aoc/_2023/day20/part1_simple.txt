@@ -1,0 +1,10 @@
+32000000
+-------AdventOfCodeTestDelimiter-------
+finalOutputName=output
+-------AdventOfCodeTestDelimiter-------
+broadcaster -> a, b, c
+%a -> b
+%b -> c
+%c -> inv
+&inv -> a
+&d -> output
