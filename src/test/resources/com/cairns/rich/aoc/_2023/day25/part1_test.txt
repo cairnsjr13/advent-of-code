@@ -1,5 +1,7 @@
 54
 -------AdventOfCodeTestDelimiter-------
+sampleFactor=8
+-------AdventOfCodeTestDelimiter-------
 jqt: rhn xhk nvd
 rsh: frs pzl lsr
 xhk: hfx

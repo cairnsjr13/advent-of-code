@@ -1,5 +1,7 @@
 602151
 -------AdventOfCodeTestDelimiter-------
+sampleFactor=2
+-------AdventOfCodeTestDelimiter-------
 qbx: vzd jrc jzl vll
 jhk: scv xkp mjn
 tqb: jgm qjn
