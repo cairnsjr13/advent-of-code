@@ -1,6 +1,6 @@
 package com.cairns.rich.aoc;
 
-import com.cairns.rich.aoc._2023.Base2023;
+import com.cairns.rich.aoc._2024.Base2024;
 import java.nio.file.Path;
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -15,7 +15,7 @@ final class Runner {
   private Runner() { }
 
   public static void main(String[] args) throws Throwable {
-    Base day = Base2023.day.get();
+    Base day = Base2024.day.get();
     Loader loader = new Loader(resourceFolderPath.resolve("full.txt"));
     //loader = new Loader(resourceFolderPath.resolve("test.txt"));
 
