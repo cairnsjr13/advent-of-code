@@ -31,7 +31,7 @@ class Day01 extends Base2024 {
    * the total number of times it appears in the right list.  We can use a multiset to count.
    */
   @Override
-  protected Object part2(Loader loader) throws Throwable {
+  protected Object part2(Loader loader) {
     return handlePart(loader, (lefts, rights) -> {
       Multiset<Integer> rightCounts = HashMultiset.create(rights);
       return lefts.stream().mapToInt(Integer::intValue).map((left) -> left * rightCounts.count(left)).sum();
