@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * The crossword search is a bit different as we are searching for "XMAS" or "MAS" in an X.
  */
-public class Day04 extends Base2024 {
+class Day04 extends Base2024 {
   /**
    * We need count all of the "XMAS"s we can find in any direction.
    */

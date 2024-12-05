@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * We need to count the number of safe reports by ensuring all levels are in the same direction and not too steep.
  */
-public class Day02 extends Base2024 {
+class Day02 extends Base2024 {
   /**
    * Applying the basic rules is all that is necessary for part 1.  No discarding.
    */

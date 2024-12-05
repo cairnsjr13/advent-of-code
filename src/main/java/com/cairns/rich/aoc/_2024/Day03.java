@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
  * Instruction memory has become "corrupted" and we need to parse through
  * an instruction string to find valid multiply and conditional operators.
  */
-public class Day03 extends Base2024 {
+class Day03 extends Base2024 {
   private static final Pattern pattern = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)");
 
   /**
