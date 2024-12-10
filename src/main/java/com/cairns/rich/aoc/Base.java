@@ -141,6 +141,14 @@ public abstract class Base extends SafeAccessor {
   protected static <S> Optional<SearchState<S>> bfs(
       S initial,
       Predicate<S> search,
+      BiConsumer<S, Consumer<S>> step
+  ) {
+    return bfs(initial, search, SearchState::getNumSteps, step);
+  }
+
+  protected static <S> Optional<SearchState<S>> bfs(
+      S initial,
+      Predicate<S> search,
       ToLongFunction<SearchState<S>> priorityComputer,
       BiConsumer<S, Consumer<S>> step
   ) {
