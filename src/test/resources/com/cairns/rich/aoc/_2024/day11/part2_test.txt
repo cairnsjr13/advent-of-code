@@ -1,0 +1,5 @@
+65601038650482
+-------AdventOfCodeTestDelimiter-------
+numTicks=75
+-------AdventOfCodeTestDelimiter-------
+125 17

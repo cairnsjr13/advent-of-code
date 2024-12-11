@@ -1,0 +1,5 @@
+22
+-------AdventOfCodeTestDelimiter-------
+numTicks=6
+-------AdventOfCodeTestDelimiter-------
+125 17
