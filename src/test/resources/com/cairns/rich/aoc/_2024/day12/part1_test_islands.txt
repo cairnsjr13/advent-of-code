@@ -1,0 +1,7 @@
+772
+-------AdventOfCodeTestDelimiter-------
+OOOOO
+OXOXO
+OOOOO
+OXOXO
+OOOOO

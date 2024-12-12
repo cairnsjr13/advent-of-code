@@ -1,0 +1,6 @@
+140
+-------AdventOfCodeTestDelimiter-------
+AAAA
+BBCD
+BBCC
+EEEC

@@ -1,0 +1,8 @@
+368
+-------AdventOfCodeTestDelimiter-------
+AAAAAA
+AAABBA
+AAABBA
+ABBAAA
+ABBAAA
+AAAAAA

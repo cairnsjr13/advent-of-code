@@ -1,0 +1,7 @@
+236
+-------AdventOfCodeTestDelimiter-------
+EEEEE
+EXXXX
+EEEEE
+EXXXX
+EEEEE
