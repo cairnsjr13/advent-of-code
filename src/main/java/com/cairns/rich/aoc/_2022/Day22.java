@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2022;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.Point;
 import com.cairns.rich.aoc.grid.ReadDir;
@@ -91,10 +92,9 @@ class Day22 extends Base2022 {
   }
 
   private static char spot(char[][] map, Point<?> location) {
-    return (   (location.y() < 0) || (map.length - 1 < location.y())
-            || (location.x() < 0) || (map[0].length - 1 < location.x()))
-        ? ' '
-        : map[location.y()][location.x()];
+    return (Grid.isValid(map, location))
+        ? map[location.y()][location.x()]
+        : ' ';
   }
 
   private char[][] buildMap(List<String> mapInput) {

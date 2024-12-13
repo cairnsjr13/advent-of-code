@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2024;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashMultimap;
@@ -63,7 +64,7 @@ class Day12 extends Base2024 {
           char crop = grid[cur.y()][cur.x()];
           for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
             ImmutablePoint next = cur.move(dir);
-            if (!visited.contains(next) && isValid(grid, next) && (grid[next.y()][next.x()] == crop)) {
+            if (!visited.contains(next) && Grid.isValid(grid, next) && (grid[next.y()][next.x()] == crop)) {
               visited.add(next);
               registrar.accept(next);
             }
@@ -139,15 +140,7 @@ class Day12 extends Base2024 {
    */
   boolean isEdge(char[][] grid, ImmutablePoint cur, ReadDir dirOfEdge) {
     ImmutablePoint neighbor = cur.move(dirOfEdge);
-    return !isValid(grid, neighbor)
+    return !Grid.isValid(grid, neighbor)
         || (grid[cur.y()][cur.x()] != grid[neighbor.y()][neighbor.x()]);
-  }
-
-  /**
-   * Returns true if the given point is on the grid.
-   */
-  private boolean isValid(char[][] grid, ImmutablePoint at) {
-    return (0 <= at.x()) && (at.x() < grid[0].length)
-        && (0 <= at.y()) && (at.y() < grid.length);
   }
 }

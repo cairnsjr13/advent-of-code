@@ -3,6 +3,7 @@ package com.cairns.rich.aoc._2023;
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.Loader.ConfigToken;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ class Day21 extends Base2023 {
    * same thing.  We can use odd/even mods to keep track of the seen gardens at each step.
    */
   private Map<Long, Long> countGardensPerStep(boolean isInfinite, Loader loader, long numSteps) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
     Map<Long, Long> gardensPerStep = new HashMap<>();
     List<Set<ImmutablePoint>> permanents = List.of(new HashSet<>(), new HashSet<>());
     List<Set<ImmutablePoint>> currents = List.of(new HashSet<>(), new HashSet<>());
@@ -97,9 +98,7 @@ class Day21 extends Base2023 {
   private boolean canGo(boolean isInfinite, char[][] grid, ImmutablePoint at, ReadDir dir) {
     int nx = at.x() + dir.dx();
     int ny = at.y() + dir.dy();
-    boolean inBounds = (0 <= nx) && (nx < grid[0].length)
-                    && (0 <= ny) && (ny < grid.length);
-    return (isInfinite || inBounds)
+    return (isInfinite || Grid.isValid(grid, ny, nx))
         && (safeGet(safeGet(grid, ny), nx) == '.');
   }
 

@@ -33,7 +33,7 @@ class Day13 extends Base2018 {
 
   @Override
   protected Object part1(Loader loader) {
-    char[][] tracks = loadTracks(loader.ml());
+    char[][] tracks = loader.ml(String::toCharArray).toArray(char[][]::new);
     List<Cart> carts = findCarts(tracks);
     while (true) {
       Optional<Cart> collision = carts.stream().sorted(Cart.cmp).filter((cart) -> cart.move(tracks)).findFirst();
@@ -45,7 +45,7 @@ class Day13 extends Base2018 {
 
   @Override
   protected Object part2(Loader loader) {
-    char[][] tracks = loadTracks(loader.ml());
+    char[][] tracks = loader.ml(String::toCharArray).toArray(char[][]::new);
     List<Cart> carts = findCarts(tracks);
     Set<Cart> crashed = new HashSet<>();
     while (true) {
@@ -64,10 +64,6 @@ class Day13 extends Base2018 {
 
   private Cart getCollidingCart(List<Cart> carts, Cart mover) {
     return carts.stream().filter((cart) -> (cart != mover) && cart.location.equals(mover.location)).findFirst().get();
-  }
-
-  private char[][] loadTracks(List<String> lines) {
-    return lines.stream().map(String::toCharArray).toArray(char[][]::new);
   }
 
   private List<Cart> findCarts(char[][] tracks) {

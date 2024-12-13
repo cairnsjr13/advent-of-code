@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2024;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Range;
@@ -34,16 +35,16 @@ class Day08 extends Base2024 {
    * Only magnitudes in the given range will be considered.
    */
   private int countAllAntinodes(Loader loader, Range<Integer> magRange) {
-    Grid grid = new Grid(loader);
+    City city = new City(loader);
     Set<ImmutablePoint> antinodes = new HashSet<>();
-    for (char signal : grid.antennasBySignal.keySet()) {
-      List<ImmutablePoint> antennas = grid.antennasBySignal.get(signal);
+    for (char signal : city.antennasBySignal.keySet()) {
+      List<ImmutablePoint> antennas = city.antennasBySignal.get(signal);
       for (int i = 0; i < antennas.size(); ++i) {
         ImmutablePoint antennaI = antennas.get(i);
         for (int j = i + 1; j < antennas.size(); ++j) {
           ImmutablePoint antennaJ = antennas.get(j);
-          findAntinodesFromPair(grid, antinodes, antennaI, antennaJ, magRange);
-          findAntinodesFromPair(grid, antinodes, antennaJ, antennaI, magRange);
+          findAntinodesFromPair(city, antinodes, antennaI, antennaJ, magRange);
+          findAntinodesFromPair(city, antinodes, antennaJ, antennaI, magRange);
         }
       }
     }
@@ -56,7 +57,7 @@ class Day08 extends Base2024 {
    * Adds all antinodes from the first antenna that are on the grid and in the given magRange.
    */
   private void findAntinodesFromPair(
-      Grid grid,
+      City city,
       Set<ImmutablePoint> antinodes,
       ImmutablePoint antennaI,
       ImmutablePoint antennaJ,
@@ -69,7 +70,7 @@ class Day08 extends Base2024 {
           antennaI.x() + mag * dx,
           antennaI.y() + mag * dy
       );
-      if (!grid.isValid(antinode)) {
+      if (!Grid.isValid(city.grid, antinode)) {
         break;
       }
       antinodes.add(antinode);
@@ -77,34 +78,22 @@ class Day08 extends Base2024 {
   }
 
   /**
-   * Container class describing the dimensions of the grid as well as the antenna locations grouped by signal type.
+   * Container class describing the city as well as the antenna locations grouped by signal type.
    */
-  private static final class Grid {
-    private final int width;
-    private final int height;
+  private static final class City {
+    private final char[][] grid;
     private final ArrayListMultimap<Character, ImmutablePoint> antennasBySignal = ArrayListMultimap.create();
 
-    private Grid(Loader loader) {
-      char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
-      this.width = grid[0].length;
-      this.height = grid.length;
-
-      for (int col = 0; col < width; ++col) {
-        for (int row = 0; row < height; ++row) {
+    private City(Loader loader) {
+      this.grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+      for (int row = 0; row < grid.length; ++row) {
+        for (int col = 0; col < grid[0].length; ++col) {
           char ch = grid[row][col];
           if (ch != '.') {
             antennasBySignal.put(ch, new ImmutablePoint(col, row));
           }
         }
       }
-    }
-
-    /**
-     * Returns true if the given point is on the grid.
-     */
-    private boolean isValid(ImmutablePoint point) {
-      return (0 <= point.x()) && (point.x() < width)
-          && (0 <= point.y()) && (point.y() < height);
     }
   }
 }

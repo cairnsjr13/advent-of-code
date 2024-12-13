@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2023;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.TreeMultimap;
 
@@ -15,7 +16,7 @@ class Day14 extends Base2023 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
     moveAllNorthSouth(grid, ReadDir.Up);
     return computeLoad(grid);
   }
@@ -31,7 +32,7 @@ class Day14 extends Base2023 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
     TreeMultimap<Integer, Integer> loadsSeen = TreeMultimap.create();
     for (int i = 1; i <= CYCLES_NEEDED_TO_PROJECT; ++i) {
       moveAllNorthSouth(grid, ReadDir.Up);
@@ -91,7 +92,7 @@ class Day14 extends Base2023 {
     if (grid[row][col] == 'O') {
       for (
           int nextRow = row + dir.dy(), nextCol = col + dir.dx();
-          (0 <= nextRow) && (nextRow < grid.length) && (0 <= nextCol) && (nextCol < grid[0].length);
+          Grid.isValid(grid, nextRow, nextCol);
           nextRow += dir.dy(), nextCol += dir.dx()
       ) {
         if (grid[nextRow][nextCol] == '.') {

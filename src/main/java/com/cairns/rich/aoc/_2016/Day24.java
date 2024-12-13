@@ -36,7 +36,7 @@ class Day24 extends Base2016 {
   }
 
   private long findMinSteps(Loader loader, boolean withReturn) {
-    State state = new State(loader.ml());
+    State state = new State(loader);
     Table<Integer, Integer, Long> minStepsFromTo = calculateMinStepsFromTo(state);
     List<Integer> marksToBePlaced = new ArrayList<>(minStepsFromTo.columnKeySet());
     marksToBePlaced.remove(0);
@@ -117,12 +117,11 @@ class Day24 extends Base2016 {
     private final Map<Integer, ImmutablePoint> markToLocation = new HashMap<>();
     private final char[][] grid;
 
-    private State(List<String> lines) {
-      this.grid = new char[lines.size()][lines.get(0).length()];
+    private State(Loader loader) {
+      this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
       for (int y = 0; y < grid.length; ++y) {
         for (int x = 0; x < grid[0].length; ++x) {
-          char ch = lines.get(y).charAt(x);
-          grid[y][x] = ch;
+          char ch = grid[y][x];
           if (Character.isDigit(ch)) {
             markToLocation.put(ch - '0', new ImmutablePoint(x, y));
           }

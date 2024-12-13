@@ -4,13 +4,12 @@ import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
 
 class Day25 extends Base2021 {
   @Override
   protected Object part1(Loader loader) {
-    char[][] current = loadInitial(loader.ml());
+    char[][] current = loader.ml(String::toCharArray).toArray(char[][]::new);
     char[][] next = new char[current.length][current[0].length];
     int steps = 1;
     while (0 != step(current, next)) {
@@ -53,16 +52,6 @@ class Day25 extends Base2021 {
       }
     }
     return numMoves;
-  }
-
-  private char[][] loadInitial(List<String> input) {
-    char[][] initial = new char[input.size()][input.get(0).length()];
-    for (int y = 0; y < initial.length; ++y) {
-      for (int x = 0; x < initial[0].length; ++x) {
-        initial[y][x] = input.get(y).charAt(x);
-      }
-    }
-    return initial;
   }
 
   private enum Herd {

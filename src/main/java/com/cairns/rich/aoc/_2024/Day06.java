@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2024;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashMultimap;
@@ -40,7 +41,7 @@ class Day06 extends Base2024 {
     for (ImmutablePoint visitedPoint : pathPoints.keySet()) {
       for (ReadDir visitedDir : pathPoints.get(visitedPoint)) {
         ImmutablePoint newObstacleAt = visitedPoint.move(visitedDir);
-        if (   isValid(grid, newObstacleAt)
+        if (   Grid.isValid(grid, newObstacleAt)
             && !startAt.equals(newObstacleAt)
             && !inFrontOfGuard.equals(newObstacleAt)
             && !newLoopObstacles.contains(newObstacleAt)
@@ -72,7 +73,7 @@ class Day06 extends Base2024 {
     while (true) {
       visited.put(guardLocation, guardDir);
       ImmutablePoint next = guardLocation.move(guardDir);
-      if (!isValid(grid, next)) {
+      if (!Grid.isValid(grid, next)) {
         return false;
       }
       if (visited.containsEntry(next, guardDir)) {
@@ -101,13 +102,5 @@ class Day06 extends Base2024 {
       }
     }
     throw fail();
-  }
-
-  /**
-   * Returns true if the given point is in the grid.
-   */
-  private boolean isValid(char[][] grid, ImmutablePoint at) {
-    return (0 <= at.x()) && (at.x() < grid.length)
-        && (0 <= at.y()) && (at.y() < grid[0].length);
   }
 }

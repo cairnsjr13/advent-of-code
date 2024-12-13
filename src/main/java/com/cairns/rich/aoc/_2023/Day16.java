@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2023;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -57,7 +58,7 @@ class Day16 extends Base2023 {
         (ss) -> false,
         SearchState::getNumSteps,
         (cur, registrar) -> {
-          if (cur.valid(grid)) {
+          if (Grid.isValid(grid, cur.location)) {
             visited.put(cur.location, cur.dir);
             char ch = grid[cur.location.y()][cur.location.x()];
             if (!nextDirs.contains(cur.dir, ch)) {
@@ -121,13 +122,6 @@ class Day16 extends Base2023 {
     private LocationAndDir(ImmutablePoint location, ReadDir dir) {
       this.location = location;
       this.dir = dir;
-    }
-
-    /**
-     * Helper method to determine if this location is valid on the given grid.
-     */
-    private boolean valid(char[][] grid) {
-      return (0 <= location.x()) && (location.x() < grid[0].length) && (0 <= location.y()) && (location.y() < grid.length);
     }
 
     /**

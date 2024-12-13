@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2024;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.HashSet;
@@ -58,7 +59,7 @@ class Day10 extends Base2024 {
           }
           for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
             ImmutablePoint next = cur.move(dir);
-            if (isValid(grid, next)) {
+            if (Grid.isValid(grid, next)) {
               char nextElevation = grid[next.y()][next.x()];
               if (nextElevation == curElevation + 1) {
                 registrar.accept(next);
@@ -91,7 +92,7 @@ class Day10 extends Base2024 {
     int ratingFromHere = 0;
     for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
       ImmutablePoint next = cur.move(dir);
-      if (!visited.contains(next) && isValid(grid, next)) {
+      if (!visited.contains(next) && Grid.isValid(grid, next)) {
         char nextElevation = grid[next.y()][next.x()];
         if (nextElevation == curElevation + 1) {
           visited.add(next);
@@ -101,13 +102,5 @@ class Day10 extends Base2024 {
       }
     }
     return ratingFromHere;
-  }
-
-  /**
-   * Returns true if the given point is on the grid.
-   */
-  private boolean isValid(char[][] grid, ImmutablePoint location) {
-    return (0 <= location.x()) && (location.x() < grid[0].length)
-        && (0 <= location.y()) && (location.y() < grid.length);
   }
 }

@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2023;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -56,7 +57,7 @@ class Day23 extends Base2023 {
    * Computes the longest possible path for the input with the given path options.
    */
   private long maxPath(Loader loader, Multimap<Character, ReadDir> pathOptions) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
     Set<ImmutablePoint> inflectionPoints = findInflectionPoints(grid);
     ImmutablePoint start = inflectionPoints.stream().filter((p) -> p.y() == 0).findFirst().get();
     ImmutablePoint end = inflectionPoints.stream().filter((p) -> p.y() == grid.length - 1).findFirst().get();
@@ -161,6 +162,6 @@ class Day23 extends Base2023 {
   private boolean isValidPath(char[][] grid, Multimap<Character, ReadDir> pathOptions, int x, int y, ReadDir dir) {
     int nx = x + dir.dx();
     int ny = y + dir.dy();
-    return (0 <= nx) && (nx < grid[0].length) && (0 <= ny) && (ny < grid.length) && pathOptions.get(grid[ny][nx]).contains(dir);
+    return Grid.isValid(grid, ny, nx) && pathOptions.get(grid[ny][nx]).contains(dir);
   }
 }
