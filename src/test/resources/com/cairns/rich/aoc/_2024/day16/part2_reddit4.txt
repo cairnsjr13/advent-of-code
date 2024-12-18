@@ -1,0 +1,7 @@
+5
+-------AdventOfCodeTestDelimiter-------
+#####
+#..E#
+#...#
+#S..#
+#####
