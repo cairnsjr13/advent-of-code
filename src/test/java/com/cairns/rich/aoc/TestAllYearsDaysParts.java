@@ -30,7 +30,7 @@ public class TestAllYearsDaysParts extends AocTestBase {
   private static final Class<?>[] partParams = { Loader.class };
 
   private static final Predicate<Path> yearFilter = (yearPath) -> yearPath.getFileName().toString().contains("2024");
-  private static final Predicate<Path> dayFilter = (dayPath) -> dayPath.getFileName().toString().contains("16");
+  private static final Predicate<Path> dayFilter = (dayPath) -> dayPath.getFileName().toString().contains("17");
   private static final Predicate<String> partFilter = (part) -> true;
   private static final Predicate<Path> fileFilter = (file) -> true;
   private static final Predicate<Speed> speedFilter = (speed) -> speed.ordinal() <= Speed.Ouch.ordinal();
