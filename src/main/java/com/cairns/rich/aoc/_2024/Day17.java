@@ -28,7 +28,7 @@ class Day17 extends Base2024 {
    * Runs the input program {@link #UNTIL_DONE} and returns the output values joined by commas.
    */
   @Override
-  protected Object part1(Loader loader) throws Throwable {
+  protected Object part1(Loader loader) {
     List<String> lines = loader.ml();
     long startA = Long.parseLong(lines.get(0).split(" +")[2]);
     List<Integer> program = Arrays.stream(lines.get(lines.size() - 1).split(" ")[1].split(","))
@@ -73,7 +73,7 @@ class Day17 extends Base2024 {
    * we can simply map those back to a long and return the minimum to get the answer.
    */
   @Override
-  protected Object part2(Loader loader) throws Throwable {
+  protected Object part2(Loader loader) {
     List<String> lines = loader.ml();
     String programLine = lines.get(lines.size() - 1);
     if (!md5(programLine).equals("d762469f475a95c80903f6b1341da253")) {
