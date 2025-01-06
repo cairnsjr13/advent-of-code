@@ -1,0 +1,6 @@
+0
+-------AdventOfCodeTestDelimiter-------
+r, wr, b, g, bwu, rb, gb, br
+
+ubwu
+bbrgwb
