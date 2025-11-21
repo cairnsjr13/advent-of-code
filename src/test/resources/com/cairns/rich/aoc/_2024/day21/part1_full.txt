@@ -1,0 +1,9 @@
+242484
+-------AdventOfCodeTestDelimiter-------
+depth=3
+-------AdventOfCodeTestDelimiter-------
+805A
+682A
+671A
+973A
+319A

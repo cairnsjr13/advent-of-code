@@ -1,0 +1,5 @@
+58800
+-------AdventOfCodeTestDelimiter-------
+depth=3
+-------AdventOfCodeTestDelimiter-------
+980A

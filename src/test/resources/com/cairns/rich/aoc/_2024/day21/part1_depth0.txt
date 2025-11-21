@@ -1,0 +1,6 @@
+116
+-------AdventOfCodeTestDelimiter-------
+depth=0
+comment=complexity 4 (116/29)
+-------AdventOfCodeTestDelimiter-------
+029A
