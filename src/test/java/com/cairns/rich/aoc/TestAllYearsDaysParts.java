@@ -28,7 +28,6 @@ import org.junit.jupiter.api.TestFactory;
 //@Execution(ExecutionMode.CONCURRENT)  // TODO: enable multi threading.  Seems like there are races
 public class TestAllYearsDaysParts extends AocTestBase {
   private static final Class<?>[] partParams = { Loader.class };
-  src/test/java/com/cairns/rich/aoc/TestAllYearsDaysParts.java 
   private static final Predicate<Path> yearFilter = (yearPath) -> yearPath.getFileName().toString().contains("2024");
   private static final Predicate<Path> dayFilter = (dayPath) -> dayPath.getFileName().toString().contains("24");
   private static final Predicate<String> partFilter = (part) -> true;
