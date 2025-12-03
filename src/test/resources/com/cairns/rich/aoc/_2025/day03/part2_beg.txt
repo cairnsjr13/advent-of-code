@@ -1,0 +1,5 @@
+987654321111
+-------AdventOfCodeTestDelimiter-------
+numDigits=12
+-------AdventOfCodeTestDelimiter-------
+987654321111111

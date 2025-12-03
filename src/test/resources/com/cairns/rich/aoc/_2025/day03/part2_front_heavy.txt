@@ -1,0 +1,5 @@
+811111111119
+-------AdventOfCodeTestDelimiter-------
+numDigits=12
+-------AdventOfCodeTestDelimiter-------
+811111111111119

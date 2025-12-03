@@ -1,0 +1,5 @@
+92
+-------AdventOfCodeTestDelimiter-------
+numDigits=2
+-------AdventOfCodeTestDelimiter-------
+818181911112111

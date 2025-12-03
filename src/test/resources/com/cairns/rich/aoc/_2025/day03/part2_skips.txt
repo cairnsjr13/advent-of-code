@@ -1,0 +1,5 @@
+888911112111
+-------AdventOfCodeTestDelimiter-------
+numDigits=12
+-------AdventOfCodeTestDelimiter-------
+818181911112111

@@ -1,0 +1,5 @@
+78
+-------AdventOfCodeTestDelimiter-------
+numDigits=2
+-------AdventOfCodeTestDelimiter-------
+234234234234278

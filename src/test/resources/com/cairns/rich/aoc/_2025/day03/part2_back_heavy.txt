@@ -1,0 +1,5 @@
+434234234278
+-------AdventOfCodeTestDelimiter-------
+numDigits=12
+-------AdventOfCodeTestDelimiter-------
+234234234234278

@@ -1,0 +1,5 @@
+98
+-------AdventOfCodeTestDelimiter-------
+numDigits=2
+-------AdventOfCodeTestDelimiter-------
+987654321111111
