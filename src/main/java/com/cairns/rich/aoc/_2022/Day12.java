@@ -49,7 +49,7 @@ class Day12 extends Base2022 {
     private final ImmutablePoint end;
 
     private Init(Loader loader) {
-      this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+      this.grid = Grid.parseChars(loader);
       this.part1Start = findAndReplace('S', 'a');
       this.end = findAndReplace('E', 'z');
     }

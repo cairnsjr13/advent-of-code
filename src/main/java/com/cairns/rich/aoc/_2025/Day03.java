@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2025;
 
 import com.cairns.rich.aoc.Loader;
 import com.cairns.rich.aoc.Loader.ConfigToken;
+import com.cairns.rich.aoc.grid.Grid;
 
 /**
  * Battery banks need to be turned on to maximize the joltage to the system.
@@ -42,14 +43,14 @@ class Day03 extends Base2025 {
    */
   private long computeMaxJoltage(Loader loader) {
     int numDigits = loader.getConfig(numDigitsToken);
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    int[][] grid = Grid.parseInts(loader);
     long totalJoltage = 0;
-    for (char[] bank : grid) {
+    for (int[] bank : grid) {
       long bankJoltage = 0;
       int lastUsedIndex = -1;
       for (int digit = 0; digit < numDigits; ++digit) {
         lastUsedIndex = maxIndexIn(bank, lastUsedIndex, bank.length - (numDigits - digit - 1));
-        bankJoltage = (bankJoltage * 10) + (bank[lastUsedIndex] - '0');
+        bankJoltage = (bankJoltage * 10) + bank[lastUsedIndex];
       }
       totalJoltage += bankJoltage;
     }
@@ -59,11 +60,11 @@ class Day03 extends Base2025 {
   /**
    * Finds the index of the largest value falling between the two given exclusive indexes.
    */
-  private int maxIndexIn(char[] bank, int fromExc, int toExc) {
+  private int maxIndexIn(int[] bank, int fromExc, int toExc) {
     int maxIndex = fromExc + 1;
-    char max = bank[fromExc + 1];
+    int max = bank[fromExc + 1];
     for (int i = fromExc + 2; i < toExc; ++i) {
-      char val = bank[i];
+      int val = bank[i];
       if (max < val) {
         maxIndex = i;
         max = val;

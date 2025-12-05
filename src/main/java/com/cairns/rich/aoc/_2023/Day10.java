@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2023;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.Point;
@@ -42,7 +43,7 @@ class Day10 extends Base2023 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     return findLoop(grid).size() / 2;
   }
 
@@ -55,7 +56,7 @@ class Day10 extends Base2023 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     Set<Point<?>> dGridInsides = findDoubleGridInsides(grid);
     int totalInside = 0;
     for (int y = 0; y < grid.length; ++y) {

@@ -36,7 +36,7 @@ class Day12 extends Base2024 {
    * Helper method to find all regions in the input and use the given price to calculate total fence cost.
    */
   private int computeFenceCost(Loader loader, ToIntBiFunction<char[][], Set<ImmutablePoint>> regionPricer) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     Set<ImmutablePoint> visited = new HashSet<>();
     int cost = 0;
     for (int row = 0; row < grid.length; ++row) {

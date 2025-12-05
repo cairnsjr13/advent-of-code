@@ -13,8 +13,8 @@ class Day04 extends Base2025 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
-    char[][] ignored = new char[grid.length][grid[0].length];
+    boolean[][] grid = Grid.parseBools(loader, '@');
+    boolean[][] ignored = new boolean[grid.length][grid[0].length];
     return removeAccessible(grid, ignored);
   }
 
@@ -25,8 +25,8 @@ class Day04 extends Base2025 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
-    char[][] nextGrid = new char[grid.length][grid[0].length];
+    boolean[][] grid = Grid.parseBools(loader, '@');
+    boolean[][] nextGrid = new boolean[grid.length][grid[0].length];
     int totalRemoved = 0;
     while (true) {
       int numRemoved = removeAccessible(grid, nextGrid);
@@ -34,7 +34,7 @@ class Day04 extends Base2025 {
         return totalRemoved;
       }
       totalRemoved += numRemoved;
-      char[][] swapGrid = grid;
+      boolean[][] swapGrid = grid;
       grid = nextGrid;
       nextGrid = swapGrid;
     }
@@ -44,13 +44,13 @@ class Day04 extends Base2025 {
    * Removes all accessible paper rolls from the given grid by writing the
    * next generation to the given nextGrid.  Returns the number removed.
    */
-  private int removeAccessible(char[][] grid, char[][] nextGrid) {
+  private int removeAccessible(boolean[][] grid, boolean[][] nextGrid) {
     int numRemoved = 0;
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
         nextGrid[row][col] = grid[row][col];
-        if ((grid[row][col] == '@') && isAccessible(grid, row, col)) {
-          nextGrid[row][col] = '.';
+        if (grid[row][col] && isAccessible(grid, row, col)) {
+          nextGrid[row][col] = false;
           ++numRemoved;
         }
       }
@@ -61,14 +61,14 @@ class Day04 extends Base2025 {
   /**
    * Returns true if the number of neighbors for the given cell is less than 4.
    */
-  private boolean isAccessible(char[][] grid, int row, int col) {
+  private boolean isAccessible(boolean[][] grid, int row, int col) {
     int neighbors = 0;
     for (int dr = -1; dr <= 1; ++dr) {
       for (int dc = -1; dc <= 1; ++dc) {
         if ((dr != 0) || (dc != 0)) {
           int nRow = row + dr;
           int nCol = col + dc;
-          if (Grid.isValid(grid, nRow, nCol) && (grid[nRow][nCol] == '@')) {
+          if (Grid.isValid(grid, nRow, nCol) && grid[nRow][nCol]) {
             ++neighbors;
           }
         }

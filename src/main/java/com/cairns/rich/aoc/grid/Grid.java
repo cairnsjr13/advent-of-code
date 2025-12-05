@@ -1,5 +1,6 @@
 package com.cairns.rich.aoc.grid;
 
+import com.cairns.rich.aoc.Loader;
 import java.util.List;
 import java.util.function.IntSupplier;
 
@@ -8,6 +9,35 @@ import java.util.function.IntSupplier;
  */
 public final class Grid {
   private Grid() { /* Do not instantiate */ }
+
+  /**
+   * Helper method to parse a char[][] grid from the given loader.
+   */
+  public static char[][] parseChars(Loader loader) {
+    return loader.ml(String::toCharArray).toArray(char[][]::new);
+  }
+
+  /**
+   * Helper method to parse an int[][] from the given loader.
+   * It is assumed that each char is a digit [0-9].
+   */
+  public static int[][] parseInts(Loader loader) {
+    return loader.ml((str) -> str.chars().map((c) -> c - '0').toArray()).toArray(int[][]::new);
+  }
+
+  /**
+   * Helper method to parse a boolean[][] from the given loader.
+   * True values will be exact matched with the given trueValue, all others will be false.
+   */
+  public static boolean[][] parseBools(Loader loader, char trueValue) {
+    return loader.ml((str) -> {
+      boolean[] bools = new boolean[str.length()];
+      for (int i = 0; i < bools.length; ++i) {
+        bools[i] = str.charAt(i) == trueValue;
+      }
+      return bools;
+    }).toArray(boolean[][]::new);
+  }
 
   /**
    * Returns the Manhattan distance (horiz + vert) of two points.

@@ -1,8 +1,8 @@
 package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -82,7 +82,7 @@ class Day02 extends Base2016 {
    * based on the index of the char move in the {@link #moves}.
    */
   private String getCode(Loader loader, Map<Character, char[]> buttons) {
-    List<char[]> specs = loader.ml(String::toCharArray);
+    char[][] specs = Grid.parseChars(loader);
     char current = '5';
     StringBuilder code = new StringBuilder();
     for (char[] spec : specs) {

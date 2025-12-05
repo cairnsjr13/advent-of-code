@@ -16,7 +16,7 @@ class Day14 extends Base2023 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     moveAllNorthSouth(grid, ReadDir.Up);
     return computeLoad(grid);
   }
@@ -32,7 +32,7 @@ class Day14 extends Base2023 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     TreeMultimap<Integer, Integer> loadsSeen = TreeMultimap.create();
     for (int i = 1; i <= CYCLES_NEEDED_TO_PROJECT; ++i) {
       moveAllNorthSouth(grid, ReadDir.Up);

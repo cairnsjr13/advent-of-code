@@ -1,0 +1,8 @@
+10
+-------AdventOfCodeTestDelimiter-------
+comment=One of these ranges is completely inside the other, sharing the same lowEndpoint
+-------AdventOfCodeTestDelimiter-------
+13-22
+13-20
+
+15

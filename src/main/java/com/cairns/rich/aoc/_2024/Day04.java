@@ -28,7 +28,7 @@ class Day04 extends Base2024 {
    * This is done by checking the given finder against every position with the given anchor.
    */
   private int countFrom(Loader loader, char anchor, XmasPatternFinder finder) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     int totalXmas = 0;
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {

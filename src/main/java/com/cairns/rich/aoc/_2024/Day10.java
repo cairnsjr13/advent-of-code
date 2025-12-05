@@ -29,12 +29,12 @@ class Day10 extends Base2024 {
   /**
    * Helper method that finds the total value of all trailheads found in the given loaders input grid.
    */
-  private int findTotal(Loader loader, ToIntBiFunction<char[][], ImmutablePoint> toTrailheadValue) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+  private int findTotal(Loader loader, ToIntBiFunction<int[][], ImmutablePoint> toTrailheadValue) {
+    int[][] grid = Grid.parseInts(loader);
     int total = 0;
     for (int row = 0; row < grid.length; ++row) {
       for (int col = 0; col < grid[0].length; ++col) {
-        if (grid[row][col] == '0') {
+        if (grid[row][col] == 0) {
           total += toTrailheadValue.applyAsInt(grid, new ImmutablePoint(col, row));
         }
       }
@@ -47,20 +47,20 @@ class Day10 extends Base2024 {
    * trailhead and increasing exactly 1 elevation each step.  This is computed using a bread-first-first search
    * starting at the trailhead and preventing repeats globally, registering a summit on each '9' encountered.
    */
-  private int findScore(char[][] grid, ImmutablePoint trailhead) {
+  private int findScore(int[][] grid, ImmutablePoint trailhead) {
     Set<ImmutablePoint> nines = new HashSet<>();
     bfs(
         trailhead,
         (cur) -> false,
         (cur, registrar) -> {
-          char curElevation = grid[cur.y()][cur.x()];
-          if (curElevation == '9') {
+          int curElevation = grid[cur.y()][cur.x()];
+          if (curElevation == 9) {
             nines.add(cur);
           }
           for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
             ImmutablePoint next = cur.move(dir);
             if (Grid.isValid(grid, next)) {
-              char nextElevation = grid[next.y()][next.x()];
+              int nextElevation = grid[next.y()][next.x()];
               if (nextElevation == curElevation + 1) {
                 registrar.accept(next);
               }
@@ -77,23 +77,23 @@ class Day10 extends Base2024 {
    * is computed using a depth-first-search starting at the trailhead and preventing repeats
    * along the current path, registering a unique path any time a summit is encountered.
    */
-  private int findRating(char[][] grid, ImmutablePoint trailhead) {
+  private int findRating(int[][] grid, ImmutablePoint trailhead) {
     return findRating(grid, new HashSet<>(), trailhead);
   }
 
   /**
    * Recursive depth-first-search method to find all of the unique paths that end in a summit from the given point.
    */
-  private int findRating(char[][] grid, Set<ImmutablePoint> visited, ImmutablePoint cur) {
-    char curElevation = grid[cur.y()][cur.x()];
-    if (curElevation == '9') {
+  private int findRating(int[][] grid, Set<ImmutablePoint> visited, ImmutablePoint cur) {
+    int curElevation = grid[cur.y()][cur.x()];
+    if (curElevation == 9) {
       return 1;
     }
     int ratingFromHere = 0;
     for (ReadDir dir : EnumUtils.enumValues(ReadDir.class)) {
       ImmutablePoint next = cur.move(dir);
       if (!visited.contains(next) && Grid.isValid(grid, next)) {
-        char nextElevation = grid[next.y()][next.x()];
+        int nextElevation = grid[next.y()][next.x()];
         if (nextElevation == curElevation + 1) {
           visited.add(next);
           ratingFromHere += findRating(grid, visited, next);

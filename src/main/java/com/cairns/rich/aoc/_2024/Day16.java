@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2024;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Comparator;
@@ -44,7 +45,7 @@ class Day16 extends Base2024 {
       Loader loader,
       ToLongBiFunction<Map<MazeState, ToHere>, MazeState> resultsComputer
   ) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     ImmutablePoint goal = find(grid, 'E');
     ImmutablePoint start = find(grid, 'S');
 

@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2016;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.Table;
@@ -118,7 +119,7 @@ class Day24 extends Base2016 {
     private final char[][] grid;
 
     private State(Loader loader) {
-      this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+      this.grid = Grid.parseChars(loader);
       for (int y = 0; y < grid.length; ++y) {
         for (int x = 0; x < grid[0].length; ++x) {
           char ch = grid[y][x];

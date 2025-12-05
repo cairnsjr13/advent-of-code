@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -158,7 +159,7 @@ class Day18 extends Base2019 {
     private final List<Table<Character, Character, PathDesc>> pathsByRobot;
 
     private State(Loader loader) {
-      this.grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+      this.grid = Grid.parseChars(loader);
       this.pathsByRobot = computePaths(grid);
     }
   }

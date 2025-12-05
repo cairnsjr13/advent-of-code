@@ -1,0 +1,8 @@
+10
+-------AdventOfCodeTestDelimiter-------
+comment=One of these ranges is completely inside the other, not touching an endpoint
+-------AdventOfCodeTestDelimiter-------
+13-22
+15-20
+
+15

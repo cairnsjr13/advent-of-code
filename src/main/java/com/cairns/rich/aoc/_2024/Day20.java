@@ -43,7 +43,7 @@ class Day20 extends Base2024 {
    */
   private int numImprovements(Loader loader, int maxCheatDist) {
     int cheatThreshold = loader.getConfig(cheatThresholdToken);
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     ImmutablePoint start = Grid.findAndReplace(grid, 'S', '.');
     ImmutablePoint end = Grid.findAndReplace(grid, 'E', '.');
     Map<ImmutablePoint, Long> bestNoCheatFrom = computeBestNoCheatStartingAt(grid, end);

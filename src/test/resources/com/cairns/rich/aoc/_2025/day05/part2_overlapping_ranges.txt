@@ -1,0 +1,8 @@
+18
+-------AdventOfCodeTestDelimiter-------
+comment=These ranges have a partial overlap
+-------AdventOfCodeTestDelimiter-------
+13-22
+20-30
+
+15

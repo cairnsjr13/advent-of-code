@@ -1,6 +1,7 @@
 package com.cairns.rich.aoc._2018;
 
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.MutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.BiMap;
@@ -33,7 +34,7 @@ class Day13 extends Base2018 {
 
   @Override
   protected Object part1(Loader loader) {
-    char[][] tracks = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] tracks = Grid.parseChars(loader);
     List<Cart> carts = findCarts(tracks);
     while (true) {
       Optional<Cart> collision = carts.stream().sorted(Cart.cmp).filter((cart) -> cart.move(tracks)).findFirst();
@@ -45,7 +46,7 @@ class Day13 extends Base2018 {
 
   @Override
   protected Object part2(Loader loader) {
-    char[][] tracks = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] tracks = Grid.parseChars(loader);
     List<Cart> carts = findCarts(tracks);
     Set<Cart> crashed = new HashSet<>();
     while (true) {

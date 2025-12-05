@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2019;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ImmutablePoint;
 import com.cairns.rich.aoc.grid.ReadDir;
 import com.google.common.collect.HashBasedTable;
@@ -30,7 +31,7 @@ class Day20 extends Base2019 {
   }
 
   private long getMinSteps(Loader loader, boolean recursive) {
-    State state = buildState(loader.ml(String::toCharArray).toArray(char[][]::new));
+    State state = buildState(Grid.parseChars(loader));
     WalkDesc init = new WalkDesc(0, state.start, 0);
     PriorityQueue<WalkDesc> candidates = new PriorityQueue<>(Comparator.comparing((ws) -> ws.numSteps));
     Map<WalkDesc, Long> visitedInSteps = new HashMap<>();

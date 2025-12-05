@@ -85,7 +85,7 @@ class Day08 extends Base2024 {
     private final ArrayListMultimap<Character, ImmutablePoint> antennasBySignal = ArrayListMultimap.create();
 
     private City(Loader loader) {
-      this.grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+      this.grid = Grid.parseChars(loader);
       for (int row = 0; row < grid.length; ++row) {
         for (int col = 0; col < grid[0].length; ++col) {
           char ch = grid[row][col];

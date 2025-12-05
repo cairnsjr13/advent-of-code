@@ -24,7 +24,7 @@ class Day16 extends Base2023 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     return getNumEnergized(grid, 0, 0, ReadDir.Right);
   }
 
@@ -34,7 +34,7 @@ class Day16 extends Base2023 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     return Math.max(
         IntStream.range(0, grid.length).map((y) -> Math.max(
             getNumEnergized(grid, 0, y, ReadDir.Right),

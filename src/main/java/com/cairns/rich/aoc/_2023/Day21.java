@@ -67,7 +67,7 @@ class Day21 extends Base2023 {
    * same thing.  We can use odd/even mods to keep track of the seen gardens at each step.
    */
   private Map<Long, Long> countGardensPerStep(boolean isInfinite, Loader loader, long numSteps) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     Map<Long, Long> gardensPerStep = new HashMap<>();
     List<Set<ImmutablePoint>> permanents = List.of(new HashSet<>(), new HashSet<>());
     List<Set<ImmutablePoint>> currents = List.of(new HashSet<>(), new HashSet<>());

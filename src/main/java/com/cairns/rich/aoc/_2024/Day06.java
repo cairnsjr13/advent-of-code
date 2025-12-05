@@ -18,7 +18,7 @@ class Day06 extends Base2024 {
    */
   @Override
   protected Object part1(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     Multimap<ImmutablePoint, ReadDir> visited = HashMultimap.create();
     findAllPointsAndDirsAndIfLoops(grid, findStart(grid), visited);
     return visited.keySet().size();
@@ -31,7 +31,7 @@ class Day06 extends Base2024 {
    */
   @Override
   protected Object part2(Loader loader) {
-    char[][] grid = loader.ml(String::toCharArray).stream().toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     ImmutablePoint startAt = findStart(grid);
     ImmutablePoint inFrontOfGuard = startAt.move(ReadDir.Up);
     Multimap<ImmutablePoint, ReadDir> pathPoints = HashMultimap.create();

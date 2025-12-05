@@ -1,0 +1,8 @@
+17
+-------AdventOfCodeTestDelimiter-------
+comment=These ranges share an endpoint
+-------AdventOfCodeTestDelimiter-------
+13-22
+22-29
+
+15

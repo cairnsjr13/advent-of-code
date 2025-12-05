@@ -57,7 +57,7 @@ class Day23 extends Base2023 {
    * Computes the longest possible path for the input with the given path options.
    */
   private long maxPath(Loader loader, Multimap<Character, ReadDir> pathOptions) {
-    char[][] grid = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] grid = Grid.parseChars(loader);
     Set<ImmutablePoint> inflectionPoints = findInflectionPoints(grid);
     ImmutablePoint start = inflectionPoints.stream().filter((p) -> p.y() == 0).findFirst().get();
     ImmutablePoint end = inflectionPoints.stream().filter((p) -> p.y() == grid.length - 1).findFirst().get();

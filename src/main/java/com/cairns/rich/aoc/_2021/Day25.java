@@ -2,6 +2,7 @@ package com.cairns.rich.aoc._2021;
 
 import com.cairns.rich.aoc.EnumUtils;
 import com.cairns.rich.aoc.Loader;
+import com.cairns.rich.aoc.grid.Grid;
 import com.cairns.rich.aoc.grid.ReadDir;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -9,7 +10,7 @@ import java.util.stream.Stream;
 class Day25 extends Base2021 {
   @Override
   protected Object part1(Loader loader) {
-    char[][] current = loader.ml(String::toCharArray).toArray(char[][]::new);
+    char[][] current = Grid.parseChars(loader);
     char[][] next = new char[current.length][current[0].length];
     int steps = 1;
     while (0 != step(current, next)) {

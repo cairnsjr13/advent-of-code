@@ -1,0 +1,8 @@
+19
+-------AdventOfCodeTestDelimiter-------
+comment=The same range twice
+-------AdventOfCodeTestDelimiter-------
+13-31
+13-31
+
+15
