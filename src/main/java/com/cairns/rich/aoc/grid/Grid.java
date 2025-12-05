@@ -78,14 +78,14 @@ public final class Grid {
   /**
    * Returns true if the given grid contains the given point.
    */
-  public static boolean isValid(List<List<?>> grid, Point<?> at) {
+  public static <T> boolean isValid(List<List<T>> grid, Point<?> at) {
     return isValid(at, grid.size(), () -> grid.get(0).size());
   }
 
   /**
    * Returns true if the given grid contains the given row/col coordinates.
    */
-  public static boolean isValid(List<List<?>> grid, int row, int col) {
+  public static <T> boolean isValid(List<List<T>> grid, int row, int col) {
     return isValid(row, col, grid.size(), () -> grid.get(0).size());
   }
 
