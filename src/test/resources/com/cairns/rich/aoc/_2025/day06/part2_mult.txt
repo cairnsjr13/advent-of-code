@@ -1,0 +1,6 @@
+8544
+-------AdventOfCodeTestDelimiter-------
+123
+ 45
+  6
+*

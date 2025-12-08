@@ -1,0 +1,8 @@
+381
+-------AdventOfCodeTestDelimiter-------
+comment=Vertical grouping can have spaces at the top that shouldnt stop parsing
+-------AdventOfCodeTestDelimiter-------
+  3
+ 25
+146
++
