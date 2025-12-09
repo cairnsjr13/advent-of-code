@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * Junction boxes need to be connected to form circuits in 3d space.  Distance between
+ * boxes is determined by straight-line euclidean distance instead of manhattan distance.
+ */
 class Day08 extends Base2025 {
   private static final ConfigToken<Integer> numConnectionsToken = ConfigToken.of("numConnections", Integer::parseInt);
 
@@ -149,8 +153,8 @@ class Day08 extends Base2025 {
     private double euclidDist() {
       return Math.sqrt(
           Math.pow((left.x - right.x), 2)
-          + Math.pow((left.y - right.y), 2)
-          + Math.pow((left.z - right.z), 2)
+         + Math.pow((left.y - right.y), 2)
+         + Math.pow((left.z - right.z), 2)
       );
     }
   }
